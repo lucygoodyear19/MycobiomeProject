@@ -1,13 +1,9 @@
-# CMEE Project Data_Scripts Repository
+# Mycobiome Project Boilerplates Repository
 
 *Author: Lucy Goodyear*  
-*Created: 30/01/20*
+*Created: 04/02/20*
 
-This repository contains all relevant scripts and data fro my analysis.
-
-**Taiwan_Vietnam** contains all documents relating to the 2016 Taiwan/Vietnam dataset.
-
-HPC-pipeline_notes_LG is a markdown file containing my notes of Jenny's HPC pipeline, the method of processing the sequences from MiSeq to get OTU tables.
+This repository contains all relevant boilerplate scripts for my analysis.
 
 ## Requirements
 
@@ -16,3 +12,7 @@ All code has been created for Mac so there may be a few differences in commands 
 ## Scripts
 
 All folders contain the following scripts:
+
+dada2_hpc_pipeline.R
+
+This is a script following the dada2 IS2 tutorial with some modifications to use only the forward reads and to run on HPC.
