@@ -1,4 +1,12 @@
 References
 Thesis_write_up
 Analysis/Countries_Runs/Ecuador_CR/Plates
+Analysis/Countries_Runs/Ecuador_CR/HPC_results
+Analysis/Countries_Runs/Taiwan_Vietnam/Filtering
+Analysis/Countries_Runs/Taiwan_Vietnam/Plots
+Analysis/Countries_Runs/Taiwan_Vietnam/Data
+Analysis/Countries_Runs/Taiwan_Vietnam/qPCR_vs_MiSeq/TW_Bd_qpcr_miseq_comparison_Dirk.R
+Analysis/Countries_Runs/Taiwan_Vitenam/qPCR_vs_MiSeq/Plots
+Analysis/UNITE_database
 .DS_Store
+.Rhistory
