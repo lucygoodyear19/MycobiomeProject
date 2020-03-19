@@ -12,18 +12,18 @@ rm(list=ls())
 
 ############ initial set up, library and data loading ################
 
-
 # load packages
 library("dada2")
 library("ShortRead")
 library("Biostrings")
-library("cutadapt")
+# personal laptop
+#library("cutadapt")
 
 # save path to data folder
 # my laptop
-path <- "/Users/lucy/Documents/CMEECourseWork/Project/Analysis/Countries_Runs/Ecuador_CR/Plates"
+#path <- "/Users/lucy/Documents/MRes/MycobiomeProject/Analysis/Countries_Runs/Ecuador_CR/Plates"
 # hpc
-#path <- "$HOME/Project/Analysis/Countries_Runs/Ecuador_CR/Plates"
+path <- "/rds/general/user/leg19/home/Project/Ecuador_pipelineITS/Plates"
 
 # check folder has correct contents
 list.files(path)
@@ -62,8 +62,8 @@ FWD.orients
 
 # put N-filtered files in filtN/ subdirectory for both forward and reverse reads
 # and save in new lists
-fnFs.filtN <- file.path(path, "filtN", basename(fnFs))
-fnRs.filtN <- file.path(path, "filtN", basename(fnRs))
+fnFs.filtN <- file.path(path, "filtN_lg", basename(fnFs))
+fnRs.filtN <- file.path(path, "filtN_lg", basename(fnRs))
 
 # use dada2 filter and trim function on forward and reverse reads
 filterAndTrim(fnFs, fnFs.filtN, fnRs, fnRs.filtN, maxN = 0, multithread = TRUE)
@@ -72,9 +72,9 @@ filterAndTrim(fnFs, fnFs.filtN, fnRs, fnRs.filtN, maxN = 0, multithread = TRUE)
 
 # reset working directory to the filtN subdirectory
 # my laptop
-#path2 <- "/Users/lucy/Documents/CMEECourseWork/Project/Analysis/Countries_Runs/Ecuador_CR/Plates/filtN"
+#path2 <- "/Users/lucy/Documents/MRes/MycobiomeProject/Analysis/Countries_Runs/Ecuador_CR/Plates/filtN_lg"
 # hpc
-path2 <- "$HOME/Project/Analysis/Countries_Runs/Ecuador_CR/Plates/filtN"
+path2 <- "/rds/general/user/leg19/home/Project/Ecuador_pipelineITS/Plates/filtN_lg"
 setwd(path2)
 
 # rename files to .gz for use in next steps
@@ -115,7 +115,7 @@ system2(cutadapt, args = "--version")
 
 # create subdirectory called 'cutadapt' if it doesn't already exist
 # and copy, paste and rename read files to the subdirectory
-path.cut <- file.path(path, "cutadapt")
+path.cut <- file.path(path, "cutadapt_lg")
 if(!dir.exists(path.cut)) dir.create(path.cut)
 fnFs.cut <- file.path(path.cut, basename(fnFs))
 fnRs.cut <- file.path(path.cut, basename(fnRs))
@@ -206,7 +206,7 @@ out <- filterAndTrim(cutFs, filtFs, maxN = 0, maxEE = (2), truncLen = (200),
 # view data
 head(out)
 # save filtered data to a csv
-write.csv(out,file="filtering_output.csv")
+write.csv(out,file="filtering_output_lg.csv")
 # view csv
 out
 
@@ -266,9 +266,9 @@ track
 
 # save path of unite database
 # my laptop
-#unite.ref <- "/Users/lucy/Documents/CMEECourseWork/Project/Analysis/UNITE_database/sh_general_release_dynamic_s_02.02.2019.fasta"
+#unite.ref <- "/Users/lucy/Documents/MRes/MycobiomeProject/Analysis/UNITE_database/sh_general_release_dynamic_s_02.02.2019.fasta"
 # hpc
-unite.ref <- "$HOME/Project/Analysis/UNITE_database/sh_general_release_dynamic_s_02.02.2019.fasta"
+unite.ref <- "/rds/general/user/leg19/home/Project/Ecuador_pipelineITS/Plates/UNITE_database/General/sh_general_release_dynamic_s_02.02.2019.fasta"
 
 # run assignTaxonomy function
 taxa <- assignTaxonomy(seqtab.nochim, unite.ref, multithread = TRUE, tryRC = TRUE)
@@ -290,7 +290,7 @@ summary(taxa.print)
 # subset data to Batrachochytrium chytrids only and save as separate dataframe
 chytrid <- subset(taxa.print,Genus=="g__Batrachochytrium")
 # save to text file
-write.table(chytrid,"Chytrid_Table.txt")
+write.table(chytrid,"Chytrid_Table_lg.txt")
 
 # extract mock 1 from ASV table
 unqs.mock <- seqtab.nochim["mock1",]
@@ -321,13 +321,13 @@ cat("DADA2 inferred", length(unqs.mock), "sample sequences present in the Mock c
 # in order to check for any duplicates, which will need to be renamed
 samples.out <- data.frame(Sample=as.character(rownames(seqtab.nochim)))
 # for loop to rename any duplicates
-for (i in 1:nrow(samples.out)) {
-  if (duplicated(samples.out)[i] == TRUE){
-    samples.out[i,1] = paste0(samples.out[i,1], "a")
-  }
-}
+#for (i in 1:nrow(samples.out)) {
+#  if (duplicated(samples.out)[i] == TRUE){
+#    samples.out[i,1] = paste0(samples.out[i,1], "a")
+#  }
+#}
 # reset row names for comparison
-rownames(samples.out) <- rownames(seqtab.nochim)
+#rownames(samples.out) <- rownames(seqtab.nochim)
 
 ######################### write files out ##########################
 
@@ -343,9 +343,9 @@ seqtab.slim <- t(seqtab.nochim) # transpose
 rownames(seqtab.slim) <- paste0("SV",seq(nrow(taxa)))
 
 # save as .txt files
-write.table(taxa.slim,"../HPC_results/Tax_Table.txt")
-write.table(samples.out,"../HPC_results/Metadata.txt")
-write.table(seqtab.slim,"../HPC_results/Abundance_Table.txt")
+write.table(taxa.slim,"Tax_Table_lg.txt")
+write.table(samples.out,"Metadata_lg.txt")
+write.table(seqtab.slim,"Abundance_Table_lg.txt")
 
 #---------------------------------------------------------
 # DO NOT RUN AS WILL CRASH
