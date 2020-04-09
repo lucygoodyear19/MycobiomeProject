@@ -12,6 +12,7 @@ rm(list=ls())
 
 ############ initial set up, library and data loading ################
 
+
 # load packages
 library("dada2")
 library("ShortRead")
@@ -19,11 +20,35 @@ library("Biostrings")
 # personal laptop
 #library("cutadapt")
 
-# save path to data folder
-# my laptop
-#path <- "/Users/lucy/Documents/MRes/MycobiomeProject/Analysis/Countries_Runs/Ecuador_CR/Plates"
-# hpc
-path <- "/rds/general/user/leg19/home/Project/Ecuador_pipelineITS/Plates"
+# import arguments to run script on specific country data
+#!/usr/bin/env Rscript
+args = commandArgs(trailingOnly=TRUE) # setup to accept arguments from command line
+# test if there is at least one argument: if not, return an error
+if (length(args)==0) {
+  stop("At least one argument must be supplied in the form of an R-script containing the following arguments: 
+       1) path to data folder 
+       2) path to folder that will contain filtered data files 
+       3) path to save outputs to 
+       4) forward primer 
+       5) reverse primer
+       6) base name of fastq files 
+       7) path to cutadapt installation
+       8) path to local version of unite database")
+}
+# load arguments into script
+source(args)
+# print arguments as check
+print(path) # path to data folder
+print(path2) # path to folder that will contain filtered data files
+print(path_out) # path to save outputs to
+print(FWD) # forward primer
+print(REV) # reverse primer
+print(base_prefix) # sequences files base name
+print(cutadapt) # path to cutadapt installation
+print(unite.ref) # path to unite database
+
+# check cutadapt is installed
+system2(cutadapt, args = "--version")
 
 # check folder has correct contents
 list.files(path)
@@ -39,10 +64,6 @@ fnFs
 
 ######################### remove primers ###########################
 
-
-# set forward and reverse primers
-REV<-"CGCGCGCACGTTTCAHCGATGAAGAACGCAG"
-FWD<-"GCATATHANTAAGSGGAGGTGACTGGCCGCCT"
 
 # define function to produce all orientations of the input sequence
 allOrients <- function(primer) {
@@ -60,21 +81,17 @@ REV.orients <- allOrients(REV)
 # check forward primer orientations
 FWD.orients
 
-# put N-filtered files in filtN/ subdirectory for both forward and reverse reads
+# put N-filtered files in filtN_lg/ subdirectory for both forward and reverse reads
 # and save in new lists
-fnFs.filtN <- file.path(path, "filtN_lg", basename(fnFs))
-fnRs.filtN <- file.path(path, "filtN_lg", basename(fnRs))
+fnFs.filtN <- file.path(path, "filtN", basename(fnFs))
+fnRs.filtN <- file.path(path, "filtN", basename(fnRs))
 
 # use dada2 filter and trim function on forward and reverse reads
 filterAndTrim(fnFs, fnFs.filtN, fnRs, fnRs.filtN, maxN = 0, multithread = TRUE)
 # note maxN = 0 means any reads with one or more "N"s (representing an
 # ambiguous base) will be removed
 
-# reset working directory to the filtN subdirectory
-# my laptop
-#path2 <- "/Users/lucy/Documents/MRes/MycobiomeProject/Analysis/Countries_Runs/Ecuador_CR/Plates/filtN_lg"
-# hpc
-path2 <- "/rds/general/user/leg19/home/Project/Ecuador_pipelineITS/Plates/filtN_lg"
+# reset working directory to the filtN_lg subdirectory
 setwd(path2)
 
 # rename files to .gz for use in next steps
@@ -105,17 +122,9 @@ rbind(FWD.ForwardReads = sapply(FWD.orients, primerHits, fn = fnFs.filtN[[1]]),
 # flip reverse primer if it is in its reverse complement
 REV <- REV.orients[["RevComp"]]
 
-# check cutadapt is installed
-# my laptop
-#cutadapt <- "/usr/local/lib/python3.7/site-packages/cutadapt"
-#system2(cutadapt, args = "--version")
-# hpc
-cutadapt <- "/rds/general/user/leg19/home/anaconda3/envs/Renv/bin/cutadapt"
-system2(cutadapt, args = "--version")
-
 # create subdirectory called 'cutadapt' if it doesn't already exist
 # and copy, paste and rename read files to the subdirectory
-path.cut <- file.path(path, "cutadapt_lg")
+path.cut <- file.path(path, "cutadapt")
 if(!dir.exists(path.cut)) dir.create(path.cut)
 fnFs.cut <- file.path(path.cut, basename(fnFs))
 fnRs.cut <- file.path(path.cut, basename(fnRs))
@@ -136,7 +145,8 @@ R2.flags <- paste("-G", REV, "-A", FWD.RC)
 for (i in seq_along(fnFs)) {
   system2(cutadapt, args = c(R1.flags, R2.flags, "-n", 2,
                              "-o", fnFs.cut[i], "-p", fnRs.cut[i], # output files
-                             fnFs.filtN[i], fnRs.filtN[i])) # input files
+                             fnFs.filtN[i], fnRs.filtN[i], # input files
+			     "--minimum-length 1"))
 }
 
 # test 1st sample to check it has worked (output should all be 0 now)
@@ -148,44 +158,26 @@ rbind(FWD.ForwardReads = sapply(FWD.orients, primerHits, fn = fnFs.cut[[1]]),
 # save all primer-free forward read path and file names in a list
 cutFs <- sort(list.files(path.cut, pattern = "R1_001.fastq$", full.names = TRUE))
 # add prefix to all file names
-XcutFs<-sub("170714_M03291_0074_000000000-AV4VF_","",cutFs)
+XcutFs <- sub(base_prefix,"",cutFs)
 
 # save all primer-free reverse read path and file names in a list
 cutRs <- sort(list.files(path.cut, pattern = "R2_001.fastq$", full.names = TRUE))
 # add prefix to all file names
-XcutRs<-sub("170714_M03291_0074_000000000-AV4VF_","",cutRs)
+XcutRs <- sub(base_prefix,"",cutRs)
 
 # extract sample names
 get.sample.name <- function(fname) strsplit(basename(fname), "_")[[1]][1]
 sample.names <- unname(sapply(XcutFs, get.sample.name))
 head(sample.names)
 
-# cutadapt leaves some sequences at length zero which causes problems 
-# in viewing quality profiles, the script below corrects that
-
-#library(ShortRead)
-#fn <- "/home/paj215/Documents/Ecuador_pipelineITS/Plates/filtN/170714_M03291_0074_000000000-AV4VF_0_S188_L001_R2_001.fastq"
-#trimmed <- "/home/paj215/Documents/Ecuador_pipelineITS/Plates/cutadapt/170714_M03291_0074_000000000-AV4VF_0_S188_L001_R2_001.fastq"
-#srq <- readFastq(fn)
-#seqlen.tab <- table(width(srq)) # Table of how many RSVs have a given length in nts
-#seqlen.tab
-#seqlens <- as.integer(names(seqlen.tab))
-#counts <- as.integer(seqlen.tab)
-#plot(x=seqlens, y=counts)
-#plot(x=seqlens, y=log10(counts))
-# Vast majority have length 226
-# Trim just below that (224) to keep minor length variation in data
-
-#fastqFilter(fn, trimmed, truncQ=0, truncLen=297, verbose=TRUE)
-#plotQualityProfile(trimmed)
-
 ## From now on only forward reads will be processed because the reverse reads 
 ## are always of lower quality 
 ## (https://www.sciencedirect.com/science/article/pii/S1754504818302800)
 
 # plot quality profiles for forward reads
-
-plotQualityProfile(cutFs[1:2])
+pdf(file = paste(path_out,"Quality_Profiles.pdf",sep = ''), paper = 'A4')
+plotQualityProfile(cutFs[1:2]) # HPC will save this in a pdf with the error plot
+dev.off()
 
 
 ################# filter and trim primer-free reads ##################
@@ -206,14 +198,16 @@ out <- filterAndTrim(cutFs, filtFs, maxN = 0, maxEE = (2), truncLen = (200),
 # view data
 head(out)
 # save filtered data to a csv
-write.csv(out,file="filtering_output_lg.csv")
+write.csv(out,file=paste(path_out,"filtering_output.csv",sep = ''))
 # view csv
 out
 
 # learn the error rates (rate of error for each possible transition (A→C, A→G, …)
 errF <- learnErrors(filtFs, multithread = TRUE,verbose=TRUE)
 # visualise estimated error rates
-plotErrors(errF, nominalQ = TRUE)
+pdf(file = paste(path_out,"Error_Rates.pdf",sep = ''), paper = 'A4')
+plotErrors(errF, nominalQ = TRUE) # HPC will save this in a pdf with the quality plot 
+dev.off()
 
 # dereplicate identical reads
 derepFs <- derepFastq(filtFs, verbose = TRUE)
@@ -258,17 +252,11 @@ rownames(track) <- sample.names
 head(track)
 track
 # write dataframe to a csv
-#write.csv(track,file="read_counts_during_pipeline_steps.csv")
+write.csv(track,file=paste(path_out,"read_counts_during_pipeline_steps.csv",sep = ''))
 
 
 ####################### assign taxonomy ##########################
 
-
-# save path of unite database
-# my laptop
-#unite.ref <- "/Users/lucy/Documents/MRes/MycobiomeProject/Analysis/UNITE_database/sh_general_release_dynamic_s_02.02.2019.fasta"
-# hpc
-unite.ref <- "/rds/general/user/leg19/home/Project/Ecuador_pipelineITS/Plates/UNITE_database/General/sh_general_release_dynamic_s_02.02.2019.fasta"
 
 # run assignTaxonomy function
 taxa <- assignTaxonomy(seqtab.nochim, unite.ref, multithread = TRUE, tryRC = TRUE)
@@ -287,49 +275,58 @@ taxa.print<-as.data.frame(taxa.print)
 # print summary of dataframe to screen
 summary(taxa.print)
 
-# subset data to Batrachochytrium chytrids only and save as separate dataframe
-chytrid <- subset(taxa.print,Genus=="g__Batrachochytrium")
-# save to text file
-write.table(chytrid,"Chytrid_Table_lg.txt")
-
 # extract mock 1 from ASV table
-unqs.mock <- seqtab.nochim["mock1",]
-# drop ASVs absent in the Mock
-unqs.mock <- sort(unqs.mock[unqs.mock>0], decreasing=TRUE) 
-# print to screen the number of sample sequences present in the mock community
-cat("DADA2 inferred", length(unqs.mock), "sample sequences present in the Mock community.\n")
+if ("mock1" %in% colnames(seqtab.nochim)){
+        unqs.mock <- seqtab.nochim["mock1",]
+        # drop ASVs absent in the Mock
+        unqs.mock <- sort(unqs.mock[unqs.mock>0], decreasing=TRUE)
+        # print to screen the number of sample sequences present in the mock community
+        cat("DADA2 inferred", length(unqs.mock), "sample sequences present in the Mock community.\n")
+}
 
 # extract mock 2 from ASV table
-unqs.mock <- seqtab.nochim["mock2",]
-# drop ASVs absent in the Mock
-unqs.mock <- sort(unqs.mock[unqs.mock>0], decreasing=TRUE) # Drop ASVs absent in the Mock
-# print to screen the number of sample sequences present in the mock community
-cat("DADA2 inferred", length(unqs.mock), "sample sequences present in the Mock community.\n")
+if ("mock2" %in% colnames(seqtab.nochim)){
+        unqs.mock <- seqtab.nochim["mock2",]
+        # drop ASVs absent in the Mock
+        unqs.mock <- sort(unqs.mock[unqs.mock>0], decreasing=TRUE)
+        # print to screen the number of sample sequences present in the mock community
+        cat("DADA2 inferred", length(unqs.mock), "sample sequences present in the Mock community.\n")
+}
 
 # extract mock 3 from ASV table
-unqs.mock <- seqtab.nochim["mock3",]
-# drop ASVs absent in the Mock
-unqs.mock <- sort(unqs.mock[unqs.mock>0], decreasing=TRUE) # Drop ASVs absent in the Mock
-# print to screen the number of sample sequences present in the mock community
-cat("DADA2 inferred", length(unqs.mock), "sample sequences present in the Mock community.\n")
+if ("mock3" %in% colnames(seqtab.nochim)){
+        unqs.mock <- seqtab.nochim["mock3",]
+        # drop ASVs absent in the Mock
+        unqs.mock <- sort(unqs.mock[unqs.mock>0], decreasing=TRUE)
+        # print to screen the number of sample sequences present in the mock community
+        cat("DADA2 inferred", length(unqs.mock), "sample sequences present in the Mock community.\n")
+}
+
+# extract mock 4 from ASV table, if it exists
+if ("mock4" %in% colnames(seqtab.nochim)){
+	unqs.mock <- seqtab.nochim["mock4",]
+	# drop ASVs absent in the Mock
+	unqs.mock <- sort(unqs.mock[unqs.mock>0], decreasing=TRUE)
+	# print to screen the number of sample sequences present in the mock community
+	cat("DADA2 inferred", length(unqs.mock), "sample sequences present in the Mock community.\n")
+}
 
 
-####################### export to phyloseq ########################
+####################### rename any dulicates ########################
 
 
 # extract sample names from final dataset and save as dataframe
-# in order to check for any duplicates, which will need to be renamed
-samples.out <- data.frame(Sample=as.character(rownames(seqtab.nochim)))
-# for loop to rename any duplicates
-#for (i in 1:nrow(samples.out)) {
-#  if (duplicated(samples.out)[i] == TRUE){
-#    samples.out[i,1] = paste0(samples.out[i,1], "a")
-#  }
-#}
-# reset row names for comparison
-#rownames(samples.out) <- rownames(seqtab.nochim)
+samples.out <- data.frame(Sample=as.character(row.names(seqtab.nochim)))
+
+# rename any duplicates
+samples.out$Sample <- with(samples.out, make.unique(as.character(Sample)))
+
+# reset row names in seqtab.nochim to remove duplicates for later imports
+row.names(seqtab.nochim) <- samples.out$Sample
+
 
 ######################### write files out ##########################
+
 
 # taxa
 # remove names
@@ -343,30 +340,8 @@ seqtab.slim <- t(seqtab.nochim) # transpose
 rownames(seqtab.slim) <- paste0("SV",seq(nrow(taxa)))
 
 # save as .txt files
-write.table(taxa.slim,"Tax_Table_lg.txt")
-write.table(samples.out,"Metadata_lg.txt")
-write.table(seqtab.slim,"Abundance_Table_lg.txt")
+write.table(taxa.slim,paste(path_out,"Taxa_Table.txt",sep = ''))
+write.table(seqtab.slim,paste(path_out,"Abundance_Table.txt",sep = ''))
+write.table(seqtab.nochim,paste(path_out,"Seq_Abun_Table.txt",sep=''))
 
-#---------------------------------------------------------
-# DO NOT RUN AS WILL CRASH
-
-#library("DECIPHER")
-#BiocManager::install("phangorn")
-#library("phangorn")
-
-#seqs <- getSequences(seqtab.nochim)
-#names(seqs) <- seqs # This propagates to the tip labels of the tree
-#alignment <- AlignSeqs(DNAStringSet(seqs), anchor=NA)
-
-
-#phang.align <- phyDat(as(alignment, "matrix"), type="DNA")
-#dm <- dist.ml(phang.align)
-#treeNJ <- NJ(dm) # Note, tip order != sequence order
-#fit = pml(treeNJ, data=phang.align)
-
-#fitGTR <- update(fit, k=4, inv=0.2)
-#fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
-                    #rearrangement = "stochastic", control = pml.control(trace = 0))
-#detach("package:phangorn", unload=TRUE)
-
-
+## end of script
