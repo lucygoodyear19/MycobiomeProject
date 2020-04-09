@@ -2,6 +2,7 @@ References
 Thesis_write_up
 Proposal/WorkingDocuments
 *.pdf
+Analysis/Runs/Countries/*/SampleSheet.csv
 Analysis/Runs_Countries/*/*/HPC_Results
 Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Filtering
 Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Plots
