@@ -14,51 +14,131 @@ rm(list=ls())
 
 
 # set wd if needed
-setwd("~/Documents/MRes/MycobiomeProject/Analysis/Countries_Runs/Taiwan_Vietnam/")
+setwd("~/Documents/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan")
 
 # load packages
 library(dplyr)
 library(phyloseq)
 library(ggplot2)
+library(gridExtra)
 
-# load filtered phyloseq object
-readRDS(physeq_fil)
+# load filtered phyloseq object for Jen's data
+esto <- readRDS("physeqob_jen.rds")
+
+# create phyloseq object for DADA2
+tax <- read.table("HPC_Results/Previous_Run/Taxa_Table.txt", 
+                  stringsAsFactors = F)
+seqtab <- read.table("HPC_Results/Previous_Run/Seq_Abun_Table.txt", 
+                     stringsAsFactors = F, 
+                     header = T)
+rownames(seqtab) <- gsub("-", "", rownames(seqtab))
+plates <- read.csv("Data/TW16_plate_data.csv", 
+                   stringsAsFactor=F, 
+                   header=F)
+names(plates) <- c("barcode","sample","DNAqual","plate")
+plates_fil <- plates[-c(3,4)]
+trial <- merge(plates_fil, seqtab, by.x="barcode", by.y = "row.names")
+
+rownames(trial) <- trial$sample
+trial <- trial[-c(1,2)]
+
+metadata <- read.csv("metadata_bd.csv",
+                     stringsAsFactor=F, 
+                     header=T)
+rownames(metadata) <- metadata$X
+metadata <- metadata[,-1]
+metadata$Bd <- as.factor(metadata$Bd)
+
+rownames(tax) <- colnames(seqtab)
+
+tax_mat <- as.matrix(tax) # required to create phyloseq object
+trial_mat <- as.matrix(trial)
+
+dada2 <- phyloseq(tax_table(tax_mat), 
+                  otu_table(trial_mat, taxa_are_rows = FALSE), 
+                  sample_data(metadata))
+
 
 ######################## Plot alpha-diversity ############################
 
 
 # estimate value for alpha for each sample
-est_alpha_shannon <- estimate_richness(physeq_fil, split = TRUE, measures = "Shannon")
-metadata_fil$alpha <- est_alpha_shannon[,1]
+shannon_esto <- estimate_richness(esto, split = TRUE, measures = "Shannon")
+sample_data(esto)$alpha <- as.numeric(shannon_esto[,1])
+
+shannon_dada2 <- estimate_richness(dada2, split = TRUE, measures = "Shannon")
+sample_data(dada2)$alpha <- as.numeric(shannon_dada2[,1])
+
 
 ########## Compare pair-wise and plot with ggplot
 
-##### Lifestage
+###################### Lifestage ##########################
 
-# subset Sample_fil twice to include only shannon diversity,
-# split by lifestage
-metadata_fil_alpha_life <- as.data.frame(metadata_fil %>% select(alpha, Lifestage))
+# subset to include only shannon diversity, split by lifestage
 
-# perform Mann-Whitney U test
-wilcox.test(alpha ~ Lifestage, data = metadata_fil_alpha_life)
+alpha_life_esto <- as.data.frame(sample_data(esto) %>% select(alpha, Lifestage))
+
+alpha_life_dada2 <- as.data.frame(sample_data(dada2) %>% select(alpha, Lifestage))
+
+alpha_life_esto <- as.data.frame(as.matrix(alpha_life_esto))
+alpha_life_esto$alpha <- sapply(alpha_life_esto[,1], as.double)
+alpha_life_esto$Lifestage <- as.factor(alpha_life_esto$Lifestage)
+
+alpha_life_dada2 <- as.data.frame(as.matrix(alpha_life_dada2))
+alpha_life_dada2$alpha <- sapply(alpha_life_dada2[,1], as.double)
+alpha_life_dada2$Lifestage <- as.factor(alpha_life_dada2$Lifestage)
+
+# perform Mann-Whitney U test on esto
+wilcox.test(alpha ~ Lifestage, data = alpha_life_esto)
 require("effsize")
-cohen.d(alpha ~ Lifestage, data = metadata_fil_alpha_life)
+cohen.d(alpha ~ Lifestage, data = alpha_life_esto)
+
+# perform Mann-Whitney U test on dada2
+wilcox.test(alpha ~ Lifestage, data = alpha_life_dada2)
+require("effsize")
+cohen.d(alpha ~ Lifestage, data = alpha_life_dada2)
 
 # plot box plot
-p_lifestage_box <- ggplot(metadata_fil, 
+p_lifestage_box_esto <- ggplot(sample_data(esto), 
        aes(x = Lifestage, y = alpha)) + 
-  labs(y = "Shannon Alpha Diversity") +
+  labs(y = "Shannon Alpha Diversity - Estonian Pipeline") +
   geom_boxplot() +
-  scale_x_discrete(labels=c(paste("Adult (n=", table(metadata_fil_alpha_life$Lifestage)[1], ")"),
-                            paste("Tadpole (n=", table(metadata_fil_alpha_life$Lifestage)[2], ")"))) +
+  scale_x_discrete(labels=c(paste("Adult (n=", table(alpha_life_esto$Lifestage)[1], ")"),
+                            paste("Tadpole (n=", table(alpha_life_esto$Lifestage)[2], ")"))) +
   theme_bw()
+
+p_lifestage_box_dada2 <- ggplot(sample_data(dada2), 
+                               aes(x = Lifestage, y = alpha)) + 
+  labs(y = "Shannon Alpha Diversity - DADA2 Pipeline") +
+  geom_boxplot() +
+  scale_x_discrete(labels=c(paste("Adult (n=", table(alpha_life_dada2$Lifestage)[1], ")"),
+                            paste("Tadpole (n=", table(alpha_life_dada2$Lifestage)[2], ")"))) +
+  theme_bw()
+
 pdf("Lifestage_box.pdf")
-p_lifestage_box
+grid.arrange(p_lifestage_box_esto,p_lifestage_box_dada2, ncol=2)
 dev.off()
 
 # plot box plot with Bd comparison
-ggplot(metadata_fil, aes(x = Lifestage, y = alpha, colour = Bd)) + 
-  geom_boxplot()
+p_lifestage_box_bd_esto <- ggplot(sample_data(esto), 
+                               aes(x = Lifestage, y = alpha, colour = Bd)) + 
+  labs(y = "Shannon Alpha Diversity - Estonian Pipeline") +
+  geom_boxplot() +
+  scale_x_discrete(labels=c(paste("Adult (n=", table(alpha_life_esto$Lifestage)[1], ")"),
+                            paste("Tadpole (n=", table(alpha_life_esto$Lifestage)[2], ")"))) +
+  theme_bw()
+
+p_lifestage_box_bd_dada2 <- ggplot(sample_data(dada2), 
+                                aes(x = Lifestage, y = alpha, colour = Bd)) + 
+  labs(y = "Shannon Alpha Diversity - DADA2 Pipeline") +
+  geom_boxplot() +
+  scale_x_discrete(labels=c(paste("Adult (n=", table(alpha_life_dada2$Lifestage)[1], ")"),
+                            paste("Tadpole (n=", table(alpha_life_dada2$Lifestage)[2], ")"))) +
+  theme_bw()
+
+pdf("Lifestage_box_Bd.pdf")
+grid.arrange(p_lifestage_box_bd_esto, p_lifestage_box_bd_dada2, ncol=2)
+dev.off()
 
 # plot a violin plot with Bd comparison
 ggplot(metadata_fil, aes(x = Lifestage, y = alpha, colour = Bd)) + 
@@ -130,35 +210,53 @@ dev.off()
 ggplot(metadata_fil, aes(x = Species, y = alpha, colour = Bd)) + 
   geom_violin()
 
-##### Bd +ve/-ve
 
-# subset Sample_fil twice to include only shannon diversity,
-# split by Bd +ve/-ve
-metadata_fil_alpha_bd <- as.data.frame(metadata_fil %>% select(alpha, Bd))
+############################ Bd +ve/-ve #############################
 
-# perform Mann-Whitney U test
-wilcox.test(alpha ~ Bd, data = metadata_fil_alpha_bd)
-cohen.d(alpha ~ Bd, data = metadata_fil_alpha_bd)
+# subset to include only shannon diversity, split by lifestage
+
+alpha_bd_esto <- as.data.frame(sample_data(esto) %>% select(alpha, Bd))
+
+alpha_bd_dada2 <- as.data.frame(sample_data(dada2) %>% select(alpha, Bd))
+
+alpha_bd_esto <- as.data.frame(as.matrix(alpha_bd_esto))
+alpha_bd_esto$alpha <- sapply(alpha_bd_esto[,1], as.double)
+alpha_bd_esto$Bd <- as.factor(alpha_bd_esto$Bd)
+
+alpha_bd_dada2 <- as.data.frame(as.matrix(alpha_bd_dada2))
+alpha_bd_dada2$alpha <- sapply(alpha_bd_dada2[,1], as.double)
+alpha_bd_dada2$Bd <- as.factor(alpha_bd_dada2$Bd)
+
+# perform Mann-Whitney U test on esto
+wilcox.test(alpha ~ Bd, data = alpha_bd_esto)
+require("effsize")
+cohen.d(alpha ~ Bd, data = alpha_bd_esto)
+
+# perform Mann-Whitney U test on dada2
+wilcox.test(alpha ~ Bd, data = alpha_bd_dada2)
+require("effsize")
+cohen.d(alpha ~ Bd, data = alpha_bd_dada2)
 
 # plot box plot
-p_bd_box <- ggplot(metadata_fil, 
-                         aes(x = Bd, y = alpha)) + 
-  labs(y = "Shannon Alpha Diversity") +
+p_bd_box_esto <- ggplot(sample_data(esto), 
+                               aes(x = Bd, y = alpha)) + 
+  labs(y = "Shannon Alpha Diversity - Estonian Pipeline") +
   geom_boxplot() +
-  scale_x_discrete(labels=c(paste("Bd -ve (n=", table(metadata_fil_alpha_bd$Bd)[1], ")"),
-                            paste("Bd +ve (n=", table(metadata_fil_alpha_bd$Bd)[2], ")")))
-  
-pdf("Bd_box.pdf") 
-p_bd_box
+  scale_x_discrete(labels=c(paste("Bd positive (n=", table(alpha_bd_esto$Bd)[1], ")"),
+                            paste("Bd negative (n=", table(alpha_bd_esto$Bd)[2], ")"))) +
+  theme_bw()
+
+p_bd_box_dada2 <- ggplot(sample_data(dada2), 
+                                aes(x = Bd, y = alpha)) + 
+  labs(y = "Shannon Alpha Diversity - DADA2 Pipeline") +
+  geom_boxplot() +
+  scale_x_discrete(labels=c(paste("Bd positive (n=", table(alpha_bd_dada2$Bd)[1], ")"),
+                            paste("Bd negative (n=", table(alpha_bd_dada2$Bd)[2], ")"))) +
+  theme_bw()
+
+pdf("Bd_box.pdf")
+grid.arrange(p_bd_box_esto, p_bd_box_dada2, ncol=2)
 dev.off()
-
-# plot box plot
-ggplot(metadata_fil, aes(x = Bd, y = alpha)) + 
-  geom_boxplot()
-
-# plot a violin plot
-ggplot(metadata_fil, aes(x = Bd, y = alpha)) + 
-  geom_violin()
 
 ########## using phyloseq
 
