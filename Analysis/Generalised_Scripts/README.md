@@ -189,12 +189,13 @@ None.
 
 #### *How to use*
 
-This script is stored in the relevent country folder and contains 11 variables:  
+This script is stored in the relevent country folder and contains 12 variables:  
 
 REV - reverse primer  
 FWD - forward primer  
 base_prefix - base name of sequences  
-run_country - run directory/country directory  
+run  - run directory
+country - country directory  
 root_path - your path to the directory containing all runs  
 path - path to directory containing sequences, using the root_path  
 path2 - path to filtN directory, using the root_path  
