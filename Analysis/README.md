@@ -5,9 +5,9 @@
 
 This repository contains all relevant scripts and data for my analysis. There are 2 subdirectories:
 
-**Boilerplates** contains all my boilerplate script for running various filtering/analysis steps.
+**Generalised_Scripts** contains all my boilerplate script for running various filtering/analysis steps.
 
-**Countries_Runs** contains all my data divided by countries/run.
+**Runs_Countries** contains all my data divided by countries/run.
 
 ## Requirements
 
