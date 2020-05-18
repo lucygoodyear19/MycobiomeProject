@@ -20,14 +20,16 @@ base_prefix <- "170714_M03291_0074_000000000-AV4VF_"
 ### assign path variables
 
 # assign run/country to a variable
-run_country <- "CostaRica_Ecuador_2017/Ecuador/"
+run <- "CostaRica_Ecuador_2017/"
+country <- "Ecuador/"
 # assign root paths to a variable
 root_path <- "/rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/"
 
 # assign full paths to arguments for imprt into R scripts
-path <- paste0(root_path, run_country, "Sample_Seqs/")
-path2 <- paste0(root_path, run_country, "Sample_Seqs/filtN/")
-path_out <- paste0(root_path, run_country, "HPC_Results/")
+path <- paste0(root_path, run, country, "Sample_Seqs/")
+path2 <- paste0(root_path, run, country, "Sample_Seqs/filtN/")
+path_out <- paste0(root_path, run, country, "HPC_Results/")
+metadata_path <- paste0(root_path, run, country, "metadata.csv")
 
 cutadapt <- "/rds/general/user/leg19/home/anaconda3/envs/Renv/bin/cutadapt"
 unite.ref <- "/rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/UNITE_database/sh_general_release_dynamic_s_02.02.2019.fasta"
