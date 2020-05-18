@@ -17,26 +17,31 @@ library(DECIPHER)
 library(phyloseq)
 library(phangorn)
 library(dada2)
-library(ggplot2)
-library(gridExtra)
+#library(ggplot2)
+#library(gridExtra)
 
-# personal laptop
-setwd("~/Documents/MRes/MycobiomeProject/Analysis/Countries_Runs/Ecuador_CR/Ecuador/HPC_Results_200401/")
-# hpc
-#setwd(path_out)
+# import arguments to run script on specific country data
+#!/usr/bin/env Rscript
+args = commandArgs(trailingOnly=TRUE) # setup to accept arguments from command line
+# test if there is at least one argument: if not, return an error
+if (length(args)==0) {
+  stop("At least one argument must be supplied in the form of an R-script containing the following arguments: 
+       1) path containing results from DADA2 pipeline")
+}
+# load arguments into script
+source(args)
+# print arguments as check
+print(path_out)
 
-# load my docs
-abun <- read.csv("Abundance_Table.txt", stringsAsFactors = FALSE)
-tax <- read.table("Taxa_Table.txt", stringsAsFactors = FALSE)
-seqtab <- read.table("Seq_Abun_Table.txt", stringsAsFactors = FALSE)
-info <- read.csv("Metadata.csv", stringsAsFactors = FALSE)
+# load phyloseq object
+dada2 <- readRDS(paste0(path_out, "physeqob_DADA2.rds"))
 
 
 ############################# Build tree ##################################
 
 
 # sum abundances for each sequence and store as vector
-seqtab[nrow(seqtab)+1,] = apply(seqtab, 2, sum)
+seqtab <- as.data.frame(rbind(otu_table(dada2), apply(otu_table(dada2), 2, sum)))
 abun_sums <- seqtab[nrow(seqtab),]
 abundance <- as.numeric(abun_sums)
 
@@ -53,7 +58,7 @@ seqsfortree <- as.data.frame(seqsfortree)
 seqs <- getSequences(seqsfortree)
 names(seqs) <- seqs # this propagates to the tip labels of the tree
 # perform an allignment of all the sequences
-alignment <- AlignSeqs(DNAStringSet(seqss), anchor=NA)
+alignment <- AlignSeqs(DNAStringSet(seqs), anchor=NA)
 
 # transform alignment data into correct format for phangorn
 phang.align <- phyDat(as(alignment, "matrix"), type="DNA")
@@ -73,11 +78,21 @@ fitGTR <- optim.pml(fitGTR, model="GTR", optInv=TRUE, optGamma=TRUE,
 detach("package:phangorn", unload=TRUE)
 
 
-######################## Create phyloseq object #############################
+############################ create phyloseq object ##############################
 
 
-physeqob <- phyloseq(tax_table(tax), otu_table(seqtab.nochim, taxa_are_rows = FALSE), sample_data, phy_tree(fitGTR))
-saveRDS(physeqob,paste(path_out,"physeqob.rds",sep=''))
+# add to phyloseq object
+dada2 <- merge_phyloseq(dada2, 
+                     phy_tree(fitGTR$tree))
+
+# save phyloseq object to be imported into analysis scripts
+saveRDS(dada2,paste0(path_out,"physeqob_DADA2_complete.rds"))
+
+
+## end of script
+
+
+######################## Extracting chytrids ##################################
 
 
 ## end of script
