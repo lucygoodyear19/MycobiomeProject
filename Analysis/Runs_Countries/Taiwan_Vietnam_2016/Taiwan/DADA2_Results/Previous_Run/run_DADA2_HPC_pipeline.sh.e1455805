@@ -1,0 +1,736 @@
+Loading required package: Rcpp
+Registered S3 methods overwritten by 'ggplot2':
+  method         from 
+  [.quosures     rlang
+  c.quosures     rlang
+  print.quosures rlang
+Loading required package: BiocGenerics
+Loading required package: parallel
+
+Attaching package: ‘BiocGenerics’
+
+The following objects are masked from ‘package:parallel’:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+
+The following objects are masked from ‘package:stats’:
+
+    IQR, mad, sd, var, xtabs
+
+The following objects are masked from ‘package:base’:
+
+    anyDuplicated, append, as.data.frame, basename, cbind, colnames,
+    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
+    union, unique, unsplit, which, which.max, which.min
+
+Loading required package: BiocParallel
+Loading required package: Biostrings
+Loading required package: S4Vectors
+Loading required package: stats4
+
+Attaching package: ‘S4Vectors’
+
+The following object is masked from ‘package:base’:
+
+    expand.grid
+
+Loading required package: IRanges
+Loading required package: XVector
+
+Attaching package: ‘Biostrings’
+
+The following object is masked from ‘package:base’:
+
+    strsplit
+
+Loading required package: Rsamtools
+Loading required package: GenomeInfoDb
+Loading required package: GenomicRanges
+Loading required package: GenomicAlignments
+Loading required package: SummarizedExperiment
+Loading required package: Biobase
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.
+
+Loading required package: DelayedArray
+Loading required package: matrixStats
+
+Attaching package: ‘matrixStats’
+
+The following objects are masked from ‘package:Biobase’:
+
+    anyMissing, rowMedians
+
+
+Attaching package: ‘DelayedArray’
+
+The following objects are masked from ‘package:matrixStats’:
+
+    colMaxs, colMins, colRanges, rowMaxs, rowMins, rowRanges
+
+The following objects are masked from ‘package:base’:
+
+    aperm, apply, rowsum
+
+Scale for 'y' is already present. Adding another scale for 'y', which will
+replace the existing scale.
+Warning messages:
+1: Transformation introduced infinite values in continuous y-axis 
+2: Transformation introduced infinite values in continuous y-axis 
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AACGCTGA-ACGTCTCG_L001_R1_001.fastq
+Encountered 6165 unique sequences from 22052 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AACGCTGA-AGAGTCAC_L001_R1_001.fastq
+Encountered 4664 unique sequences from 15985 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AACGCTGA-CGTTACTA_L001_R1_001.fastq
+Encountered 19816 unique sequences from 127754 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AACGCTGA-CTACTATA_L001_R1_001.fastq
+Encountered 19703 unique sequences from 154207 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AACGCTGA-GATCGTGT_L001_R1_001.fastq
+Encountered 4998 unique sequences from 28301 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AACGCTGA-GTCAGATA_L001_R1_001.fastq
+Encountered 2911 unique sequences from 3918 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AACGCTGA-TACGAGAC_L001_R1_001.fastq
+Encountered 741 unique sequences from 1560 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AACGCTGA-TCGACGAG_L001_R1_001.fastq
+Encountered 396 unique sequences from 785 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACGTACGT-AAGCAGCA_L001_R1_001.fastq
+Encountered 12050 unique sequences from 42147 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACGTACGT-ACGCGTGA_L001_R1_001.fastq
+Encountered 9274 unique sequences from 37436 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACGTACGT-CGATCTAC_L001_R1_001.fastq
+Encountered 241 unique sequences from 412 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACGTACGT-CTAGTATG_L001_R1_001.fastq
+Encountered 127 unique sequences from 232 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACGTACGT-GATAGCGT_L001_R1_001.fastq
+Encountered 89 unique sequences from 150 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACGTACGT-GTCTAGTG_L001_R1_001.fastq
+Encountered 524 unique sequences from 976 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACGTACGT-TCTACACT_L001_R1_001.fastq
+Encountered 224 unique sequences from 421 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACGTACGT-TGCGTCAC_L001_R1_001.fastq
+Encountered 313 unique sequences from 869 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACGTGCGC-ACGTCTCG_L001_R1_001.fastq
+Encountered 5813 unique sequences from 33212 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACGTGCGC-AGAGTCAC_L001_R1_001.fastq
+Encountered 13564 unique sequences from 101644 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACGTGCGC-CGTTACTA_L001_R1_001.fastq
+Encountered 16835 unique sequences from 121186 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACGTGCGC-CTACTATA_L001_R1_001.fastq
+Encountered 21213 unique sequences from 104978 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACGTGCGC-GATCGTGT_L001_R1_001.fastq
+Encountered 12159 unique sequences from 77596 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACGTGCGC-GTCAGATA_L001_R1_001.fastq
+Encountered 13154 unique sequences from 79560 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACGTGCGC-TACGAGAC_L001_R1_001.fastq
+Encountered 2537 unique sequences from 8928 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACGTGCGC-TCGACGAG_L001_R1_001.fastq
+Encountered 19481 unique sequences from 114952 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACTGTGTA-AAGCAGCA_L001_R1_001.fastq
+Encountered 241 unique sequences from 495 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACTGTGTA-ACGCGTGA_L001_R1_001.fastq
+Encountered 163 unique sequences from 314 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACTGTGTA-CGATCTAC_L001_R1_001.fastq
+Encountered 287 unique sequences from 502 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACTGTGTA-CTAGTATG_L001_R1_001.fastq
+Encountered 130 unique sequences from 227 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACTGTGTA-GATAGCGT_L001_R1_001.fastq
+Encountered 200 unique sequences from 361 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACTGTGTA-GTCTAGTG_L001_R1_001.fastq
+Encountered 63 unique sequences from 132 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACTGTGTA-TCTACACT_L001_R1_001.fastq
+Encountered 1656 unique sequences from 2095 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ACTGTGTA-TGCGTCAC_L001_R1_001.fastq
+Encountered 224 unique sequences from 365 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AGCATACC-ACGACGTG_L001_R1_001.fastq
+Encountered 10332 unique sequences from 54403 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AGCATACC-ATATACAC_L001_R1_001.fastq
+Encountered 1429 unique sequences from 4638 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AGCATACC-CGTCGCTA_L001_R1_001.fastq
+Encountered 5788 unique sequences from 31422 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AGCATACC-CTAGAGCT_L001_R1_001.fastq
+Encountered 7961 unique sequences from 30543 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AGCATACC-GACACTGA_L001_R1_001.fastq
+Encountered 12783 unique sequences from 66335 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AGCATACC-GCTCTAGT_L001_R1_001.fastq
+Encountered 8912 unique sequences from 40491 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AGCATACC-TAGTGTAG_L001_R1_001.fastq
+Encountered 15352 unique sequences from 71822 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AGCATACC-TGCGTACG_L001_R1_001.fastq
+Encountered 101 unique sequences from 245 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AGTCGCAG-AAGCAGCA_L001_R1_001.fastq
+Encountered 650 unique sequences from 1078 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AGTCGCAG-ACGCGTGA_L001_R1_001.fastq
+Encountered 293 unique sequences from 516 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AGTCGCAG-CGATCTAC_L001_R1_001.fastq
+Encountered 89 unique sequences from 137 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AGTCGCAG-CTAGTATG_L001_R1_001.fastq
+Encountered 143 unique sequences from 231 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AGTCGCAG-GATAGCGT_L001_R1_001.fastq
+Encountered 130 unique sequences from 213 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AGTCGCAG-GTCTAGTG_L001_R1_001.fastq
+Encountered 87 unique sequences from 147 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AGTCGCAG-TCTACACT_L001_R1_001.fastq
+Encountered 68 unique sequences from 132 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_AGTCGCAG-TGCGTCAC_L001_R1_001.fastq
+Encountered 253 unique sequences from 429 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATAGCGCT-ACGACGTG_L001_R1_001.fastq
+Encountered 5045 unique sequences from 19465 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATAGCGCT-ATATACAC_L001_R1_001.fastq
+Encountered 6820 unique sequences from 31275 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATAGCGCT-CGTCGCTA_L001_R1_001.fastq
+Encountered 6273 unique sequences from 32312 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATAGCGCT-CTAGAGCT_L001_R1_001.fastq
+Encountered 13458 unique sequences from 54070 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATAGCGCT-GACACTGA_L001_R1_001.fastq
+Encountered 13629 unique sequences from 89786 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATAGCGCT-GCTCTAGT_L001_R1_001.fastq
+Encountered 6075 unique sequences from 27166 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATAGCGCT-TAGTGTAG_L001_R1_001.fastq
+Encountered 11287 unique sequences from 40335 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATAGCGCT-TGCGTACG_L001_R1_001.fastq
+Encountered 3 unique sequences from 4 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATAGTACC-ACGTCTCG_L001_R1_001.fastq
+Encountered 319 unique sequences from 502 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATAGTACC-AGAGTCAC_L001_R1_001.fastq
+Encountered 11471 unique sequences from 58201 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATAGTACC-CGTTACTA_L001_R1_001.fastq
+Encountered 15321 unique sequences from 69910 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATAGTACC-CTACTATA_L001_R1_001.fastq
+Encountered 18648 unique sequences from 118724 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATAGTACC-GATCGTGT_L001_R1_001.fastq
+Encountered 8754 unique sequences from 44784 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATAGTACC-GTCAGATA_L001_R1_001.fastq
+Encountered 446 unique sequences from 827 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATAGTACC-TACGAGAC_L001_R1_001.fastq
+Encountered 1901 unique sequences from 4676 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATAGTACC-TCGACGAG_L001_R1_001.fastq
+Encountered 29413 unique sequences from 192823 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATGAGCTC-ACGACGTG_L001_R1_001.fastq
+Encountered 1108 unique sequences from 3345 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATGAGCTC-ATATACAC_L001_R1_001.fastq
+Encountered 17268 unique sequences from 81089 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATGAGCTC-CGTCGCTA_L001_R1_001.fastq
+Encountered 11733 unique sequences from 39227 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATGAGCTC-CTAGAGCT_L001_R1_001.fastq
+Encountered 11038 unique sequences from 51759 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATGAGCTC-GACACTGA_L001_R1_001.fastq
+Encountered 9781 unique sequences from 37071 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATGAGCTC-GCTCTAGT_L001_R1_001.fastq
+Encountered 12530 unique sequences from 56646 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATGAGCTC-TAGTGTAG_L001_R1_001.fastq
+Encountered 10507 unique sequences from 35422 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_ATGAGCTC-TGCGTACG_L001_R1_001.fastq
+Encountered 9 unique sequences from 11 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CAGTAGGT-ACGACGTG_L001_R1_001.fastq
+Encountered 5173 unique sequences from 20832 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CAGTAGGT-ATATACAC_L001_R1_001.fastq
+Encountered 6645 unique sequences from 33745 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CAGTAGGT-CGTCGCTA_L001_R1_001.fastq
+Encountered 6383 unique sequences from 34681 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CAGTAGGT-CTAGAGCT_L001_R1_001.fastq
+Encountered 1725 unique sequences from 4261 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CAGTAGGT-GACACTGA_L001_R1_001.fastq
+Encountered 8942 unique sequences from 42507 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CAGTAGGT-GCTCTAGT_L001_R1_001.fastq
+Encountered 6963 unique sequences from 26506 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CAGTAGGT-TAGTGTAG_L001_R1_001.fastq
+Encountered 12167 unique sequences from 46424 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CAGTAGGT-TGCGTACG_L001_R1_001.fastq
+Encountered 6 unique sequences from 8 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CATCGTGA-ACGACGTG_L001_R1_001.fastq
+Encountered 848 unique sequences from 2439 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CATCGTGA-ATATACAC_L001_R1_001.fastq
+Encountered 8502 unique sequences from 45277 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CATCGTGA-CGTCGCTA_L001_R1_001.fastq
+Encountered 9495 unique sequences from 41768 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CATCGTGA-CTAGAGCT_L001_R1_001.fastq
+Encountered 5203 unique sequences from 27304 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CATCGTGA-GACACTGA_L001_R1_001.fastq
+Encountered 9252 unique sequences from 46965 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CATCGTGA-GCTCTAGT_L001_R1_001.fastq
+Encountered 6257 unique sequences from 39238 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CATCGTGA-TAGTGTAG_L001_R1_001.fastq
+Encountered 2280 unique sequences from 3068 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CATCGTGA-TGCGTACG_L001_R1_001.fastq
+Encountered 12 unique sequences from 12 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGAAGTAT-ACGTCTCG_L001_R1_001.fastq
+Encountered 16048 unique sequences from 109259 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGAAGTAT-AGAGTCAC_L001_R1_001.fastq
+Encountered 21364 unique sequences from 144960 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGAAGTAT-CGTTACTA_L001_R1_001.fastq
+Encountered 3858 unique sequences from 18097 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGAAGTAT-CTACTATA_L001_R1_001.fastq
+Encountered 546 unique sequences from 1077 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGAAGTAT-GATCGTGT_L001_R1_001.fastq
+Encountered 8065 unique sequences from 48352 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGAAGTAT-GTCAGATA_L001_R1_001.fastq
+Encountered 1546 unique sequences from 4971 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGAAGTAT-TACGAGAC_L001_R1_001.fastq
+Encountered 1036 unique sequences from 2287 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGAAGTAT-TCGACGAG_L001_R1_001.fastq
+Encountered 7323 unique sequences from 35696 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGAGCTAG-ACGACGTG_L001_R1_001.fastq
+Encountered 8564 unique sequences from 48845 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGAGCTAG-ATATACAC_L001_R1_001.fastq
+Encountered 8717 unique sequences from 37000 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGAGCTAG-CGTCGCTA_L001_R1_001.fastq
+Encountered 10952 unique sequences from 42748 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGAGCTAG-CTAGAGCT_L001_R1_001.fastq
+Encountered 8607 unique sequences from 35852 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGAGCTAG-GACACTGA_L001_R1_001.fastq
+Encountered 7734 unique sequences from 38039 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGAGCTAG-GCTCTAGT_L001_R1_001.fastq
+Encountered 3543 unique sequences from 15381 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGAGCTAG-TAGTGTAG_L001_R1_001.fastq
+Encountered 9816 unique sequences from 32389 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGAGCTAG-TGCGTACG_L001_R1_001.fastq
+Encountered 2 unique sequences from 4 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGCGATAT-AAGCAGCA_L001_R1_001.fastq
+Encountered 13100 unique sequences from 44980 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGCGATAT-ACGCGTGA_L001_R1_001.fastq
+Encountered 13642 unique sequences from 57079 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGCGATAT-CGATCTAC_L001_R1_001.fastq
+Encountered 1136 unique sequences from 2645 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGCGATAT-CTAGTATG_L001_R1_001.fastq
+Encountered 258 unique sequences from 442 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGCGATAT-GATAGCGT_L001_R1_001.fastq
+Encountered 7594 unique sequences from 36734 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGCGATAT-GTCTAGTG_L001_R1_001.fastq
+Encountered 153 unique sequences from 238 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGCGATAT-TCTACACT_L001_R1_001.fastq
+Encountered 344 unique sequences from 593 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGCGATAT-TGCGTCAC_L001_R1_001.fastq
+Encountered 187 unique sequences from 326 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGTAGCGA-ACGTCTCG_L001_R1_001.fastq
+Encountered 11971 unique sequences from 65681 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGTAGCGA-AGAGTCAC_L001_R1_001.fastq
+Encountered 14087 unique sequences from 121749 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGTAGCGA-CGTTACTA_L001_R1_001.fastq
+Encountered 24690 unique sequences from 152312 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGTAGCGA-CTACTATA_L001_R1_001.fastq
+Encountered 25203 unique sequences from 161381 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGTAGCGA-GATCGTGT_L001_R1_001.fastq
+Encountered 834 unique sequences from 1989 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGTAGCGA-GTCAGATA_L001_R1_001.fastq
+Encountered 16542 unique sequences from 82838 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGTAGCGA-TACGAGAC_L001_R1_001.fastq
+Encountered 6944 unique sequences from 49746 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGTAGCGA-TCGACGAG_L001_R1_001.fastq
+Encountered 9431 unique sequences from 58354 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGTCATAC-ACGACGTG_L001_R1_001.fastq
+Encountered 3552 unique sequences from 13167 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGTCATAC-ATATACAC_L001_R1_001.fastq
+Encountered 4442 unique sequences from 22356 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGTCATAC-CGTCGCTA_L001_R1_001.fastq
+Encountered 50 unique sequences from 75 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGTCATAC-CTAGAGCT_L001_R1_001.fastq
+Encountered 184 unique sequences from 354 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGTCATAC-GACACTGA_L001_R1_001.fastq
+Encountered 9869 unique sequences from 39902 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGTCATAC-GCTCTAGT_L001_R1_001.fastq
+Encountered 6323 unique sequences from 27799 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGTCATAC-TAGTGTAG_L001_R1_001.fastq
+Encountered 12214 unique sequences from 46468 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CGTCATAC-TGCGTACG_L001_R1_001.fastq
+Encountered 44 unique sequences from 71 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTACGACC-AAGCAGCA_L001_R1_001.fastq
+Encountered 192 unique sequences from 338 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTACGACC-ACGCGTGA_L001_R1_001.fastq
+Encountered 212 unique sequences from 347 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTACGACC-CGATCTAC_L001_R1_001.fastq
+Encountered 201 unique sequences from 318 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTACGACC-CTAGTATG_L001_R1_001.fastq
+Encountered 141 unique sequences from 212 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTACGACC-GATAGCGT_L001_R1_001.fastq
+Encountered 61 unique sequences from 102 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTACGACC-GTCTAGTG_L001_R1_001.fastq
+Encountered 85 unique sequences from 146 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTACGACC-TCTACACT_L001_R1_001.fastq
+Encountered 200 unique sequences from 407 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTACGACC-TGCGTCAC_L001_R1_001.fastq
+Encountered 881 unique sequences from 2758 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTATCGTG-AAGCAGCA_L001_R1_001.fastq
+Encountered 16335 unique sequences from 65165 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTATCGTG-ACGCGTGA_L001_R1_001.fastq
+Encountered 243 unique sequences from 485 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTATCGTG-CGATCTAC_L001_R1_001.fastq
+Encountered 277 unique sequences from 434 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTATCGTG-CTAGTATG_L001_R1_001.fastq
+Encountered 99 unique sequences from 165 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTATCGTG-GATAGCGT_L001_R1_001.fastq
+Encountered 70 unique sequences from 128 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTATCGTG-GTCTAGTG_L001_R1_001.fastq
+Encountered 158 unique sequences from 243 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTATCGTG-TCTACACT_L001_R1_001.fastq
+Encountered 80 unique sequences from 135 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTATCGTG-TGCGTCAC_L001_R1_001.fastq
+Encountered 616 unique sequences from 1522 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTCGACTT-ACGTCTCG_L001_R1_001.fastq
+Encountered 821 unique sequences from 2096 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTCGACTT-AGAGTCAC_L001_R1_001.fastq
+Encountered 16687 unique sequences from 89165 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTCGACTT-CGTTACTA_L001_R1_001.fastq
+Encountered 11547 unique sequences from 55272 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTCGACTT-CTACTATA_L001_R1_001.fastq
+Encountered 10403 unique sequences from 60855 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTCGACTT-GATCGTGT_L001_R1_001.fastq
+Encountered 198 unique sequences from 374 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTCGACTT-GTCAGATA_L001_R1_001.fastq
+Encountered 172 unique sequences from 257 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTCGACTT-TACGAGAC_L001_R1_001.fastq
+Encountered 9792 unique sequences from 53680 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTCGACTT-TCGACGAG_L001_R1_001.fastq
+Encountered 1205 unique sequences from 4551 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTCTAGAG-ACGACGTG_L001_R1_001.fastq
+Encountered 476 unique sequences from 1411 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTCTAGAG-ATATACAC_L001_R1_001.fastq
+Encountered 2612 unique sequences from 9070 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTCTAGAG-CGTCGCTA_L001_R1_001.fastq
+Encountered 7812 unique sequences from 37103 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTCTAGAG-CTAGAGCT_L001_R1_001.fastq
+Encountered 93 unique sequences from 169 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTCTAGAG-GACACTGA_L001_R1_001.fastq
+Encountered 5711 unique sequences from 24842 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTCTAGAG-GCTCTAGT_L001_R1_001.fastq
+Encountered 5527 unique sequences from 24495 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTCTAGAG-TAGTGTAG_L001_R1_001.fastq
+Encountered 8265 unique sequences from 25973 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_CTCTAGAG-TGCGTACG_L001_R1_001.fastq
+Encountered 4 unique sequences from 4 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GAGACTTA-AAGCAGCA_L001_R1_001.fastq
+Encountered 1256 unique sequences from 3468 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GAGACTTA-ACGCGTGA_L001_R1_001.fastq
+Encountered 360 unique sequences from 672 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GAGACTTA-CGATCTAC_L001_R1_001.fastq
+Encountered 277 unique sequences from 526 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GAGACTTA-CTAGTATG_L001_R1_001.fastq
+Encountered 216 unique sequences from 388 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GAGACTTA-GATAGCGT_L001_R1_001.fastq
+Encountered 266 unique sequences from 559 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GAGACTTA-GTCTAGTG_L001_R1_001.fastq
+Encountered 95 unique sequences from 201 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GAGACTTA-TCTACACT_L001_R1_001.fastq
+Encountered 26 unique sequences from 41 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GAGACTTA-TGCGTCAC_L001_R1_001.fastq
+Encountered 1123 unique sequences from 2457 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GAGCTCGA-ACGACGTG_L001_R1_001.fastq
+Encountered 7321 unique sequences from 39322 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GAGCTCGA-ATATACAC_L001_R1_001.fastq
+Encountered 4066 unique sequences from 17213 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GAGCTCGA-CGTCGCTA_L001_R1_001.fastq
+Encountered 16775 unique sequences from 56273 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GAGCTCGA-CTAGAGCT_L001_R1_001.fastq
+Encountered 9095 unique sequences from 34425 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GAGCTCGA-GACACTGA_L001_R1_001.fastq
+Encountered 217 unique sequences from 340 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GAGCTCGA-GCTCTAGT_L001_R1_001.fastq
+Encountered 6442 unique sequences from 29378 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GAGCTCGA-TAGTGTAG_L001_R1_001.fastq
+Encountered 15331 unique sequences from 76078 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GAGCTCGA-TGCGTACG_L001_R1_001.fastq
+Encountered 929 unique sequences from 2524 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GATCTACG-ACGTCTCG_L001_R1_001.fastq
+Encountered 10558 unique sequences from 57727 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GATCTACG-AGAGTCAC_L001_R1_001.fastq
+Encountered 16462 unique sequences from 82028 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GATCTACG-CGTTACTA_L001_R1_001.fastq
+Encountered 10880 unique sequences from 74377 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GATCTACG-CTACTATA_L001_R1_001.fastq
+Encountered 16921 unique sequences from 104499 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GATCTACG-GATCGTGT_L001_R1_001.fastq
+Encountered 436 unique sequences from 776 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GATCTACG-GTCAGATA_L001_R1_001.fastq
+Encountered 8538 unique sequences from 47354 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GATCTACG-TACGAGAC_L001_R1_001.fastq
+Encountered 8732 unique sequences from 35680 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GATCTACG-TCGACGAG_L001_R1_001.fastq
+Encountered 36659 unique sequences from 231229 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GCGATACG-AAGCAGCA_L001_R1_001.fastq
+Encountered 10414 unique sequences from 44322 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GCGATACG-ACGCGTGA_L001_R1_001.fastq
+Encountered 332 unique sequences from 587 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GCGATACG-CGATCTAC_L001_R1_001.fastq
+Encountered 497 unique sequences from 1016 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GCGATACG-CTAGTATG_L001_R1_001.fastq
+Encountered 78 unique sequences from 123 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GCGATACG-GATAGCGT_L001_R1_001.fastq
+Encountered 111 unique sequences from 156 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GCGATACG-GTCTAGTG_L001_R1_001.fastq
+Encountered 88 unique sequences from 147 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GCGATACG-TCTACACT_L001_R1_001.fastq
+Encountered 115 unique sequences from 220 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GCGATACG-TGCGTCAC_L001_R1_001.fastq
+Encountered 4989 unique sequences from 18161 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GCGTATAC-ACGTCTCG_L001_R1_001.fastq
+Encountered 688 unique sequences from 1329 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GCGTATAC-AGAGTCAC_L001_R1_001.fastq
+Encountered 6878 unique sequences from 29232 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GCGTATAC-CGTTACTA_L001_R1_001.fastq
+Encountered 9360 unique sequences from 34934 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GCGTATAC-CTACTATA_L001_R1_001.fastq
+Encountered 24770 unique sequences from 178354 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GCGTATAC-GATCGTGT_L001_R1_001.fastq
+Encountered 1710 unique sequences from 6576 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GCGTATAC-GTCAGATA_L001_R1_001.fastq
+Encountered 1024 unique sequences from 2425 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GCGTATAC-TACGAGAC_L001_R1_001.fastq
+Encountered 173 unique sequences from 290 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GCGTATAC-TCGACGAG_L001_R1_001.fastq
+Encountered 34124 unique sequences from 218745 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GTAACGAG-ACGTCTCG_L001_R1_001.fastq
+Encountered 11341 unique sequences from 75200 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GTAACGAG-AGAGTCAC_L001_R1_001.fastq
+Encountered 23150 unique sequences from 140798 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GTAACGAG-CGTTACTA_L001_R1_001.fastq
+Encountered 12107 unique sequences from 75268 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GTAACGAG-CTACTATA_L001_R1_001.fastq
+Encountered 1452 unique sequences from 3228 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GTAACGAG-GATCGTGT_L001_R1_001.fastq
+Encountered 7155 unique sequences from 36669 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GTAACGAG-GTCAGATA_L001_R1_001.fastq
+Encountered 11567 unique sequences from 71377 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GTAACGAG-TACGAGAC_L001_R1_001.fastq
+Encountered 6383 unique sequences from 36131 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GTAACGAG-TCGACGAG_L001_R1_001.fastq
+Encountered 20149 unique sequences from 145318 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GTTACAGC-AAGCAGCA_L001_R1_001.fastq
+Encountered 7952 unique sequences from 37770 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GTTACAGC-ACGCGTGA_L001_R1_001.fastq
+Encountered 398 unique sequences from 666 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GTTACAGC-CGATCTAC_L001_R1_001.fastq
+Encountered 7223 unique sequences from 25163 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GTTACAGC-CTAGTATG_L001_R1_001.fastq
+Encountered 238 unique sequences from 426 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GTTACAGC-GATAGCGT_L001_R1_001.fastq
+Encountered 274 unique sequences from 550 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GTTACAGC-GTCTAGTG_L001_R1_001.fastq
+Encountered 50 unique sequences from 89 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GTTACAGC-TCTACACT_L001_R1_001.fastq
+Encountered 129 unique sequences from 236 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_GTTACAGC-TGCGTCAC_L001_R1_001.fastq
+Encountered 148 unique sequences from 303 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TAACGTCC-AAGCAGCA_L001_R1_001.fastq
+Encountered 9281 unique sequences from 40602 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TAACGTCC-ACGCGTGA_L001_R1_001.fastq
+Encountered 13827 unique sequences from 51065 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TAACGTCC-CGATCTAC_L001_R1_001.fastq
+Encountered 7994 unique sequences from 31406 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TAACGTCC-CTAGTATG_L001_R1_001.fastq
+Encountered 109 unique sequences from 175 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TAACGTCC-GATAGCGT_L001_R1_001.fastq
+Encountered 156 unique sequences from 260 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TAACGTCC-GTCTAGTG_L001_R1_001.fastq
+Encountered 116 unique sequences from 208 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TAACGTCC-TCTACACT_L001_R1_001.fastq
+Encountered 359 unique sequences from 965 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TAACGTCC-TGCGTCAC_L001_R1_001.fastq
+Encountered 6014 unique sequences from 20589 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TACTAGGT-AAGCAGCA_L001_R1_001.fastq
+Encountered 7700 unique sequences from 34973 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TACTAGGT-ACGCGTGA_L001_R1_001.fastq
+Encountered 132 unique sequences from 253 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TACTAGGT-CGATCTAC_L001_R1_001.fastq
+Encountered 222 unique sequences from 326 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TACTAGGT-CTAGTATG_L001_R1_001.fastq
+Encountered 66 unique sequences from 130 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TACTAGGT-GATAGCGT_L001_R1_001.fastq
+Encountered 45 unique sequences from 82 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TACTAGGT-GTCTAGTG_L001_R1_001.fastq
+Encountered 87 unique sequences from 163 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TACTAGGT-TCTACACT_L001_R1_001.fastq
+Encountered 69 unique sequences from 127 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TACTAGGT-TGCGTCAC_L001_R1_001.fastq
+Encountered 201 unique sequences from 336 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TAGCAGCT-ACGTCTCG_L001_R1_001.fastq
+Encountered 14628 unique sequences from 83402 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TAGCAGCT-AGAGTCAC_L001_R1_001.fastq
+Encountered 2695 unique sequences from 6836 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TAGCAGCT-CGTTACTA_L001_R1_001.fastq
+Encountered 13704 unique sequences from 58766 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TAGCAGCT-CTACTATA_L001_R1_001.fastq
+Encountered 6720 unique sequences from 44591 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TAGCAGCT-GATCGTGT_L001_R1_001.fastq
+Encountered 13681 unique sequences from 69753 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TAGCAGCT-GTCAGATA_L001_R1_001.fastq
+Encountered 17718 unique sequences from 106249 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TAGCAGCT-TACGAGAC_L001_R1_001.fastq
+Encountered 13624 unique sequences from 65413 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TAGCAGCT-TCGACGAG_L001_R1_001.fastq
+Encountered 24577 unique sequences from 141220 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCAGTCTA-ACGACGTG_L001_R1_001.fastq
+Encountered 1093 unique sequences from 3659 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCAGTCTA-ATATACAC_L001_R1_001.fastq
+Encountered 4053 unique sequences from 16921 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCAGTCTA-CGTCGCTA_L001_R1_001.fastq
+Encountered 414 unique sequences from 825 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCAGTCTA-CTAGAGCT_L001_R1_001.fastq
+Encountered 1512 unique sequences from 4237 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCAGTCTA-GACACTGA_L001_R1_001.fastq
+Encountered 8365 unique sequences from 29699 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCAGTCTA-GCTCTAGT_L001_R1_001.fastq
+Encountered 838 unique sequences from 2293 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCAGTCTA-TAGTGTAG_L001_R1_001.fastq
+Encountered 54 unique sequences from 68 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCAGTCTA-TGCGTACG_L001_R1_001.fastq
+Encountered 2 unique sequences from 2 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCCTCATG-ACGACGTG_L001_R1_001.fastq
+Encountered 9097 unique sequences from 42847 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCCTCATG-ATATACAC_L001_R1_001.fastq
+Encountered 616 unique sequences from 1546 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCCTCATG-CGTCGCTA_L001_R1_001.fastq
+Encountered 3240 unique sequences from 14629 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCCTCATG-CTAGAGCT_L001_R1_001.fastq
+Encountered 9576 unique sequences from 39595 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCCTCATG-GACACTGA_L001_R1_001.fastq
+Encountered 7963 unique sequences from 35657 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCCTCATG-GCTCTAGT_L001_R1_001.fastq
+Encountered 1096 unique sequences from 2578 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCCTCATG-TAGTGTAG_L001_R1_001.fastq
+Encountered 11233 unique sequences from 38232 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCCTCATG-TGCGTACG_L001_R1_001.fastq
+Encountered 9 unique sequences from 9 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCTAGACT-ACGACGTG_L001_R1_001.fastq
+Encountered 1448 unique sequences from 4730 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCTAGACT-ATATACAC_L001_R1_001.fastq
+Encountered 34311 unique sequences from 174398 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCTAGACT-CGTCGCTA_L001_R1_001.fastq
+Encountered 4662 unique sequences from 20890 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCTAGACT-CTAGAGCT_L001_R1_001.fastq
+Encountered 1325 unique sequences from 3226 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCTAGACT-GACACTGA_L001_R1_001.fastq
+Encountered 13022 unique sequences from 71530 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCTAGACT-GCTCTAGT_L001_R1_001.fastq
+Encountered 6816 unique sequences from 24572 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCTAGACT-TAGTGTAG_L001_R1_001.fastq
+Encountered 15318 unique sequences from 56604 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCTAGACT-TGCGTACG_L001_R1_001.fastq
+Encountered 7 unique sequences from 8 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCTCTATG-ACGTCTCG_L001_R1_001.fastq
+Encountered 14072 unique sequences from 77060 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCTCTATG-AGAGTCAC_L001_R1_001.fastq
+Encountered 18064 unique sequences from 100275 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCTCTATG-CGTTACTA_L001_R1_001.fastq
+Encountered 910 unique sequences from 2544 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCTCTATG-CTACTATA_L001_R1_001.fastq
+Encountered 9041 unique sequences from 62196 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCTCTATG-GATCGTGT_L001_R1_001.fastq
+Encountered 989 unique sequences from 2454 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCTCTATG-GTCAGATA_L001_R1_001.fastq
+Encountered 1547 unique sequences from 4393 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCTCTATG-TACGAGAC_L001_R1_001.fastq
+Encountered 1160 unique sequences from 2607 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TCTCTATG-TCGACGAG_L001_R1_001.fastq
+Encountered 19581 unique sequences from 145009 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TGCGTCAA-AAGCAGCA_L001_R1_001.fastq
+Encountered 200 unique sequences from 362 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TGCGTCAA-ACGCGTGA_L001_R1_001.fastq
+Encountered 336 unique sequences from 564 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TGCGTCAA-CGATCTAC_L001_R1_001.fastq
+Encountered 4361 unique sequences from 17592 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TGCGTCAA-CTAGTATG_L001_R1_001.fastq
+Encountered 166 unique sequences from 277 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TGCGTCAA-GATAGCGT_L001_R1_001.fastq
+Encountered 157 unique sequences from 280 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TGCGTCAA-GTCTAGTG_L001_R1_001.fastq
+Encountered 6162 unique sequences from 32529 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TGCGTCAA-TCTACACT_L001_R1_001.fastq
+Encountered 8644 unique sequences from 36317 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TGCGTCAA-TGCGTCAC_L001_R1_001.fastq
+Encountered 95 unique sequences from 145 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TGCTCGTA-ACGTCTCG_L001_R1_001.fastq
+Encountered 12571 unique sequences from 88019 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TGCTCGTA-AGAGTCAC_L001_R1_001.fastq
+Encountered 7310 unique sequences from 31208 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TGCTCGTA-CGTTACTA_L001_R1_001.fastq
+Encountered 8972 unique sequences from 33780 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TGCTCGTA-CTACTATA_L001_R1_001.fastq
+Encountered 5769 unique sequences from 26841 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TGCTCGTA-GATCGTGT_L001_R1_001.fastq
+Encountered 10392 unique sequences from 50596 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TGCTCGTA-GTCAGATA_L001_R1_001.fastq
+Encountered 159 unique sequences from 264 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TGCTCGTA-TACGAGAC_L001_R1_001.fastq
+Encountered 9352 unique sequences from 57722 total sequences read.
+Dereplicating sequence entries in Fastq file: /rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Sample_Seqs//cutadapt/filtered/160823_M03291_0044_000000000-ATG89_TGCTCGTA-TCGACGAG_L001_R1_001.fastq
+Encountered 1038 unique sequences from 2347 total sequences read.
+Identified 846 bimeras out of 5490 input sequences.
+Loading required package: phyloseq
+Registered S3 methods overwritten by 'ggplot2':
+  method         from 
+  [.quosures     rlang
+  c.quosures     rlang
+  print.quosures rlang
+Loading required package: Biostrings
+Loading required package: BiocGenerics
+Loading required package: parallel
+
+Attaching package: ‘BiocGenerics’
+
+The following objects are masked from ‘package:parallel’:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+
+The following objects are masked from ‘package:stats’:
+
+    IQR, mad, sd, var, xtabs
+
+The following objects are masked from ‘package:base’:
+
+    anyDuplicated, append, as.data.frame, basename, cbind, colnames,
+    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
+    union, unique, unsplit, which, which.max, which.min
+
+Loading required package: S4Vectors
+Loading required package: stats4
+
+Attaching package: ‘S4Vectors’
+
+The following object is masked from ‘package:base’:
+
+    expand.grid
+
+Loading required package: IRanges
+Loading required package: XVector
+
+Attaching package: ‘Biostrings’
+
+The following object is masked from ‘package:base’:
+
+    strsplit
+
+Loading required package: RSQLite
+Registered S3 methods overwritten by 'ggplot2':
+  method         from 
+  [.quosures     rlang
+  c.quosures     rlang
+  print.quosures rlang
+
+Attaching package: ‘phyloseq’
+
+The following object is masked from ‘package:IRanges’:
+
+    distance
+
+Loading required package: ape
+
+Attaching package: ‘ape’
+
+The following object is masked from ‘package:Biostrings’:
+
+    complement
+
+Loading required package: Rcpp
+negative edges length changed to 0!

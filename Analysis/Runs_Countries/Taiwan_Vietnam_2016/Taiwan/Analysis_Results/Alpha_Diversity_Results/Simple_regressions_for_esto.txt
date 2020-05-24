@@ -1,0 +1,234 @@
+
+
+Simple regressions for esto - Site_code
+
+Call:
+lm(formula = alpha ~ df[, i], data = df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-168.400  -47.963    0.425   52.161  165.596 
+
+Coefficients:
+                           Estimate Std. Error t value Pr(>|t|)   
+(Intercept)                   43.50      45.83   0.949  0.34340   
+df[, i]JFE Mountain          123.48      46.55   2.653  0.00849 **
+df[, i]JFE Mountain 2        126.90      46.96   2.702  0.00735 **
+df[, i]Lien Hua Pond (TW7)    39.90      46.70   0.854  0.39364   
+df[, i]Nantou                142.17      49.50   2.872  0.00442 **
+df[, i]Puli                   53.98      47.28   1.142  0.25463   
+df[, i]Xitou 2               100.82      47.43   2.126  0.03452 * 
+df[, i]Xitou Entrance         46.47      47.24   0.984  0.32618   
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 64.81 on 252 degrees of freedom
+Multiple R-squared:  0.2774,	Adjusted R-squared:  0.2573 
+F-statistic: 13.82 on 7 and 252 DF,  p-value: 3.962e-15
+
+
+
+Simple regressions for esto - Species
+
+Call:
+lm(formula = alpha ~ df[, i], data = df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-173.853  -51.498   -0.966   53.709  161.564 
+
+Coefficients:
+                                 Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                        87.436      9.201   9.503  < 2e-16 ***
+df[, i]Buergeria japonica          88.417     14.886   5.939 9.53e-09 ***
+df[, i]Bufo bankorensis            54.564     15.659   3.484 0.000582 ***
+df[, i]Duttaphyrus melanotrictus   30.564     68.854   0.444 0.657504    
+df[, i]Fejervarya limnocharis      69.897     40.456   1.728 0.085274 .  
+df[, i]Hylarana latouchii          60.811     11.518   5.280 2.81e-07 ***
+df[, i]Microhyla                  137.564     68.854   1.998 0.046810 *  
+df[, i]Microhyla butleri          -78.436     68.854  -1.139 0.255721    
+df[, i]Polypedates braueri        172.564     68.854   2.506 0.012838 *  
+df[, i]Rhacophorus moltrechti       6.248     14.394   0.434 0.664621    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 68.24 on 250 degrees of freedom
+Multiple R-squared:  0.2052,	Adjusted R-squared:  0.1766 
+F-statistic: 7.173 on 9 and 250 DF,  p-value: 2.957e-09
+
+
+
+Simple regressions for esto - Age
+
+Call:
+lm(formula = alpha ~ df[, i], data = df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-154.209  -52.488   -0.709   57.760  165.750 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(>|t|)    
+(Intercept)            156.209      5.901  26.471  < 2e-16 ***
+df[, i]tadpoles        -42.006     10.246  -4.100 5.55e-05 ***
+df[, i]tadpoles (OW)   -72.625     15.379  -4.723 3.84e-06 ***
+df[, i]tadpoles (YOY)  -72.959     14.411  -5.063 7.91e-07 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 69.57 on 256 degrees of freedom
+Multiple R-squared:  0.154,	Adjusted R-squared:  0.1441 
+F-statistic: 15.53 on 3 and 256 DF,  p-value: 2.596e-09
+
+
+
+Simple regressions for esto - Lifestage
+
+Call:
+lm(formula = alpha ~ df[, i], data = df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-154.209  -53.398   -1.088   57.223  148.033 
+
+Coefficients:
+               Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     156.209      5.944   26.28  < 2e-16 ***
+df[, i]tadpole  -55.242      8.714   -6.34 1.02e-09 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 70.08 on 258 degrees of freedom
+Multiple R-squared:  0.1348,	Adjusted R-squared:  0.1314 
+F-statistic: 40.19 on 1 and 258 DF,  p-value: 1.023e-09
+
+
+
+Simple regressions for esto - Habitat_type
+
+Call:
+lm(formula = alpha ~ df[, i], data = df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-168.40  -47.29    1.55   47.69  158.90 
+
+Coefficients:
+                    Estimate Std. Error t value Pr(>|t|)    
+(Intercept)           97.484     11.623   8.387 3.53e-15 ***
+df[, i]brook          88.183     22.002   4.008 8.06e-05 ***
+df[, i]plastic tubs  -53.984     47.213  -1.143  0.25395    
+df[, i]pond           75.794     14.582   5.198 4.16e-07 ***
+df[, i]Pond           -7.387     13.421  -0.550  0.58252    
+df[, i]slow brook     72.916     15.485   4.709 4.11e-06 ***
+df[, i]small pond     46.838     16.872   2.776  0.00591 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 64.71 on 253 degrees of freedom
+Multiple R-squared:  0.2766,	Adjusted R-squared:  0.2594 
+F-statistic: 16.12 on 6 and 253 DF,  p-value: 1.064e-15
+
+
+
+Simple regressions for esto - Latitude
+
+Call:
+lm(formula = alpha ~ df[, i], data = df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-168.400  -50.234    0.425   53.754  165.596 
+
+Coefficients:
+               Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     115.333      8.522  13.533  < 2e-16 ***
+df[, i]23.825    70.333     20.875   3.369 0.000871 ***
+df[, i]23.8285  -71.833     47.450  -1.514 0.131307    
+df[, i]23.9188  -31.929     12.507  -2.553 0.011272 *  
+df[, i]23.94    -17.849     14.601  -1.222 0.222677    
+df[, i]23.9497   55.067     13.475   4.087 5.88e-05 ***
+df[, i]23.9581   51.651     11.908   4.337 2.08e-05 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 66.01 on 253 degrees of freedom
+Multiple R-squared:  0.2472,	Adjusted R-squared:  0.2294 
+F-statistic: 13.85 on 6 and 253 DF,  p-value: 1.309e-13
+
+
+
+Simple regressions for esto - Longitude
+
+Call:
+lm(formula = alpha ~ df[, i], data = df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-168.400  -50.234    0.425   53.754  165.596 
+
+Coefficients:
+                Estimate Std. Error t value Pr(>|t|)    
+(Intercept)      115.333      8.522  13.533  < 2e-16 ***
+df[, i]120.8014  -71.833     47.450  -1.514 0.131307    
+df[, i]120.8506   51.651     11.908   4.337 2.08e-05 ***
+df[, i]120.8539   55.067     13.475   4.087 5.88e-05 ***
+df[, i]120.8572   70.333     20.875   3.369 0.000871 ***
+df[, i]120.8827  -31.929     12.507  -2.553 0.011272 *  
+df[, i]120.9256  -17.849     14.601  -1.222 0.222677    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 66.01 on 253 degrees of freedom
+Multiple R-squared:  0.2472,	Adjusted R-squared:  0.2294 
+F-statistic: 13.85 on 6 and 253 DF,  p-value: 1.309e-13
+
+
+
+Simple regressions for esto - Altitude_m
+
+Call:
+lm(formula = alpha ~ df[, i], data = df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-168.400  -50.234    0.425   53.754  165.596 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  115.333      8.522  13.533  < 2e-16 ***
+df[, i]257   -71.833     47.450  -1.514 0.131307    
+df[, i]324    70.333     20.875   3.369 0.000871 ***
+df[, i]483   -17.849     14.601  -1.222 0.222677    
+df[, i]541    55.067     13.475   4.087 5.88e-05 ***
+df[, i]685    51.651     11.908   4.337 2.08e-05 ***
+df[, i]722   -31.929     12.507  -2.553 0.011272 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 66.01 on 253 degrees of freedom
+Multiple R-squared:  0.2472,	Adjusted R-squared:  0.2294 
+F-statistic: 13.85 on 6 and 253 DF,  p-value: 1.309e-13
+
+
+
+Simple regressions for esto - Bd
+
+Call:
+lm(formula = alpha ~ df[, i], data = df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-167.026  -54.239   -0.489   54.261  146.011 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  113.989      5.260  21.670  < 2e-16 ***
+df[, i]1      55.037      9.604   5.731 2.78e-08 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 70.96 on 258 degrees of freedom
+Multiple R-squared:  0.1129,	Adjusted R-squared:  0.1095 
+F-statistic: 32.84 on 1 and 258 DF,  p-value: 2.782e-08
+

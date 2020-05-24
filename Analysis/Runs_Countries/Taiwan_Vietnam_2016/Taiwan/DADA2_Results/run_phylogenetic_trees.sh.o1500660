@@ -1,0 +1,67 @@
+R is about to run phylogenetic tree script on DADA2 results
+[1] "/rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/HPC_Results/"
+Determining distance matrix based on shared 8-mers:
+================================================================================
+
+Time difference of 191.65 secs
+
+Clustering into groups by similarity:
+================================================================================
+
+Time difference of 6.07 secs
+
+Aligning Sequences:
+================================================================================
+
+Time difference of 111.45 secs
+
+Iteration 1 of 2:
+
+Determining distance matrix based on alignment:
+================================================================================
+
+Time difference of 37.67 secs
+
+Reclustering into groups by similarity:
+================================================================================
+
+Time difference of 3.85 secs
+
+Realigning Sequences:
+================================================================================
+
+Time difference of 27.94 secs
+
+Iteration 2 of 2:
+
+Determining distance matrix based on alignment:
+================================================================================
+
+Time difference of 31.09 secs
+
+Reclustering into groups by similarity:
+================================================================================
+
+Time difference of 3.8 secs
+
+Realigning Sequences:
+================================================================================
+
+Time difference of 15.18 secs
+
+Refining the alignment:
+================================================================================
+
+Time difference of 31.42 secs
+
+R has finished running phylogenetic tree script on DADA2 results
+
+============================================
+
+        Job resource usage summary 
+
+                 Memory (GB)    NCPUs
+ Requested  :       124            32
+ Used       :         4 (peak)   0.98 (ave)
+
+============================================

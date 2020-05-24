@@ -1,0 +1,34 @@
+R is about to run filtering script on DADA2 results
+[1] "/rds/general/user/leg19/home/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/HPC_Results/"
+[1] "PosC species is g__Candida s__auris"
+[1] 1
+[1] "Mock species are g__Penicillium NA"           
+[2] "Mock species are g__Cordyceps s__brongniartii"
+[3] "Mock species are g__Bjerkandera s__adusta"    
+[4] "Mock species are g__Lentinus s__arcularius"   
+[5] "Mock species are g__Aspergillus s__hiratsukae"
+[1] 92
+[1] "Number of samples in plate: 96"
+[1] "Number of ASVs with NTC/PosC reads not equal to 0: 11"
+[1] "Number of NTC and posC reads overall before: 307"
+[1] "CHECK. Number of NTC and posC reads overall after: 0(should be 0)"
+[1] "Number of samples in plate: 96"
+[1] "Number of ASVs with NTC/PosC reads not equal to 0: 6"
+[1] "Number of NTC and posC reads overall before: 78"
+[1] "CHECK. Number of NTC and posC reads overall after: 0(should be 0)"
+[1] "Number of samples in plate: 96"
+[1] "Number of ASVs with NTC/PosC reads not equal to 0: 2"
+[1] "Number of NTC and posC reads overall before: 10"
+[1] "CHECK. Number of NTC and posC reads overall after: 0(should be 0)"
+[1] 8
+R has finished running filtering script on DADA2 results
+
+============================================
+
+        Job resource usage summary 
+
+                 Memory (GB)    NCPUs
+ Requested  :       124            32
+ Used       :         0 (peak)   0.57 (ave)
+
+============================================
