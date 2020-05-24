@@ -18,13 +18,9 @@ rm(list=ls())
 setwd("~/Documents/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan")
 
 # load packages
-library(dplyr)
 library(phyloseq)
 library(Biostrings)
 library(ggtree)
-library(scales)
-#library(nlme)
-library(lme4)
 library(ggplot2)
 library(gridExtra)
 
@@ -84,8 +80,12 @@ dada2 <- merge_phyloseq(dada2, tax_table(tempdf))
 plotTree(phy_tree(chytrids_pruned))
 nodelabels() 
 
+library(adephylo)
+one <- rownames(as.data.frame(listTips(phy_tree(chytrids_pruned))[[1]]))[1]
+two <- rownames(as.data.frame(listTips(phy_tree(chytrids_pruned))[[length(listTips(phy_tree(chytrids_pruned)))]]))[1]
+
 # use ASV ends to find MRCA node number
-mrca_node <- getMRCA(as.phylo(phy_tree(dada2)), c("ASV2776", "ASV2365"))
+mrca_node <- getMRCA(as.phylo(phy_tree(dada2)), c(one, two)) # "ASV2776", "ASV2365"
 # extract clade from node number
 clade1 <- extract.clade(as.phylo(phy_tree(dada2)), mrca_node)
 # subset dada2 by clade
