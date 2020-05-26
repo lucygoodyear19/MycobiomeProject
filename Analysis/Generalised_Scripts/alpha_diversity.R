@@ -10,13 +10,10 @@
 rm(list=ls())
 
 
+
 ##############################################################################
 ################################## Set up ####################################
 
-
-# set wd if needed
-setwd("~/Documents/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/")
-path_out <- "Analysis_Results/Alpha_Diversity_Results/"
 
 # load packages
 library(dplyr)
@@ -27,21 +24,50 @@ library(lme4)
 library(ggplot2)
 library(gridExtra)
 
+
+# import arguments to run script on specific country data
+#!/usr/bin/env Rscript
+args = commandArgs(trailingOnly=TRUE) # setup to accept arguments from command line
+# test if there is at least one argument: if not, return an error
+if (length(args)==0) {
+  stop("At least one argument must be supplied in the form of an R-script containing the following arguments: 
+       1) path to results folder, results_path
+       2) path to dada2 data folder, dada2_path 
+       3) path to esto data folder, esto_path")
+}
+
+# load arguments into script
+source(args)
+
+# print arguments as check
+print(results_path) # path to data folder
+print(dada2_path) # path to folder that will contain filtered data files
+print(esto_path) # path to folder that will contain filtered data files
+
+# define path out
+path_out <- paste0(results_path, "Alpha_Diversity/")
+
 # load filtered phyloseq object for both DADA2 pipeline and Estonianpipeline
-dada2 <- readRDS("DADA2_Results/physeqob_DADA2_complete.rds")
-esto <- readRDS("Esto_Results/physeqob_jen.rds")
+dada2 <- readRDS(paste0(dada2_path, "physeqob_DADA2_complete.rds"))
+esto <- readRDS(paste0(esto_path, "physeqob_esto.rds"))
 
+# define vector of variables of interest
 myvars <- c("Site_code", "Species", "Age", "Lifestage", "Habitat_type", "Latitude", "Longitude", "Altitude_m", "Bd", "alpha")
+# define vector of independent variables
 ind_vars <- myvars[myvars != "alpha"]
+# define vector of random effects variables
 rand_effs <- c("Notes", "Sample_type", "Date", "ID")
+# vecotr of datasets
+datasets <- c("dada2", "esto")
 
+
+# temp until new data filtering script is used
 asv_seqs <- Biostrings::DNAStringSet(taxa_names(dada2))
 names(asv_seqs) <- taxa_names(dada2)
 dada2 <- merge_phyloseq(dada2, asv_seqs)
 taxa_names(dada2) <- paste0("ASV", seq(ntaxa(dada2)))
 dada2
 
-datasets <- c("dada2", "esto")
 
 #################################################################################
 ########################### Calculate alpha diversity ###########################
