@@ -5,7 +5,8 @@ Proposal/WorkingDocuments
 *.pdf
 Analysis/Runs_Countries/*/Plate_Data.csv
 Analysis/Runs_Countries/*/SampleSheet.csv
-Analysis/Runs_Countries/*/*/HPC_Results
+Analysis/Runs_Countries/*/*/DADA2_Results/
+Analysis/Runs_Countries/*/*/Esto_Results/
 Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Filtering
 Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Plots
 Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan/Data
