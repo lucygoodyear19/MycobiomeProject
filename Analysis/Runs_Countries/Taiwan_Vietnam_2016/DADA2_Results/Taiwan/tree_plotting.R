@@ -37,7 +37,7 @@ dada2
 
 
 ###################################################################################
-############################ Phylogenetic tree ####################################
+######################### Create phylogenetic tree ################################
 
 
 # create tree subsetting by order
@@ -85,7 +85,7 @@ one <- rownames(as.data.frame(listTips(phy_tree(chytrids_pruned))[[1]]))[1]
 two <- rownames(as.data.frame(listTips(phy_tree(chytrids_pruned))[[length(listTips(phy_tree(chytrids_pruned)))]]))[1]
 
 # use ASV ends to find MRCA node number
-mrca_node <- getMRCA(as.phylo(phy_tree(dada2)), c(one, two)) # "ASV2776", "ASV2365"
+mrca_node <- getMRCA(as.phylo(phy_tree(dada2)), c("ASV2776", "ASV2365")) #one, two))
 # extract clade from node number
 clade1 <- extract.clade(as.phylo(phy_tree(dada2)), mrca_node)
 # subset dada2 by clade
@@ -115,6 +115,35 @@ dev.off()
 #plot_heatmap(chytrids1, na.value = "black")
 
 #x <- plot_heatmap(chytrids_pruned)
+
+
+###############################################################################
+#################### BLAST chytrids against NCBI database #####################
+
+
+refseq(chytrids1)
+
+taxa <- assignTaxonomy(refseq(chytrids1), unite.ref, multithread = TRUE, tryRC = TRUE)
+
+# add new assignments to phyloseq object
+chytrids1 <- merge_phyloseq(chytrids1, tax_table(taxa))
+
+
+################################################################################
+########### Create phylogenetic tree including new assignments #################
+
+
+pdf("Analysis_Results/chytrid_tree_tax_ind_new.pdf", 8, 25)
+plot_tree(chytrids1,           
+          shape = "Family", 
+          label.tips = "name", 
+          #size = "abundance", 
+          plot.margin = 0.5, 
+          ladderize = TRUE,
+          text.size = 3,
+          color = "Genus")
+dev.off()
+
 
 ## end of script
 

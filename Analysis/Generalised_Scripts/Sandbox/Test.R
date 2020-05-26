@@ -9,3 +9,10 @@ if (length(args)==0) {
 source(args)
 
 print(path)
+
+
+###############################################################
+
+seqtab <- rbind(c(2,3,4,1,2,3,7), c(8,5,4,3,2,1,6))
+seqtab <- rbind(seqtab, apply(seqtab, 2, sum))
+

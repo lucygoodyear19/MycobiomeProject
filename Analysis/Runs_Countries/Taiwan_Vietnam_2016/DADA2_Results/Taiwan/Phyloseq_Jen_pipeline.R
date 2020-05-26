@@ -14,7 +14,7 @@ rm(list=ls())
 
 
 # set wd if needed
-setwd("~/Documents/MRes/MycobiomeProject/Analysis/Countries_Runs/Taiwan_Vietnam/")
+setwd("~/Documents/MRes/MycobiomeProject/Analysis/Runs_Countries/Taiwan_Vietnam_2016/Taiwan")
 
 # load packages
 library(dplyr)
@@ -49,6 +49,8 @@ for (i in (1:nrow(metadata))){
 }
 # set as factor for plotting
 metadata$Bd <- as.factor(metadata$Bd)
+
+write.csv(metadata,"metadata_bd.csv")
 
 
 ###################### Create phyloseq object of all data #####################
@@ -137,6 +139,6 @@ TW_physeq_filtered = prune_taxa(wh0, physeq_fil)
 #TW_physeq_filtered = prune_taxa((tax_table(TW_physeq_filtered)[, "Phylum"] %in% top5phyla), TW_physeq_filtered)
 
 # save phyloseq object to be imported into analysis scripts
-saveRDS(physeq_fil,paste(path_out,"physeqob.rds",sep=''))
+saveRDS(physeq,paste("physeqob_jen.rds",sep=''))
 
 ## end of script
