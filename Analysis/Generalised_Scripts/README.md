@@ -21,15 +21,19 @@ File architecture must follow this structure:
     ├── Generalised_Scripts
     └── Runs_Countries
         ├── CostaRica_Ecuador_2017
-        │   ├── CostaRica
-        │   │   └── HPC_Results
-        │   ├── Ecuador
-        │   │   └── HPC_Results
+        │   ├── DADA2_Results
+        │   │   ├── CostaRica
+        |   |   └── Ecuador
+        |   |       ├── DADA2_args.R   
+        |   |       └── HPC_outputs
+        |   └── Esto_Results
         └── Taiwan_Vietnam_2016
-            ├── Taiwan
-            │   └── HPC_Results
-            └── Vietnam
-                └── HPC_Results
+        │   ├── DADA2_Results
+        │   │   ├── Taiwan
+        |   |   └── Vietnam
+        |   |       ├── DADA2_args.R   
+        |   |       └── HPC_outputs
+        |   └── Esto_Results
  ```
 
  There is actually a lot of flexibility with the structure. The only requirement is that the distances between subdirectories must be the same and the countries within the run directories must be named by country only.
