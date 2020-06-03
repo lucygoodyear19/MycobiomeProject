@@ -120,6 +120,10 @@ dev.off()
 ###############################################################################
 #################### BLAST chytrids against NCBI database #####################
 
+#ASV2292, ASV2580
+seqs <- as.data.frame(refseq(chytrids1))
+seq1 <- seqs[rownames(seqs) == "ASV2580",]
+seq2 <- seqs[rownames(seqs) == "ASV2292",]
 
 refseq(chytrids1)
 

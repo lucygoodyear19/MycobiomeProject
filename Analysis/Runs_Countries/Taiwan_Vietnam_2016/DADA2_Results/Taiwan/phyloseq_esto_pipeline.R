@@ -21,7 +21,7 @@ library(dplyr)
 library(phyloseq)
 library(ggplot2)
 
-# load filtered Taiwan data (swbas only)
+# load filtered Taiwan data (swabs only)
 TWdata <- read.csv("Filtering/Taiwanswabsonly_plate2-4_filteredOTUtable.csv", 
                    header=T, 
                    stringsAsFactor=FALSE, 
@@ -49,8 +49,6 @@ for (i in (1:nrow(metadata))){
 }
 # set as factor for plotting
 metadata$Bd <- as.factor(metadata$Bd)
-
-write.csv(metadata,"metadata_bd.csv")
 
 
 ###################### Create phyloseq object of all data #####################
@@ -90,11 +88,9 @@ physeq <- phyloseq(OTU,TAX, Sample)
 # remove all OTUs of the followng phlya:
 # - "" (blank)
 # - "environmental samples"
-# - "Fungi_phy_Incertae_sedis"
 phy_fil <- TWdata %>% 
   filter(phylum != "" 
-         & phylum != "environmental samples" 
-         & phylum != "Fungi_phy_Incertae_sedis")
+         & phylum != "environmental samples")
 # subset samples only and save as matrix
 phy_fil_samp <- as.matrix(phy_fil[,23:ncol(phy_fil)])
 # add OTU ids as row names
@@ -139,6 +135,6 @@ TW_physeq_filtered = prune_taxa(wh0, physeq_fil)
 #TW_physeq_filtered = prune_taxa((tax_table(TW_physeq_filtered)[, "Phylum"] %in% top5phyla), TW_physeq_filtered)
 
 # save phyloseq object to be imported into analysis scripts
-saveRDS(physeq,paste("physeqob_jen.rds",sep=''))
+saveRDS(physeq, paste0("physeqob_esto.rds"))
 
 ## end of script

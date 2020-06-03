@@ -111,29 +111,5 @@ orditorp(plate2_NMDS_k3, display="species", col="red", air=0.01)
 orditorp(plate2_NMDS_k3, display="sites", cex=0.5, air=0.01)
 
 
-###############################################################################
-############################## Kruskall-Wallis ################################
-
-
-# load packages
-require(microbiomeSeq)
-
-# run Kruskal_Wallis test on Bd for dada2
-(kw_dada2 <- kruskal_abundance(dada2, group = "Bd", pvalue.threshold = 0.05))
-plot_signif(kw_dada2$plotdata)
-# run Kruskal_Wallis test on Bd for dada2
-(kw_esto <- kruskal_abundance(esto, group = "Bd", pvalue.threshold = 0.05))
-plot_signif(kw_dada2$plotdata)
-
-# create a list of the significant taxa
-sig_asv <- kw_dada2$importance[,1]
-sig_tax <- tax_table(dada2)[rownames(tax_table(dada2)) %in% sig_asv,]
-
-# run Kruskal_Wallis using base R stats
-kruskal.test(alpha ~ Bd, data = alpha_prep(dada2, "Bd"))
-kruskal.test(alpha ~ Bd, data = alpha_prep(esto, "Bd"))
-
-# detach packages
-detach("package:microbiomeSeq", unload=TRUE)
-
+## end of script
         

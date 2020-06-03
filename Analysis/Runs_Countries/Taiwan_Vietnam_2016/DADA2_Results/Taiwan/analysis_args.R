@@ -7,14 +7,40 @@
 # Version: 0.0.1
 
 
-### paths to change for each seperate analysis
-results_path <- "/Users/lucy/Documents/MRes/MycobiomeProject/Analysis/Results/Taiwan_2016/"
-data_path <- "/Users/lucy/Documents/MRes/MycobiomeProject/Analysis/Results/Taiwan_2016/Runs_Countries/Taiwan_Vietnam_2016/"
-dada2_path <- paste0(data_path, "DADA2_Results/Taiwan/")
-esto_path <- paste0(data_path, "Esto_Results/")
+######################### SET UP FOR EASE ############################
+
+
+# only change these for ease
+root <- "~/Documents/MRes/MycobiomeProject/Analysis/"
+run <- "Taiwan_Vietnam_2016/"
+country <- "Taiwan"
+year <- "2016"
+
+
+##################### INPUTS REQUIRED FOR SCRIPTS ####################
+
+# paths
+dada2_data_path <- paste0(root, 
+                          "Runs_Countries/", 
+                          run, 
+                          "DADA2_Results/", 
+                          country, 
+                          "/physeqob_DADA2_complete.rds")
+esto_data_path <- paste0(root, 
+                    "Runs_Countries/", 
+                    run, 
+                    "Esto_Results/physeqob_esto.rds")
+results_path <- paste0(root, 
+                  "Results/", 
+                  country, 
+                  "_", 
+                  year)
+
+# vector of datasets
+datasets <- c("dada2", "esto")
 
 ### NCBI database?
-ncbi.ref <- paste(root_path, "NCBI_database")
+#ncbi.ref <- paste(root, "NCBI_database")
 
 
 ## end of script

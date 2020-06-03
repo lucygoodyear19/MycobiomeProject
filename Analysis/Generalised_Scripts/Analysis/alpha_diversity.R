@@ -21,6 +21,7 @@ library(phyloseq)
 library(Biostrings)
 #library(nlme)
 library(lme4)
+library(effsize) # load effect size package
 library(ggplot2)
 library(gridExtra)
 
@@ -38,6 +39,9 @@ if (length(args)==0) {
 
 # load arguments into script
 source(args)
+
+######## TEMP
+source("analysis_args.R")
 
 # print arguments as check
 print(results_path) # path to data folder
@@ -212,9 +216,6 @@ for (j in datasets) { # loop over each dataset
 #################################### DADA2 #####################################
 
 
-# load effect size package
-require("effsize")
-
 # loop to run stats tests on all variables one by one
 for (i in 1:(ncol(corr_total_fac)-1)) {
   sub_df <- as.data.frame(ls_alpha[i])
@@ -226,10 +227,6 @@ for (i in 1:(ncol(corr_total_fac)-1)) {
   cat(paste0("Wilcox for DADA2 - ", colnames(corr_total_fac)[i]), wilcox_out, file="Wilcox_DADA2.txt", append=TRUE)
   cat(paste0("Cohen for DADA2 - ", colnames(corr_total_fac)[i]), cohen_out, file="Cohen_DADA2.txt", append=TRUE)
 }
-
-# save outputs to a text files
-cat("Wilcox for DADA2", wilcox_out, file="Wilcox_DADA2.txt", append=TRUE)
-cat("Cohen for DADA2", cohen_out, file="Cohen_DADA2.txt", append=TRUE)
 
 
 #################################################################################
@@ -334,5 +331,6 @@ model <- glm(alpha_scale ~ 1 +
              data = dada2_sample_df)
 require("olsrr")
 ols_step_all_possible(model)
+
 
 ## end of script

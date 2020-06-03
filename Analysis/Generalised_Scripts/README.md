@@ -19,21 +19,22 @@ File architecture must follow this structure:
 .
 └── Analysis
     ├── Generalised_Scripts
+    ├── Results  
     └── Runs_Countries
         ├── CostaRica_Ecuador_2017
         │   ├── DADA2_Results
         │   │   ├── CostaRica
-        |   |   └── Ecuador
-        |   |       ├── DADA2_args.R   
-        |   |       └── HPC_outputs
-        |   └── Esto_Results
+        │   │   └── Ecuador
+        │   │       ├── DADA2_args.R   
+        │   │       └── HPC_outputs
+        │   └── Esto_Results
         └── Taiwan_Vietnam_2016
         │   ├── DADA2_Results
         │   │   ├── Taiwan
-        |   |   └── Vietnam
-        |   |       ├── DADA2_args.R   
-        |   |       └── HPC_outputs
-        |   └── Esto_Results
+        │   │   └── Vietnam
+        │   │       ├── DADA2_args.R   
+        │   │       └── HPC_outputs
+        │   └── Esto_Results
  ```
 
  There is actually a lot of flexibility with the structure. The only requirement is that the distances between subdirectories must be the same and the countries within the run directories must be named by country only.
@@ -51,19 +52,19 @@ File architecture must follow this structure:
 
 Given a tarball containing data from an Illumina MiSeq run, this script processes the sequences into a form ready to be run through the DADA2 pipeline.
 
-### 2) [run_DADA2_HPC_pipleine.sh](#3.run_DADA2_HPC_pipleine.sh)
+### 2) [run_DADA2_HPC_pipleine.sh](#2.run_DADA2_HPC_pipleine.sh)
 
 Runs DADA2_HPC_pipeline.R, the Data_filtering.R and phylogenetic_trees.R on the HPC. Each R-script is easily recognisable and can be hashed out as required. Running the whole bash script will result a phyloseq object containing out_table, taxa_table, sample_data and phylogenetic tree.
 
-### 3) [DADA2_HPC_pipeline.R](#2.-DADA2_HPC_pipeline.R)
+### 3) [DADA2_HPC_pipeline.R](#3.-DADA2_HPC_pipeline.R)
 
 Processes seqeunce data to produce useful outputs for analysis, including quality profiles and error rates.
 
-### 4) [Data_filtering.R](#3.Data_filtering.R)
+### 4) [Data_filtering.R](#4.Data_filtering.R)
 
 Filters the results from the DADA2_HPC_pipeline R-script, removing mocks, negative and positive controls. Result is a phyloseq object.
 
-### 5) [phylogenetic_trees.R](#3.phylogenetic_trees.R)
+### 5) [phylogenetic_trees.R](#5.phylogenetic_trees.R)
 
 Produces a phylogenetic tree based on maximum likelihood and saves it to the existing phyloseq object.
 
