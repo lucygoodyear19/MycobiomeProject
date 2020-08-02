@@ -16,13 +16,12 @@ rm(list=ls())
 
 # load packages
 library("dplyr")
-library("phyloseq")
-library("compositions")
-library("microbiome")
-library("ggplot2")
-library("vegan")
-library("compositions")
 library("tidyr") # for separate function
+library("phyloseq")
+library("microbiome") # for abundances() function
+library("ggplot2")
+library("vegan") # for adonis() function
+library("compositions") # for ilr transform
 
 # import arguments to run script on specific country data
 #!/usr/bin/env Rscript
@@ -30,15 +29,19 @@ args = commandArgs(trailingOnly=TRUE) # setup to accept arguments from command l
 # test if there is at least one argument: if not, return an error
 if (length(args)==0) {
   stop("At least one argument must be supplied in the form of an R-script containing the following arguments: 
-       1) path containing results from DADA2 pipeline")
+       1) dada2_data_path - path to directory containing input data (phyloseq object)
+       2) results_path - path to results directory
+       3) samp_vars - vector containing strings of variables to be analysed")
 }
 # load arguments into script
 source(args)
 # print arguments as check
 print(paste0("Data path: ", dada2_data_path))
 print(paste0("Results path: ", results_path))
+print(paste0("Sample variables to analyse: ", samp_vars))
 
 # load phyloseq object
+print("Loading data...")
 dada2 <- readRDS(paste0(dada2_data_path, "physeqob_DADA2.rds"))
 
 # to account for Costa Rica singles
@@ -61,6 +64,7 @@ sampdata <- sampdata %>%
 ############################## Data transformations ###############################
 
 
+print("Transforming data...")
 # transform data to compositional
 abun_c <- transform(abun, "compositional")
 # account for zeros by performing replacement with small scaled numeric
@@ -68,13 +72,16 @@ detectlims <- matrix(min(as.vector(abun_c)[as.vector(abun_c) > 0]/2), nrow(abun_
 abun_0 <- zeroreplace(abun_c, d=detectlims, a=0.65)
 # transpose matrix
 abun0t <- t(abun_0)
-#saveRDS(abun0t, paste0(results_path, "BetaDiversity/abun0t_africa.rds"))
+# transform data using isometric log-ratio transform
+dada2_ilr <- as.data.frame(clr(abun0t))
 
 
-####### Bd
-#Subset ECU to Complete Cases 
+############ Bd
+
+
+#Subset phyloseq object to remoave all samples with NA in Bd column
 dada2_bd <- prune_samples(!is.na(sample_data(dada2)$Bd), dada2)
-#Can't Have Zero-Sum taxa for distances 
+# remove any taxa with sum 0 abundance across all samples
 dada2_bd_nonzero <- prune_taxa(taxa_sums(dada2_bd) > 0, dada2_bd)
 # extract otu_table
 abun_bd <- abundances(dada2_bd_nonzero)
@@ -87,171 +94,62 @@ detectlims_bd <- matrix(min(as.vector(abun_bd_c)[as.vector(abun_bd_c) > 0]/2), n
 abun0bd <- zeroreplace(abun_bd_c, d=detectlims_bd, a=0.65)
 # transpose matrix
 abun0t_bd <- t(abun0bd)
-
+# transform data using isometric log-ratio transform
 dada2_ilr_bd <- as.data.frame(clr(abun0t_bd))
-
-dada2_ilr <- readRDS(paste0(dada2_data_path, "BetaDiversity/dada2_ilr_SouthAm.rds"))
-
-# ilr transform
-#dada2_ilr <- as.data.frame(ilr(abun0t))
-# clr tranform using compositions package
-#dada2_clr_comp <- as.data.frame(clr(abun0t))
-
-#dada2_clr_comp_phylo <- phyloseq(otu_table(dada2_clr_comp, taxa_are_rows = F),
-#                            tax_table(dada2),
-#                            sample_data(dada2),
-#                            refseq(dada2))
-
-# clr transform using microbiome package (contains zero replacement function)
-#dada2_clr_micro_phylo <- microbiome::transform(dada2, "clr")
-#dada2_clr_micro <- as.data.frame(otu_table(dada2_clr_micro_phylo))
-
-
-###################################################################################
-############################## Using in-built phyloseq ############################
-
-
-########## non-metric multidimensional scaling (NMDS) on raw data
-
-#physeq_ord_nmds <- ordinate(dada2, "NMDS", "bray")
-#pdf(paste0(results_path, "BetaDiversity/NMDS_phyloseq_country.pdf"))
-#print(plot_ordination(dada2, physeq_ord_nmds, type="samples", color="Country", title=""))
-#dev.off()
-
-########## redundancy analysis (PCoA) on transformed data
-
-# redundancy analysis on transformed data
-#physeq_ord_rda_clr <- ordinate(dada2_clr_comp_phylo, "RDA")
-#pdf(paste0(results_path, "BetaDiversity/phyloseq_comp_clr_rda_country.pdf"))
-#plot_ordination(dada2, physeq_ord_rda_clr, type="samples", color="Country", title="") +
-#  stat_ellipse(type = "t", aes(color=Country), level = 0.95, alpha = 0.5) + 
-#  theme_bw()
-#dev.off()
-
-#physeq_ord_rda_micro_clr <- ordinate(dada2_clr_micro_phylo, "RDA")
-#pdf(paste0(results_path, "BetaDiversity/phyloseq_micro_clr_rda_country.pdf"))
-#plot_ordination(dada2, physeq_ord_rda_micro_clr, type="samples", color="Country", title="") +
-#  stat_ellipse(type = "t", aes(color=Country), level = 0.95, alpha = 0.5) + 
-#  theme_bw()
-#dev.off()
 
 
 #####################################################################################
-############################### Using microbiome package ############################
+################################### Perform PCA #####################################
 
 
-# perform principle components analysis on transformed data
-#dada2_clr_pca <- prcomp(dada2_clr_comp)
-#dada2_clr_pca_scores <- scores(dada2_clr_pca)
-#dada2_clr_pca_scores_sub <- dada2_clr_pca_scores[,1:2]
-#Variance Explained by FIrst 2 axes  
-#axes <- summary(dada2_clr_pca)$importance[,1:2] # (not a lot)
-# Add Sample Data 
-#final_clr_pca <- cbind(dada2_clr_pca_scores_sub, sampdata)
-
-#pdf(paste0(results_path, "BetaDiversity/microcomp_clr_pca_country.pdf"))
-#pca_clr_comp_plot <- ggplot(final_clr_pca,
-#                            aes(x = PC1, y= PC2)) + 
-#  stat_ellipse(type = "t", aes(color=Country), level = 0.95, alpha = 0.5) + 
-#  geom_point(aes(colour = Country), size=0.25) + 
-#  theme_bw() + 
-#  labs(fill = "Country", x = paste0("PC1 (", round(axes[,1], 3), "%)"), y = paste0("PC2 (", round(axes[,2], 3), "%)")) #+ 
-#theme(legend.position = "top", 
-#axis.text = element_text(size=18),
-#axis.title = element_text(size=20),
-#legend.text = element_text(size=12),
-#legend.title = element_text(size=18))
-#print(pca_clr_comp_plot)
-#dev.off()
-
-
-
-dada2_ilr_pca <- prcomp(dada2_ilr)
-dada2_ilr_pca_scores <- scores(dada2_ilr_pca)
-dada2_ilr_pca_scores_sub <- dada2_ilr_pca_scores[,1:2]
-#Variance Explained by FIrst 2 axes  
-axes <- summary(dada2_ilr_pca)$importance[,1:2] # (not a lot)
-# Add Sample Data  
-final_ilr_pca <- cbind(dada2_ilr_pca_scores_sub, sampdata)
-
-pdf(paste0(results_path, "BetaDiversity/microcomp_ilr_pca_country.pdf"))
-pca_ilr_plot <- ggplot(final_ilr_pca,
-                       aes(x = PC1, y= PC2)) + 
-  stat_ellipse(type = "t", aes(color=Country), level = 0.95, alpha = 0.5) + 
-  geom_point(aes(colour = Country), size=0.25) + 
-  theme_bw() + 
-  labs(fill = "Country", x = paste0("PC1 (", round(axes[,1], 3), "%)"), y = paste0("PC2 (", round(axes[,2], 3), "%)")) #+ 
-#theme(legend.position = "top", 
-#axis.text = element_text(size=18),
-#axis.title = element_text(size=20),
-#legend.text = element_text(size=12),
-#legend.title = element_text(size=18))
-print(pca_ilr_plot)
-dev.off()
+print("Performing PCA...")
+# perform PCA on ilr transformed data
+ilr_pca <- prcomp(dada2_ilr)
+# calculate values per sample for all axes
+ilr_pca_scores <- scores(ilr_pca)
+# extract principle axes
+ilr_pca_scores_sub <- ilr_pca_scores[,1:2]
+# extract variance explained by principle axes 
+axes <- summary(ilr_pca)$importance[,1:2] 
+# add sample data 
+ilr_pca_final <- cbind(ilr_pca_scores_sub, sampdata)
 
 
 ############################ Bd
-final_ilr_pca_bd <- final_ilr_pca[!is.na(final_ilr_pca$Bd),]
+
+
+# perform PCA on non-NA Bd ilr transformed data
+ilr_bd_pca <- prcomp(dada2_ilr_bd)
+# calculate values per sample for all axes
+ilr_bd_pca_scores <- scores(ilr_bd_pca)
+# extract principle axes
+ilr_bd_pca_scores_sub <- ilr_bd_pca_scores[,1:2]
+# extract variance explained by principle axes 
+axes <- summary(ilr_bd_pca)$importance[,1:2]
+# add sample data 
+ilr_bd_pca_final <- cbind(ilr_bd_pca_scores_sub, sampdata_bd)
+
+
+#####################################################################################
+################################### Plots ###########################################
+
+
+print("Plotting...")
+# plot for non-NA Bd PCA
 pdf(paste0(results_path, "BetaDiversity/ilr_pca_bd_noNA.pdf"))
-pca_ilr_plot <- ggplot(final_ilr_pca_bd,
+pca_ilr_plot <- ggplot(ilr_bd_pca_final,
                        aes(x = PC1, y= PC2)) + 
   stat_ellipse(type = "t", aes(color=Bd), level = 0.95, alpha = 0.5) + 
   geom_point(aes(colour = Bd), size=0.25) + 
   theme_bw() + 
-  labs(fill = "Bd Status", x = paste0("PC1 (", round(axes[,1], 3), "%)"), y = paste0("PC2 (", round(axes[,2], 3), "%)"))
+  labs(fill = "Bd", x = paste0("PC1 (", round(axes[,1], 3), "%)"), y = paste0("PC2 (", round(axes[,2], 3), "%)"))
 print(pca_ilr_plot)
 dev.off()
 
-# Then transform to compositional data
-#abun <- abundances(dada2)
-#abun_c <- transform(abun, "compositional")
-#colnames(abun_c) <- colnames(abun)
-
-#if (any(abun_c == 0)) {
-#  v <- as.vector(abun_c)
-#  minval <- min(v[v > 0])/2
-#  abun_c <- abun_c + minval
-#}
-
-#no_zero <- multLN(X=abun_c, label=min(as.vector(abun_c)[as.vector(abun_c) > 0]), dl=p)
-#non_zero <- apply(abun_c, 2, function (x) zeroreplace(x, d=min(as.vector(x)[as.vector(x) > 0])/2, a=0.65))
-#abun_0 <- zeroreplace(abun_c, d=p, a=0.65)
-#p <- matrix(min(as.vector(abun_c)[as.vector(abun_c) > 0]/2), 9292, 335)
-# pca
-#dada2_clr_micro_pca <- prcomp(dada2_clr_micro)
-
-#Cool Biplot Showing How Diff ASVs affect the primary axes of the ordinatiton
-#biplot(dada2_clr_pca, type = "points")
-#Scree plot of relative variance explained by sequential axes
-#plot(dada2_clr_pca)
-#Variance Explained by FIrst 2 axes  
-#axes <- summary(dada2_clr_micro_pca)$importance[,1:2] # (not a lot)
-
-#dada2_clr_micro_pca_scores <- scores(dada2_clr_micro_pca)
-#dada2_clr_micro_pca_scores_sub <- dada2_clr_micro_pca_scores[,1:2]
-# Add Sample Data  
-#final_clr_micro_pca <- cbind(dada2_clr_micro_pca_scores_sub, sampdata)
-
-# plot
-# plot
-#pdf(paste0(results_path, "BetaDiversity/micro_clr_pca_country.pdf"))
-#pca_plot <- ggplot(final_clr_micro_pca,
-#                   aes(x = PC1, y= PC2)) + 
-#  stat_ellipse(type = "t", aes(color=Country), level = 0.95, alpha = 0.5) + 
-#  geom_point(aes(colour = Country), size=0.25) + 
-#  theme_bw() + 
-#  labs(fill = "Country", x = paste0("PC1 (", round(axes[,1], 3), "%)"), y = paste0("PC2 (", round(axes[,2], 3), "%)")) #+ 
-#theme(legend.position = "top", 
-#axis.text = element_text(size=18),
-#axis.title = element_text(size=20),
-#legend.text = element_text(size=12),
-#legend.title = element_text(size=18))
-#print(pca_plot)
-#dev.off()
-
+# plot for all other variables
 for (aspect in samp_vars) {
   pdf(paste0(results_path, "BetaDiversity/ilr_pca_", aspect, ".pdf"))
-  pca_plot <- ggplot(final_ilr_pca,
+  pca_plot <- ggplot(ilr_pca_final,
                    aes(x = PC1, y= PC2)) + 
   stat_ellipse(type = "t", aes(color=get(aspect)), level = 0.95, alpha = 0.5) + 
   geom_point(aes(colour = get(aspect)), size=0.25) + 
@@ -266,37 +164,46 @@ for (aspect in samp_vars) {
 #################################### PERMANOVA #######################################
 
 
+print("Performing PERMANOVA...")
+# create empty list to save permanova results for each variable
 permanova_results <- list()
+# run permanova on each sample variable with no NAs present
 for (aspect in samp_vars) {
   if (aspect != "Bd") {
+    # perform permanova
     permanova_calc <- adonis(dada2_ilr ~ get(aspect), data = sampdata, permutations=999,method="euclidean")
+    # save result to list
     permanova_results <- append(permanova_results, permanova_calc)
+    # save output to text file
     permanova_out <- capture.output(permanova_calc)
-    cat(paste0("\nPERMANOVA for ", aspect, ":\n"), permanova_out,
+    cat(paste0("\n\nPERMANOVA for ", aspect, ":\n"), permanova_out,
         file=paste0(results_path, "BetaDiversity/permanovas.txt"), sep = "\n", append=TRUE)
   }
 }
-# add Bd permanova (NA issue)
+# perform Bd permanova and add to list (separate due to NA issue)
 ilr_perm_bd <- adonis(dada2_ilr_bd ~ Bd, data = sampdata, permutations=999,method="euclidean")
 permanova_results <- append(permanova_results, ilr_perm_bd)
-cat(paste0("\nPERMANOVA for ", Bd, ":\n"), ilr_perm_bd,
+permanova_out_bd <- capture.output(ilr_perm_bd)
+# save output to same text file
+cat(paste0("\n\nPERMANOVA for Bd:\n"), permanova_out_bd,
     file=paste0(results_path, "BetaDiversity/permanovas.txt"), sep = "\n", append=TRUE)
 
-# calculate q-values with Holm method
+# create empty vectors to store p and R^2 values
 p_vals <- c()
 Rs <- c()
+# extract p and R^2 values for each permanova
 for (p_stat in 1:length(permanova_results)) {
   var_stats <- as.data.frame(permanova_results[p_stat][["aov.tab"]])
   Rs <- c(Rs, var_stats$R2[1])
   p_vals <- c(p_vals, var_stats$`Pr(>F)`[1])
 }
+# calculate q-values with Holm method to correct for multiple tests
 q_vals <- p.adjust(p_vals, method ="holm")
+# add Q and R^2 values to text file
 for (no in 1:length(samp_vars)) {
-cat(paste0("\n", samp_vars[no], "\nQval: ", q_vals[no], "\nR^2: "), Rs[no], 
+cat(paste0("\n\n", samp_vars[no], "\nQ-value: ", q_vals[no], "\nR^2: "), Rs[no], 
     file=paste0(results_path, "BetaDiversity/permanovas.txt"), sep = "", append=TRUE)
 }
-
-#adonis(dada2_ilr ~ Country+Amphibian_Type+Genus_Species, data = sampdata, permutations=999,method="euclidean")
 
 
 ## end of script
