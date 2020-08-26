@@ -124,36 +124,28 @@ for (aspect in samp_vars) {
 
 
 print("Performing PERMANOVA...")
-# create empty list to save permanova results for each variable
-permanova_results <- list()
-# run permanova on each sample variable with no NAs present
-for (aspect in samp_vars) {
-    # perform permanova
-    permanova_calc <- adonis(dada2_ilr_bd ~ get(aspect), data = sampdata_bd, permutations=999,method="euclidean")
-    # save result to list
-    permanova_results <- append(permanova_results, permanova_calc)
-    # save output to text file
-    permanova_out <- capture.output(permanova_calc)
-    cat(paste0("\n\nPERMANOVA for ", aspect, ":\n"), permanova_out,
-        file=paste0(path_out, "permanovas_nona.txt"), sep = "\n", append=TRUE)
-}
 
-# create empty vectors to store p and R^2 values
-p_vals <- c()
-Rs <- c()
-# extract p and R^2 values for each permanova
-for (p_stat in 1:length(permanova_results)) {
-  var_stats <- as.data.frame(permanova_results[p_stat][["aov.tab"]])
-  Rs <- c(Rs, var_stats$R2[1])
-  p_vals <- c(p_vals, var_stats$`Pr(>F)`[1])
-}
-# calculate q-values with Holm method to correct for multiple tests
-q_vals <- p.adjust(p_vals, method ="holm")
-# add Q and R^2 values to text file
-for (no in 1:length(samp_vars)) {
-cat(paste0("\n\n", samp_vars[no], "\nQ-value: ", q_vals[no], "\nR^2: "), Rs[no], 
-    file=paste0(path_out, "permanovas_nona.txt"), sep = "", append=TRUE)
-}
+# perform PERMANOVA on 3 variables
+permanova <- adonis2(dada2_ilr_bd ~ get(samp_vars_1host[1])+get(samp_vars_1host[2])+get(samp_vars_1host[3]), by = "margin", data = sampdata_bd, permutations=999,method="euclidean")
+# save to text file
+cat("\n\nPERMANOVA: ", capture.output(permanova_out),
+    file=paste0(path_out, "permanovas_beta.txt"), sep = "\n", append=TRUE)
 
+# calculate dispersion significance for the 3 variables
+# subset sample data by the 3 variables
+sampsub <- sampdata_bd[,samp_vars_1host]
+disp_ob <- cbind.data.frame(sampsub, dada2_ilr_bd)
+# create distance matrix
+dist <- dist(disp_ob[,4:ncol(disp_ob)], "euclidean")
+# calculate dispersion for the 3 variables
+for (var in 1:length(samp_vars_1host)){
+  dispersion <- betadisper(dist, group=disp_ob[[samp_vars_1host[var]]],type="median",bias.adjust=TRUE)
+  # extract ANOVA
+  anova_disp <- anova(dispersion)
+  # save dispersion ANOVAs to text file
+  cat(paste0("\n\nANOVA for dispersion of ", samp_vars_1host[var], ": "), capture.output(anova_disp),
+      file=paste0(path_out, "permanovas_beta.txt"), sep = "\n", append=TRUE)
+}
+  
 
 ## end of script
