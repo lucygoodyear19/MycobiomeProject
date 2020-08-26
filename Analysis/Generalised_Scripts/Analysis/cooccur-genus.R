@@ -14,8 +14,8 @@ rm(list=ls())
 ################################## Set up ####################################
 
 # load packages
-library(phyloseq)
-library(cooccur)
+library("phyloseq")
+library("cooccur")
 
 # import arguments to run script on specific country data
 #!/usr/bin/env Rscript
