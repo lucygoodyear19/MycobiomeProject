@@ -23,7 +23,8 @@ args = commandArgs(trailingOnly=TRUE) # setup to accept arguments from command l
 # test if there is at least one argument: if not, return an error
 if (length(args)==0) {
   stop("At least one argument must be supplied in the form of an R-script containing the following arguments: 
-       1) path containing results from DADA2 pipeline")
+       1) dada2_data_path - path to directory containing input data (phyloseq object)
+       2) results_path - path to results directory")
 }
 # load arguments into script
 source(args)
