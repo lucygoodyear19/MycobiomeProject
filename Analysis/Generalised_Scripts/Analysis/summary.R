@@ -92,7 +92,6 @@ no_tw_plot <- samps_per_country_plot[!samps_per_country_plot$Country == "Taiwan"
 
 # load world map data
 world <- ne_countries(scale = "medium", returnclass = "sf")
-#pops <- ne_download(scale = 110, type = 'populated_places', category = 'cultural', returnclass='sf')
 
 
 ###############################################################################################
@@ -117,7 +116,7 @@ ggplot(data = world) +
         legend.text = element_text(size=7)) +
   guides(colour = guide_colourbar(order = 1), 
          fill = guide_legend(order = 2)) +
-  #coord_sf(xlim = c(118, 123), ylim = c(21, 26), expand = FALSE) +
+  #coord_sf(xlim = c(118, 123), ylim = c(21, 26), expand = FALSE) + # method to zoom in on map
   theme(axis.line=element_blank(),
         axis.text.x=element_blank(),
         axis.text.y=element_blank(),
@@ -136,6 +135,7 @@ dev.off()
 ############################### Plot map of alpha diversity #####################################
 
 
+# capture mean alpha diversity per country for plotting
 alpha_table <- as.data.frame(c())
 for (country in unique(samps$Country)) {
   samps_sub <- samps %>% filter(samps$Country == country)
@@ -158,7 +158,6 @@ alpha_plot$Latitude <- as.numeric(as.character(alpha_plot$Latitude))
 pdf(paste0(results_path, "Summary/map_alpha.pdf"))
 ggplot(data = world) +
   geom_sf(colour = "gray44", size = 0.1, fill = NA) +
-  #geom_sf(data = pops) +
   geom_point(data = alpha_plot, 
              aes(x = Longitude, y = Latitude, colour = Alpha),
              size = 3, 
@@ -168,7 +167,6 @@ ggplot(data = world) +
   labs(colour = "Shannon Alpha") +
   theme(legend.title = element_text(size=8),
         legend.text = element_text(size=7)) +
-  #coord_sf(xlim = c(118, 123), ylim = c(21, 26), expand = FALSE) +
   theme(axis.line=element_blank(),
         axis.text.x=element_blank(),
         axis.text.y=element_blank(),
@@ -187,6 +185,7 @@ dev.off()
 ############################### Plot map of ASV richness ########################################
 
 
+# extract average ASV richness per country
 richness_table <- as.data.frame(c())
 for (country in unique(samps$Country)) {
   samps_sub <- samps %>% filter(samps$Country == country)
@@ -228,7 +227,6 @@ ggplot(data = world) +
         legend.text = element_text(size=7)) +
   guides(colour = guide_colourbar(order = 1), 
          fill = guide_legend(order = 2)) +
-  #coord_sf(xlim = c(118, 123), ylim = c(21, 26), expand = FALSE) +
   theme(axis.line=element_blank(),
         axis.text.x=element_blank(),
         axis.text.y=element_blank(),
@@ -242,6 +240,7 @@ ggplot(data = world) +
         plot.background=element_blank())
 dev.off()
 
+
 ##################################################################################################
 #################################### Pie charts of taxa ##########################################
 
@@ -249,7 +248,7 @@ dev.off()
 phyla <- as.data.frame(table(taxa$Phylum))
 names(phyla) <- c("Phyla", "Frequency")
 
-# ggplot pie chart
+# plot pie chart
 pdf("Summary/phyla_pie_ggplot.pdf")
 print(ggplot(phyla, aes(x= "", y= Frequency, fill= Phyla)) +
   geom_bar(stat = "identity", width = 1) +
@@ -257,52 +256,48 @@ print(ggplot(phyla, aes(x= "", y= Frequency, fill= Phyla)) +
   theme_void())
 dev.off()
 
-# base R pie chart
-slices <- phyla$Frequency
-lbls <- phyla$Phyla
-pct <- round(slices/sum(slices)*100)
-lbls <- paste0(lbls, ", ", pct) # add percents to labels
-lbls <- paste(lbls,"%",sep="") # ad % to labels
-pdf("Summary/phyla_pie_base.pdf")
-pie(slices, labels = NA, col=rainbow(length(lbls)))
-    #main="Pie Chart of Countries") 
-legend("topright", lbls, fill=rainbow(length(slices)), cex = 0.5)
-dev.off()
-
 
 #################################################################################################
 ############################# Taxa composition by presence/absence ##############################
 
 
-# plot by presence absence
-find_taxa_breakdown <- function(taxa_data, seq_data, samp_data, taxa_rank, condition, NAs) {
+# function for plot by presence absence by chosen factor
+# inputs:
+# 1) taxa_data - data frame containing taxonomy data
+# 2) seq_data - data frame containing abundance data
+# 3) samp_data - data frame containing sample data
+# 4) tax_rank - taxonomic rank to plot, as string (matching column in taxa_data)
+# 5) condition - name of variable chose, as string
+# Outputs:
+# 1) bar chart showing break down by tax_rank per condition, saved as pdf
+find_taxa_breakdown <- function(taxa_data, seq_data, samp_data, taxa_rank, condition) {
   taxon_table <- as.data.frame(c())
-  labs <- c()
-  factors <- c()
+  labs <- c() # to store plot labels
+  factors <- c() # to ensure bars are in the right order
+  # for loop over factor levels in condition
   for (var in unique(samp_data[[condition]])) {
     if (!is.na(var)) {
-      samps_sub <- samp_data %>% filter(samp_data[[condition]] == var)
-      labs <- c(labs, paste0(samps_sub[[condition]][1], " (n = ", nrow(samps_sub), ")"))
-      factors <- c(factors, var)
-      samp_seqs <- seq_data[colnames(seq_data) %in% rownames(samps_sub)]
-      samp_seqs$sum <- rowSums(samp_seqs)
-      samp_seqs <- samp_seqs[samp_seqs$sum > 0,]
-  
+      samps_sub <- samp_data %>% filter(samp_data[[condition]] == var) # subset by factor level in condition
+      labs <- c(labs, paste0(samps_sub[[condition]][1], " (n = ", nrow(samps_sub), ")")) 
+      factors <- c(factors, var) 
+      samp_seqs <- seq_data[colnames(seq_data) %in% rownames(samps_sub)] # subset seqs
+      samp_seqs$sum <- rowSums(samp_seqs) # sum ASV abundance in factor
+      samp_seqs <- samp_seqs[samp_seqs$sum > 0,] # remove any ASV not equal to 0
+      # subset taxa by taxa_rank
       samp_taxa <- taxa_data[rownames(taxa_data) %in% rownames(samp_seqs),]
       taxon <- as.character(samp_taxa[[taxa_rank]])
-      if (NAs == "NAinc")
-      {taxon[is.na(taxon)] <- "NA"}
+      taxon[is.na(taxon)] <- "NA" # set NA to string to ensure inclusion in count
       count <- as.data.frame(table(taxon))
-      count$taxon[count$taxon == "NA"] <- NA
-      count$Freq <- count$Freq/sum(count$Freq)
-      count$taxon <- gsub(".__", "", count$taxon)
+      count$taxon[count$taxon == "NA"] <- NA # set "NA" back to NA
+      count$Freq <- count$Freq/sum(count$Freq) # calculate percentages
+      count$taxon <- gsub(".__", "", count$taxon) # remove prefix in taxa
       count$Variable <- var
       taxon_table <- rbind(taxon_table, count)
     }
   }
+  # ensure bars are in correct order
   taxon_table$Variable <- factor(taxon_table$Variable, ordered=TRUE, levels = factors)
-  #is.na(taxon_table) <- 0
-  # plot stacked bar chart for all countries
+  # plot stacked bar chart for all conditions
   pdf(paste0(results_path, "Summary/", condition, "_", NAs, "_", taxa_rank, "_breakdown.pdf"))
   print(ggplot(taxon_table, aes(fill=taxon, y=Freq, x=Variable)) + 
     geom_bar(position="stack", stat="identity") +
@@ -314,80 +309,83 @@ find_taxa_breakdown <- function(taxa_data, seq_data, samp_data, taxa_rank, condi
   dev.off()
 }
 
-find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Phylum", "Country", "NAinc")
-find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Phylum", "Country", "noNA")
-find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Phylum", "Bd", "NAinc")
-find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Phylum", "Bd", "noNA")
-find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Phylum", "A_Order", "NAinc")
-find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Phylum", "A_Order", "noNA")
+# plot bar charts for the following options
+find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Phylum", "Country")
+find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Phylum", "Bd")
+find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Phylum", "A_Order")
 samps$Lifestage <- as.character(samps$Lifestage)
-samps$Lifestage[samps$Lifestage == ""] <- NA
+samps$Lifestage[samps$Lifestage == ""] <- NA # set any empty Lifestage as NA
 samps$Lifestage <- as.factor(samps$Lifestage)
-find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Phylum", "Lifestage", "NAinc")
-find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Phylum", "Lifestage", "noNA")
+find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Phylum", "Lifestage")
 
-find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Class", "Country", "NAinc")
-find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Class", "Country", "noNA")
-find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Class", "Bd", "NAinc")
-find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Class", "Bd", "noNA")
-find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Class", "A_Order", "NAinc")
-find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Class", "A_Order", "noNA")
+find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Class", "Country")
+find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Class", "Bd")
+find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Class", "A_Order")
 samps$Lifestage <- as.character(samps$Lifestage)
 samps$Lifestage[samps$Lifestage == ""] <- NA
 samps$Lifestage <- as.factor(samps$Lifestage)
-find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Class", "Lifestage", "NAinc")
-find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Class", "Lifestage", "noNA")
+find_taxa_breakdown(taxa, seqs_pres_abs_t, samps, "Class", "Lifestage")
 
 
 #################################################################################################
 ################################ Taxa composition by abundance ##################################
 
 
-seqs_t <- as.data.frame(t(seqs))
-
+# function for plot by abundance by chosen factor
+# inputs:
+# 1) taxa_data - data frame containing taxonomy data
+# 2) seq_data - data frame containing abundance data
+# 3) samp_data - data frame containing sample data
+# 4) tax_rank - taxonomic rank to plot, as string (matching column in taxa_data)
+# 5) condition - name of variable chose, as string
+# Outputs:
+# 1) bar chart showing break down by tax_rank per condition, saved as pdf
 find_taxa_breakdown_abun  <- function(taxa_data, seq_data, samp_data, taxa_rank, condition) {
   taxon_table <- as.data.frame(c())
-  labs <- c()
-  factors <- c()
+  labs <- c() # to store plot labels
+  factors <- c() # to ensure bars are in the right order
+  # for loop over factor levels in condition
   for (var in unique(samp_data[[condition]])) {
     if (!is.na(var)) {
-      samps_sub <- samp_data %>% filter(samp_data[[condition]] == var)
+      samps_sub <- samp_data %>% filter(samp_data[[condition]] == var) # subset by factor level in condition
       labs <- c(labs, paste0(samps_sub[[condition]][1], " (n = ", nrow(samps_sub), ")"))
       factors <- c(factors, var)
-      samp_seqs <- seq_data[colnames(seq_data) %in% rownames(samps_sub)]
-      samp_seqs$sum <- rowSums(samp_seqs)
-      samp_seqs <- samp_seqs[samp_seqs$sum > 0,]
+      samp_seqs <- seq_data[colnames(seq_data) %in% rownames(samps_sub)] # subset seqs
+      samp_seqs$sum <- rowSums(samp_seqs) # sum ASV abundance in factor
+      samp_seqs <- samp_seqs[samp_seqs$sum > 0,] # remove any ASV not equal to 0
       total <- sum(samp_seqs$sum)
-    
+      # subset taxa by taxa_rank
       samp_taxa <- taxa_data[rownames(taxa_data) %in% rownames(samp_seqs),]
       taxon <- samp_taxa[[taxa_rank]]
-      pcts <- samp_seqs$sum/total
+      pcts <- samp_seqs$sum/total # calculate percentages
       count <- cbind.data.frame(taxon, pcts)
-
-      require(dplyr)
+      # merge similar taxa and sum percenatges
+      require("dplyr")
       count <- count %>%
                group_by(taxon) %>%
                summarise(Percentage = sum(pcts))
-    
       count$Variable <- var
-      count$taxon <- gsub(".__", "", count$taxon)
-  
+      count$taxon <- gsub(".__", "", count$taxon) # remove prefix in taxa
       taxon_table <- rbind.data.frame(taxon_table, count)
     }
   }
+  # set NA to string to ensure inclusion in count
   taxon_table$taxon <- as.character(taxon_table$taxon)
   taxon_table$taxon[is.na(taxon_table$taxon)] <- "NA"
   taxon_table$taxon <- as.factor(taxon_table$taxon)
+  # set NA to the end of list of factor levels
   taxon_table$taxon <- fct_relevel(taxon_table$taxon, "NA", after = Inf)
+  # ensure bars are in correct order
   taxon_table$Variable <- factor(taxon_table$Variable, ordered=TRUE, levels = factors)
+  # write breakdown by taxa by condition to csv
   write.csv(taxon_table, paste0("Summary/", condition, "_", taxa_rank, "breakdown.csv"))
-  #is.na(taxon_table) <- 0
-  # plot stacked bar chart for all countries
+  # plot stacked bar chart for all conditions
   pdf(paste0(results_path, "Summary/", condition, "_", taxa_rank, "_abun_breakdown.pdf"))
   print(ggplot(taxon_table, aes(fill=taxon, y=Percentage, x=Variable)) + 
     geom_bar(position="stack", stat="identity") +
-    coord_fixed(ratio=18) +
+    coord_fixed(ratio=18) + # change ratio between x and y axes
     scale_fill_manual(values = cbpalette) +
+      # remove white space above and below bars
     scale_y_continuous(limits = c(0,1), expand = expansion(mult = c(0,0))) +
     labs(fill = taxa_rank) +
     scale_x_discrete(labels = labs) +
@@ -402,75 +400,37 @@ find_taxa_breakdown_abun  <- function(taxa_data, seq_data, samp_data, taxa_rank,
   dev.off()
 }
 
+# plot bar charts for the following options
 find_taxa_breakdown_abun(taxa, seqs_t, samps, "Phylum", "Country")
 find_taxa_breakdown_abun(taxa, seqs_t, samps, "Phylum", "Bd")
 find_taxa_breakdown_abun(taxa, seqs_t, samps, "Phylum", "A_Order")
 samps$Lifestage <- as.character(samps$Lifestage)
-samps$Lifestage[samps$Lifestage == ""] <- NA
+samps$Lifestage[samps$Lifestage == ""] <- NA # set empty lifestage as NA
 samps$Lifestage <- as.factor(samps$Lifestage)
 find_taxa_breakdown_abun(taxa, seqs_t, samps, "Phylum", "Lifestage")
 find_taxa_breakdown_abun(taxa, seqs_t, samps, "Phylum", "A_Family")
 
-# total abundance breakdown by phyla
+# calculate total abundance breakdown by phyla
 samp_seqs <- seqs_t
-samp_seqs$sum <- rowSums(samp_seqs)
-total <- sum(samp_seqs$sum)
-
+samp_seqs$sum <- rowSums(samp_seqs) # sum each ASV
+total <- sum(samp_seqs$sum) # total read count
+# subset by phylum
 taxon <- taxa[["Phylum"]]
-
+# find percentages per ASV
 pcts <- samp_seqs$sum/total
 count <- cbind.data.frame(taxon, pcts)
-
+# generate percenatges per phyla
 count <- count %>%
   group_by(taxon) %>%
   summarise(Percentage = sum(pcts))
-
+# remove taxa prefix
 count$taxon <- gsub(".__", "", count$taxon)
-
+# save total phylum breakdwn to ASV
 write.csv(taxon_table, paste0("Summary/total_phylum_breakdown.csv"))
-
 
 
 #################################################################################################
 ######################################### Bd status #############################################
-
-
-# extract samples with Bd not NA
-samps_bd <- samps[!is.na(samps$Bd),]
-
-# plot stacked bar chart for Bd status proportion per country
-bd_table <- as.data.frame(c())
-labs <- c() # for plot labels
-factors <- c() # for correct label order
-for (country in unique(samps_bd$Country)) {
-  samps_sub <- samps_bd %>% filter(samps_bd$Country == country)
-  samps_sub$Country <- as.character(samps_sub$Country)
-  labs <- c(labs, paste0(country, " (n = ", nrow(samps_sub), ")"))
-  factors <- c(factors, country)
-  subs <- subset(samps_sub, select = c("Country", "Bd"))
-  count <- as.data.frame(table(subs, exclude = NULL))
-  count$Freq <- count$Freq/sum(count$Freq)
-  bd_table <- rbind(bd_table, count)
-}
-bd_table$Country <- factor(bd_table$Country, ordered=TRUE, levels = factors)
-# plot stacked bar chart for all countries
-pdf(paste0(results_path, "Summary/bd_breakdown_noNA.pdf"))
-ggplot(bd_table, aes(fill=Bd, y=Freq, x=Country)) + 
-  geom_bar(position="stack", stat="identity") +
-  scale_fill_manual(values = cbpalette) +
-  scale_y_continuous(limits = c(0,1), expand = expansion(mult = c(0,0))) +
-  labs(fill = "Bd Status") +
-  scale_x_discrete(labels = labs) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
-        axis.text = element_text(size = 16),   
-        axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        panel.border = element_blank(),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        axis.line.y = element_line(colour = "black"))
-dev.off()
 
 
 # plot stacked bar chart for Bd status per country, including NA
@@ -496,7 +456,7 @@ pdf(paste0(results_path, "Summary/bd_breakdown.pdf"))
 ggplot(bd_table, aes(fill=Bd, y=Freq, x=Country)) + 
   geom_bar(position="stack", stat="identity") +
   coord_fixed(ratio=5) +
-  scale_fill_manual(values = c("#90C987", "#6195CF", "#F6C141")) +
+  scale_fill_manual(values = c("#90C987", "#6195CF", "#F6C141")) + # colour blind friendly colours
   scale_y_continuous(limits = c(0,1), expand = expansion(mult = c(0,0))) +
   labs(fill = "Bd Status") +
   ylab("Proportion") +
@@ -644,6 +604,12 @@ library("VennDiagram")
 
 
 # function to draw venn diagram
+# inputs:
+# 1) sets - data frame containing taxonomy data
+# 2) cat_names - data frame containing abundance data
+# 3) file_prefix - data frame containing sample data
+# Outputs:
+# 1) Venn diagram showing shared ASVs per condition, saved as png
 draw_venn <- function(sets, cat_names, file_prefix) {
   venn.diagram(x = sets,
                category.names = cat_names,
@@ -651,16 +617,23 @@ draw_venn <- function(sets, cat_names, file_prefix) {
                output=TRUE)
 }
 
-# function to extract vectors of ASVs according to Bd status
+# function to extract vectors of ASVs according to condition
+# inputs:
+# 1) samp_data - data frame containing sample data
+# 2) seq_data - data frame containing abundance data
+# 3) condition - name of variable chose, as string
+# 4) condition_result - factor level chosen
+# Outputs:
+# 1) Vector of ASVs present in chosen factor level
 find_asvs_for_venn <- function(samp_data, seq_data, condition, condition_result) {
-  samps_sub <- samp_data %>% filter(samp_data[[condition]] == condition_result)
-  cond_asv <- seq_data %>% select(colnames(seq_data[,colnames(seq_data) %in% rownames(samps_sub)]))
-  cond_asv$Sum <- rowSums(cond_asv)
-  cond_asv <- cond_asv %>% filter(cond_asv$Sum > 0)
-  cond <- rownames(cond_asv)
+  samps_sub <- samp_data %>% filter(samp_data[[condition]] == condition_result) # subset samps by condition result
+  cond_asv <- seq_data %>% select(colnames(seq_data[,colnames(seq_data) %in% rownames(samps_sub)])) # subset seqs
+  cond_asv$Sum <- rowSums(cond_asv) # sum ASVs
+  cond_asv <- cond_asv %>% filter(cond_asv$Sum > 0) # remove any ASVs equal to 0
+  cond <- rownames(cond_asv) # save ASV names as vector
 }
 
-# function to extract vectors of ASVs according to Bd status
+# function to extract vectors of species according to condition
 # function preparation
 taxa_species <- taxa %>% filter(!is.na(taxa$Species)) # subset taxa to species assigned ASVs only
 # subset seqs to species assigned ASVs only
@@ -669,21 +642,37 @@ Species <- taxa_species$Species # save species names as vector
 Genus <- taxa_species$Genus # save species names as vector
 species_df <- cbind(Genus, Species, species_seqs) # create dataframe of seqs and species names
 
+# function to extract vectors of species according to condition
+# inputs:
+# 1) samp_data - data frame containing sample data
+# 2) species_data - data frame containing species abundance data
+# 3) condition - name of variable chose, as string
+# 4) condition_result - factor level chosen
+# Outputs:
+# 1) Vector of species names present in chosen factor level
 find_specs_for_venn <- function(samp_data, species_data, condition, condition_result) {
-  samps_sub <- samp_data %>% filter(samp_data[[condition]] == condition_result)
+  samps_sub <- samp_data %>% filter(samp_data[[condition]] == condition_result) # subset samps by condition result
+  # subset species data frame by condition
   species_cond <- species_data %>% select(colnames(species_data[,colnames(species_data) %in% rownames(samps_sub)]))
-  
+  # sum species, ignoring species column
   species_cond$Sum <- rowSums(species_cond[,-2])
-  species_cond$Species <- paste0(Genus, " ", Species)
-  species_cond <- species_cond %>% filter(species_cond$Sum > 0)
-  specls <- c(as.character(unique(species_cond$Species)))
+  species_cond$Species <- paste0(Genus, " ", Species) # combine genus and species for labels
+  species_cond <- species_cond %>% filter(species_cond$Sum > 0) # remove ASVs equal to 0
+  specls <- c(as.character(unique(species_cond$Species))) # save species' names as vector
 }
 
 
 ############################### extract results and plot venns ###################################
 
 
-# continent
+#set seed so same random samples are generated for reproducibility
+set.seed(26) 
+
+
+#################### Continent
+
+
+# assign continent to samples
 conts_samps <- samps
 for (row in 1:nrow(conts_samps)) {
   if (conts_samps$Country[row] %in% c("China", "Kazakhstan", "Mongolia",
@@ -692,46 +681,62 @@ for (row in 1:nrow(conts_samps)) {
     conts_samps$Continent[row] <- "Asia"
   } else {conts_samps$Continent[row] <- "non-Asia"}
 }
+# view continent break down
 table(conts_samps$Continent)
 
-# random sample
-set.seed(26)
+# subset by Asia and non-Asia
 asia_samp <- conts_samps[conts_samps$Continent == "Asia",]
 noasia_samp <- conts_samps[conts_samps$Continent == "non-Asia",]
-
+# generate random samples from the larger group (non-Asia)
 rand_samps_cont <- replicate(n = 100, sample(rownames(asia_samp), nrow(noasia_samp)), simplify = T)
+# initialise empty vectors
 asia_totals <- c()
 noasia_totals <- c()
 com_totals_cont <- c()
+# for loop over list of 100 groups of random samples
 for (col in 1:ncol(rand_samps_cont)) {
-  sampdata_rand_cont <- conts_samps[rownames(conts_samps) %in% rand_samps_cont[,col],]
-  random_samples_all_cont <- rbind.data.frame(sampdata_rand_cont, noasia_samp)
-  random_seqs_all_cont <- seqs_t[,colnames(seqs_t) %in% rownames(random_samples_all_cont)]
-  # plot Venns for random sample
+  sampdata_rand_cont <- conts_samps[rownames(conts_samps) %in% rand_samps_cont[,col],] # subset by random sample group
+  random_samples_all_cont <- rbind.data.frame(sampdata_rand_cont, noasia_samp) # combine with smaller group
+  random_seqs_all_cont <- seqs_t[,colnames(seqs_t) %in% rownames(random_samples_all_cont)] # subset seqs
+  # find ASVsfor random sample
   asia_rand <- find_asvs_for_venn(random_samples_all_cont, random_seqs_all_cont, "Continent", "Asia")
   noasia_rand <- find_asvs_for_venn(random_samples_all_cont, random_seqs_all_cont, "Continent", "non-Asia")
+  # find length of list of ASVs for both groups (richness)
   asia_tot <- length(asia_rand)
   noasia_tot <- length(noasia_rand)
+  # calculate intersection between groups
   common_type_cont <- Reduce(intersect, list(asia_rand, noasia_rand))
+  # calculate number of ASVs in intersection
   com_tot_cont <- length(common_type_cont)
+  # combine ASV richness for this random sample with the previous for both groups and intersection
   asia_totals <- c(asia_totals, asia_tot)
   noasia_totals <- c(noasia_totals, noasia_tot)
   com_totals_cont <- c(com_totals_cont, com_tot_cont)
 }
+# calculate richness means for both groups and intersection
+print("Number of shared ASVs between Asia and non-Asia:")
 com_av_cont <- round(mean(com_totals_cont), 0)
+print("ASV richness for Asia:")
 asia_av <- round(mean(asia_totals), 0)
+print("ASV richness for non-Asia:")
 noasia_av <- round(mean(noasia_totals), 0)
 
 
+############################# Bd
 
 
-# Bd
+# preliminary ASV richness calculation for Bd status
 bdpos <- find_asvs_for_venn(samps, seqs_t, "Bd", 1)
 bdneg <- find_asvs_for_venn(samps, seqs_t, "Bd", 0)
+# draw Venn diagram for ASV richness
 draw_venn(list(bdpos, bdneg), c("Bd positive", "Bd negative"), "bd_asv")
+# preliminary species richness calculation for Bd status
+bd_pos_spec <- find_specs_for_venn(samps, species_df, "Bd", 1)
+bd_neg_spec <- find_specs_for_venn(samps, species_df, "Bd", 0)
+# Venn diagram for assigned species
+draw_venn(list(bd_pos_spec, bd_neg_spec), c("Bd positive", "Bd negative"), "bd_species")
 
-# random sample
-set.seed(26)
+# same random sample generation technique as above but for Bd status
 bd_sub <- samps[!is.na(samps$Bd),]
 pos_samp <- bd_sub[bd_sub$Bd == 1,]
 neg_samp <- bd_sub[bd_sub$Bd == 0,]
@@ -744,7 +749,7 @@ for (col in 1:ncol(rand_samps_bd)) {
   sampdata_rand_bd <- bd_sub[rownames(bd_sub) %in% rand_samps_bd[,col],]
   random_samples_all_bd <- rbind.data.frame(sampdata_rand_bd, pos_samp)
   random_seqs_all_bd <- seqs_t[,colnames(seqs_t) %in% rownames(random_samples_all_bd)]
-  # plot Venns for random sample
+  # find ASVs for random sample
   pos_rand <- find_asvs_for_venn(random_samples_all_bd, random_seqs_all_bd, "Bd", 1)
   neg_rand <- find_asvs_for_venn(random_samples_all_bd, random_seqs_all_bd, "Bd", 0)
   pos_tot <- length(pos_rand)
@@ -760,19 +765,23 @@ pos_av <- round(mean(pos_totals), 0)
 neg_av <- round(mean(neg_totals), 0)
 
 
-# Venn diagram for assigned species
-#bd_pos_spec <- find_specs_for_venn(samps, species_df, "Bd", 1)
-#bd_neg_spec <- find_specs_for_venn(samps, species_df, "Bd", 0)
-#draw_venn(list(bd_pos_spec, bd_neg_spec), c("Bd positive", "Bd negative"), "bd_species")
+############################# Lifestage
 
-# Lifestage
+
+# preliminary ASV richness calculation for lifestage
 lifestage_adult <- find_asvs_for_venn(samps, seqs_t, "Lifestage", "Adult")
 lifestage_tadpole <- find_asvs_for_venn(samps, seqs_t, "Lifestage", "Tadpole")
+# draw Venn diagram for ASV richness
 draw_venn(list(lifestage_adult, lifestage_tadpole), c("Adult", "Tadpole"), "lifestage_asv")
 table(samps$Lifestage)
+# preliminary species richness calculation for lifestage
+lifestage_tadpole_spec <- find_specs_for_venn(samps, species_df, "Lifestage", "Tadpole")
+lifestage_adult_spec <- find_specs_for_venn(samps, species_df, "Lifestage", "Adult")
+# Venn diagram for assigned species
+draw_venn(list(lifestage_adult_spec, lifestage_tadpole_spec), c("Adult", "Tadpole"), "lifestage_species")
 
-# random sample
-set.seed(26)
+
+# same random sample generation technique as above but for lifestage
 lifestage_sub <- samps[!is.na(samps$Lifestage),]
 adult_samp <- lifestage_sub[lifestage_sub$Lifestage == "Adult",]
 tad_samp <- lifestage_sub[lifestage_sub$Lifestage == "Tadpole",]
@@ -785,7 +794,7 @@ for (col in 1:ncol(rand_samps_life)) {
   sampdata_rand <- lifestage_sub[rownames(lifestage_sub) %in% rand_samps_life[,col],]
   random_samples_all <- rbind.data.frame(sampdata_rand, tad_samp)
   random_seqs_all <- seqs_t[,colnames(seqs_t) %in% rownames(random_samples_all)]
-  # plot Venns for random sample
+  # find ASVs for random sample
   adult_rand <- find_asvs_for_venn(random_samples_all, random_seqs_all, "Lifestage", "Adult")
   tadpole_rand <- find_asvs_for_venn(random_samples_all, random_seqs_all, "Lifestage", "Tadpole")
   adult_tot <- length(adult_rand)
@@ -801,24 +810,27 @@ ad_av <- round(mean(ad_totals), 0)
 ta_av <- round(mean(ta_totals), 0)
 
 
-# Venn diagram for assigned species
-#lifestage_tadpole_spec <- find_specs_for_venn(samps, species_df, "Lifestage", "Tadpole")
-#lifestage_adult_spec <- find_specs_for_venn(samps, species_df, "Lifestage", "Adult")
-#draw_venn(list(lifestage_adult_spec, lifestage_tadpole_spec), c("Adult", "Tadpole"), "lifestage_species")
+########################### Amphibian Order
 
-# amphibian order
+
 # subset by countries that have both caudata and anura samples
 samps_caudata_countries <- unique(as.character(samps$Country[samps$A_Order == "Caudata"]))
 samps_subs_order <- samps[samps$Country %in% samps_caudata_countries,]
 seqs_subs_order <- seqs_t[,colnames(seqs_t) %in% rownames(samps_subs_order)]
-# plot Venns
+# preliminary ASV richness calculation for order
 type_anura <- find_asvs_for_venn(samps_subs_order, seqs_subs_order, "A_Order", "Anura")
 type_caudata <- find_asvs_for_venn(samps_subs_order, seqs_subs_order, "A_Order", "Caudata")
+# draw Venn diagram for ASV richness
 draw_venn(list(type_anura, type_caudata), c("Anura", "Caudata"), "type_asv")
 table(samps_subs_order$A_Order)
+# preliminary species richness calculation for order
+type_anura_spec <- find_specs_for_venn(samps, species_df, "A_Order", "Anura")
+type_caudata_spec <- find_specs_for_venn(samps, species_df, "A_Order", "Caudata")
+# Venn diagram for assigned species
+draw_venn(list(type_anura_spec, type_caudata_spec), c("Anura", "Caudata"), "type_species")
 
-# random sample
-set.seed(26)
+
+# same random sample generation technique as above but for order
 anurans_samp <- samps_subs_order[samps_subs_order$A_Order == "Anura",]
 caudata_samp <- samps_subs_order[samps_subs_order$A_Order == "Caudata",]
 
@@ -846,23 +858,7 @@ c_av <- round(mean(c_totals), 0)
 a_av <- round(mean(a_totals), 0)
 
 
-
-venn.diagram(x = sets,
-              category.names = cat_names,
-              filename = paste0(results_path, "Summary/", file_prefix, "_global_venn_diagram.png"), 
-              output=TRUE)
-  
-draw_venn(list(type_anura_rand, type_caudata_rand), c("Anura", "Caudata"), "randtype_asv")
-table(random_samples_all$A_Order)
-
-
-# Venn diagram for assigned species
-#type_anura_spec <- find_specs_for_venn(samps, species_df, "A_Order", "Anura")
-#type_caudata_spec <- find_specs_for_venn(samps, species_df, "A_Order", "Caudata")
-#draw_venn(list(type_anura_spec, type_caudata_spec), c("Anura", "Caudata"), "type_species")
-
-
-################# country 
+############################ Country 
 
 
 ############# ASVs
@@ -920,8 +916,6 @@ prop_spec_total <- capture.output(length(common_specs)/nrow(taxa_species))
 prop_spec_asv_total <- capture.output(nrow(common_species_asvs)/nrow(taxa))
 
 # find average abundance of common species as a percentage of total number of reads
-#seqs$total_sum <- rowSums(seqs)
-#taxa_noNA <- taxa[!is.na(taxa$Species),]
 taxa_shared <- taxa[taxa$full %in% common_specs,]
 seqs_shared <- seqs[,colnames(seqs) %in% rownames(taxa_shared)]
 seqs_shared$shared_sum <- rowSums(seqs_shared)
@@ -1038,32 +1032,13 @@ table(samps$Elevation_m)
 
 samps$A_Family <- as.character(samps$A_Family)
 samps$A_Family[is.na(samps$A_Family)] <- "NA"
-gs_tab <- table(samps$A_Family)
+table(samps$A_Family)
 
 samps$A_Genus_Species <- as.character(samps$A_Genus_Species)
 samps$A_Genus_Species[is.na(samps$A_Genus_Species)] <- "NA"
-gs_tab <- table(samps$A_Genus_Species)
+table(samps$A_Genus_Species)
 
-# summarise phyla breakdown in table
-phyla <- as.character(taxa$Phylum)
-phyla_abun <- cbind.data.frame(phyla, seqs_pres_abs_t)
-# merge by samples by genus
-phyla_grid <- plyr::ddply(phyla_abun, "phyla", plyr::numcolwise(sum))
-
-neo <- as.data.frame(phyla_grid[phyla_grid$Phylum == "Neocallimastigomycota",])
-
-# remove NA row
-phyla_grid <- subset(phyla_grid, !is.na(phyla))
-# rename rows to genus 
-rownames(phyla_grid) <- phyla_grid$phyla
-#remove genus column
-phyla_grid <- phyla_grid[,-1]
-phyla_grid[phyla_grid > 0] <- 1
-phyla_grid$sum <- rowSums(phyla_grid)
-Sums <- phyla_grid$sum
-Phyla <- rownames(phyla_grid)
-phyla_sums <- cbind.data.frame(Phyla, Sums)
-
+# summarise number of ASVs per phyla in table
 phylum_table <- as.data.frame(table(taxa$Phylum))
 names(phylum_table) <- c("Phylum", "Number of ASVs")
 write.csv(phylum_table, paste0(results_path, "Summary/phylum_breakdown.csv"))
