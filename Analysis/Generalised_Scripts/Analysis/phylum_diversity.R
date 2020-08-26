@@ -18,11 +18,11 @@ rm(list=ls())
 library("phyloseq")
 library("ggplot2")
 theme_set(theme_bw())
-library("viridis")
 library("microbiome") # for abundances()
 library("dplyr")
 library("tidyr")
 library("vegan")
+library("compositions")
 
 # set wd
 setwd("/Users/lucy/Documents/MRes/MycobiomeProject/Analysis/Results/Global_14/")
@@ -88,8 +88,6 @@ samps_bd <- samps[!is.na(samps$Bd),]
 ##################################### ilr transform ######################################
 
 
-
-library("compositions")
 # account for zeros by performing replacement with small scaled numeric
 detectlims_phylum <- matrix(min(as.vector(phylum_mat)[as.vector(phylum_mat) > 0]/2), nrow(phylum_mat), ncol(phylum_mat))
 phylum_mat0 <- zeroreplace(phylum_mat, detectlims_phylum, a=0.65) 
@@ -134,32 +132,43 @@ for (var in 1:length(samp_vars_1host)){
 }
 
 
-#######################################
+########################################################################################
+################################## Inferences and numbers ##############################
 
 
+# calculate percentage of reads of different phyla
+print("Percentage of reads assigned to Ascomycota:")
 sum(phylum_grid_t$p__Ascomycota)/nrow(phylum_grid_t)
+print("Percentage of reads assigned to Basidiomycota:")
 sum(phylum_grid_t$p__Basidiomycota)/nrow(phylum_grid_t)
-pyr <- samps[samps$Country == "Pyrenees",]
-pyr_phy <- phylum_grid_t[rownames(phylum_grid_t)%in% pyr$MiSeqCode,]
-View(pyr_phy)
-sum(pyr_phy$p__Chytridiomycota)/nrow(pyr_phy)
+print("Percentage of reads assigned to Chytriodiomycota:")
 sum(phylum_grid_t$p__Chytridiomycota)/nrow(phylum_grid_t)
-
-sum(pyr_phy$p__Rozellomycota)/nrow(pyr_phy)
+print("Percentage of reads assigned to Rozellomycota:")
 sum(phylum_grid_t$p__Rozellomycota)/nrow(phylum_grid_t)
 
-
+# view break down of chytrid genera
 chyt <- taxa[!is.na(taxa$Phylum),]
 chyt <- chyt[chyt$Phylum == "p__Chytridiomycota",]
 chyt$Genus <- as.character(chyt$Genus)
 chyt$Genus[is.na(chyt$Genus)] <- "NA"
+print("Table of chytrid genera:")
 table(chyt$Genus)
 
+# find how many chytrid reads were found in Bd positive samples
 bdpos <- samps[samps$Bd == 1,]
 bdpos_phy <- phylum_grid_t[rownames(phylum_grid_t)%in% bdpos$MiSeqCode,]
+print("Percentage of Bd positive sample reads assigned to Chytyridiomycota:")
 sum(bdpos_phy$p__Chytridiomycota)/nrow(bdpos_phy)
-sum(phylum_grid_t$p__Chytridiomycota)/nrow(phylum_grid_t)
 
+# subset by Pyrenees
+pyr <- samps[samps$Country == "Pyrenees",]
+pyr_phy <- phylum_grid_t[rownames(phylum_grid_t)%in% pyr$MiSeqCode,]
+# calculate percentage of reads of different phyla in Pyrenees
+print("Percentage of reads in Pyrenees assigned to Chytriodiomycota:")
+sum(pyr_phy$p__Chytridiomycota)/nrow(pyr_phy)
+print("Percentage of reads in Pyrenees assigned to Rozellomycota:")
+sum(pyr_phy$p__Rozellomycota)/nrow(pyr_phy)
+# find break down of chytrid genera in Pyrenees
 pyr_seq <- seqs[rownames(seqs)%in% pyr$MiSeqCode,]
 pyr_seq_t <- as.data.frame(t(pyr_seq))
 pyr_seq_t$sum <- rowSums(pyr_seq_t)
@@ -167,7 +176,8 @@ pyr_seq_t <- pyr_seq_t[pyr_seq_t$sum!=0,]
 pyr_seq_t <- pyr_seq_t[,-ncol(pyr_seq_t)]
 pyr_seq <- as.data.frame(t(pyr_seq_t))
 chyt_pyr <- chyt[rownames(chyt) %in% colnames(pyr_seq),]
-table(chyt_pyr$Genus)                   
+print("Table of chytrid genera in Pyrenees:")
+table(chyt_pyr$Genus)   
 
 
 ## end of script
