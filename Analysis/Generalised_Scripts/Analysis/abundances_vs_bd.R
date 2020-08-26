@@ -121,7 +121,7 @@ plot_bd_pies <- function(taxa_df, tax_rank) {
   names(rank_bd) <- c(tax_rank, "Frequency")
   rank_bd <- rank_bd[!rank_bd$Frequency == 0,] # remove any taxa with no samples
   # plot pie chart and save to pdf
-  pdf(paste0(path_out, "baseorder_pie_", tax_rank, ".pdf"))
+  pdf(paste0(path_out, "base_pie_", tax_rank, ".pdf"))
   print(ggplot(rank_bd, aes(x= "", y= Frequency, fill= get(tax_rank))) +
           geom_bar(stat = "identity", width = 1) +
           coord_polar("y", start = 0) +
