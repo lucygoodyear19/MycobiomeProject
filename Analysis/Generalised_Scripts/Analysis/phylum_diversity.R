@@ -177,7 +177,7 @@ pyr_seq_t <- pyr_seq_t[,-ncol(pyr_seq_t)]
 pyr_seq <- as.data.frame(t(pyr_seq_t))
 chyt_pyr <- chyt[rownames(chyt) %in% colnames(pyr_seq),]
 print("Table of chytrid genera in Pyrenees:")
-table(chyt_pyr$Genus)   
+table(chyt_pyr$Genus)
 
 
 ## end of script

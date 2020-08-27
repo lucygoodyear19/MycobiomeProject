@@ -25,6 +25,7 @@ library("dplyr")
 library("viridis")
 library("microbiome") # for abundances()
 library("tidyr")
+library("VennDiagram")
 
 
 # set wd
@@ -249,7 +250,7 @@ phyla <- as.data.frame(table(taxa$Phylum))
 names(phyla) <- c("Phyla", "Frequency")
 
 # plot pie chart
-pdf("Summary/phyla_pie_ggplot.pdf")
+pdf("Summary/phyla_pie.pdf")
 print(ggplot(phyla, aes(x= "", y= Frequency, fill= Phyla)) +
   geom_bar(stat = "identity", width = 1) +
   coord_polar("y", start = 0) +
@@ -298,7 +299,7 @@ find_taxa_breakdown <- function(taxa_data, seq_data, samp_data, taxa_rank, condi
   # ensure bars are in correct order
   taxon_table$Variable <- factor(taxon_table$Variable, ordered=TRUE, levels = factors)
   # plot stacked bar chart for all conditions
-  pdf(paste0(results_path, "Summary/", condition, "_", NAs, "_", taxa_rank, "_breakdown.pdf"))
+  pdf(paste0(results_path, "Summary/", condition, "_", taxa_rank, "_breakdown.pdf"))
   print(ggplot(taxon_table, aes(fill=taxon, y=Freq, x=Variable)) + 
     geom_bar(position="stack", stat="identity") +
     labs(fill = taxa_rank) +
@@ -378,7 +379,7 @@ find_taxa_breakdown_abun  <- function(taxa_data, seq_data, samp_data, taxa_rank,
   # ensure bars are in correct order
   taxon_table$Variable <- factor(taxon_table$Variable, ordered=TRUE, levels = factors)
   # write breakdown by taxa by condition to csv
-  write.csv(taxon_table, paste0("Summary/", condition, "_", taxa_rank, "breakdown.csv"))
+  write.csv(taxon_table, paste0("Summary/", condition, "_", taxa_rank, "_breakdown.csv"))
   # plot stacked bar chart for all conditions
   pdf(paste0(results_path, "Summary/", condition, "_", taxa_rank, "_abun_breakdown.pdf"))
   print(ggplot(taxon_table, aes(fill=taxon, y=Percentage, x=Variable)) + 
@@ -595,9 +596,6 @@ dev.off()
 
 ###################################################################################################
 ############################# Venn Diagram of shared ASVs/species #################################
-
-
-library("VennDiagram")
 
 
 ######################################## functions ###############################################
@@ -1037,11 +1035,6 @@ table(samps$A_Family)
 samps$A_Genus_Species <- as.character(samps$A_Genus_Species)
 samps$A_Genus_Species[is.na(samps$A_Genus_Species)] <- "NA"
 table(samps$A_Genus_Species)
-
-# summarise number of ASVs per phyla in table
-phylum_table <- as.data.frame(table(taxa$Phylum))
-names(phylum_table) <- c("Phylum", "Number of ASVs")
-write.csv(phylum_table, paste0(results_path, "Summary/phylum_breakdown.csv"))
 
 
 ## end of script
