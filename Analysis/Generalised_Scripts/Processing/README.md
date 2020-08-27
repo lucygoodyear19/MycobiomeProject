@@ -23,6 +23,8 @@ R packages:
 dada2 (v.1.14.1)   
 ShortRead (v.1.44.3)  
 Biostrings (v.2.54.0)  
+phyloseq (v.1.30.0)
+dplyr (v.1.0.1)  
 
 
 File architecture must a similar structure to the below:
@@ -312,7 +314,7 @@ filtering_args.R
 
 R:
    
-phyloseq (v.1.30.0)
+phyloseq (v.1.30.0)  
 dplyr (v.1.0.1)  
 
 #### *How to use*
