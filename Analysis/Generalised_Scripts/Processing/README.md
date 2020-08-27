@@ -13,7 +13,19 @@ This repository contains all scripts required for prcoessing mycobiome data, whi
 
 All code has been created for Mac so there may be a few differences in commands with respect to Linux.
 
-File architecture must follow this structure:
+Linux packages:
+
+csvkit (v.1.0.4)  
+cutadapt (v.2.8)
+
+R packages:
+
+dada2 (v.1.14.1)   
+ShortRead (v.1.44.3)  
+Biostrings (v.2.54.0)  
+
+
+File architecture must a similar structure to the below:
 
 ```
 .
@@ -46,29 +58,106 @@ File architecture must follow this structure:
 
 ## Workflow
 
-### 1) [sample_seqs_prep.sh](#1.sample_seqs_prep.sh)
+### 0.1) [DADA2_args.R](#01-dada2_args)
+
+R-script containing the arguments required to run DADA2_HPC_pipeline.R
+
+### 0.2) [filtering_args.R](#02-filtering_args)
+
+R-script containing the arguments required to run DADA2_data_filtering.R
+
+### 1) [sample_seqs_prep.sh](#1-sample_seqs_prep)
 
 Given a tarball containing data from an Illumina MiSeq run, this script processes the sequences into a form ready to be run through the DADA2 pipeline.
 
-### 2) [run_DADA2_HPC_pipleine.sh](#2.run_DADA2_HPC_pipleine.sh)
+### 2) [DADA2_pipeline.R](#2-dada2_pipeline)
 
-Runs DADA2_HPC_pipeline.R, the Data_filtering.R and phylogenetic_trees.R on the HPC. Each R-script is easily recognisable and can be hashed out as required. Running the whole bash script will result a phyloseq object containing out_table, taxa_table, sample_data and phylogenetic tree.
+Processes seqeunce data to produce useful outputs for analysis, including taxa and abundance tables, quality profiles, and error rates.
 
-### 3) [DADA2_HPC_pipeline.R](#3.-DADA2_HPC_pipeline.R)
-
-Processes seqeunce data to produce useful outputs for analysis, including quality profiles and error rates.
-
-### 4) [Data_filtering.R](#4.Data_filtering.R)
+### 3) [DADA2_data_filtering.R](#3-dada2_data_filtering)
 
 Filters the results from the DADA2_HPC_pipeline R-script, removing mocks, negative and positive controls. Result is a phyloseq object.
 
-### 6) [DADA2_args.R](#6.DADA2_args.R)
+### 4) [run_DADA2_HPC_pipleine.sh](#4-run_dada2_hpc_pipleine)
+
+Runs DADA2_HPC_pipeline.R and the Data_filtering.R on the HPC. Each R-script is easily recognisable and can be hashed out as required. Running the whole bash script will result a phyloseq object containing otu_table, taxa_table, sample_data.
+
+### 5) [phyloseq_merges.R](#5-phyloseq_merges)
+
+Combines phyloseq objects via the command line so different combinations can be analysed.
+
+
 
 &nbsp;
 
+
+
 ## Scripts
 
-### 1) sample_seqs_prep.sh
+### 0.1) DADA2_args
+
+#### *Requirements*
+
+#### Arguments: 
+
+None.
+
+#### Packages:
+
+None.
+
+#### *How to use*
+
+This script is stored in the relevent country folder and contains 11 variables:  
+
+REV - reverse primer  
+FWD - forward primer  
+base_prefix - base name of sequences  
+run  - run directory
+country - country directory  
+root_path - your path to the directory containing all runs  
+path - path to directory containing sequences, using the root_path  
+path2 - path to filtN directory, using the root_path  
+path_out - path to directory where output will be sent to, using root_path   
+cutadapt - path to cutadapt directory, using root_path  
+unite.ref - path to UNITE database, using root_path 
+
+
+
+&nbsp;
+
+
+
+### 0.2) filtering_args
+
+#### *Requirements*
+
+#### Arguments: 
+
+None.
+
+#### Packages:
+
+None.
+
+#### *How to use*
+
+This script is stored in the relevent country folder and contains 6 variables:  
+
+run  - run directory
+country - country directory  
+root_path - your path to the directory containing all runs  
+path_in - path to data input directory using root_path  
+path_out - path to directory where output will be sent to, using root_path  
+metadata_path - path to metadata file, using root_path  
+
+
+
+&nbsp;
+
+
+
+### 1) sample_seqs_prep
 
 #### *Requirements*
 
@@ -124,29 +213,12 @@ The script will output subdirectories in the **Original_Data** directory corresp
 It is this **Sample_Seqs** directory that will be accessed in the DADA2 pipeline script below.
 
 
-&nbsp;
-
-### 2) run_DADA2_HPC_pipeline.sh
-
-#### *How to use*
-
-This script has been written to run on a PBS HPC so adjustments may need to be made to accommodate other machines.
-
-The following command should be used to run the script, making sure to check your own releative paths:
-
-```qsub -v "arg_path=run/DADA2_Results/country" ../../../../Generalised_Scripts/run_DADA2_HPC_pipeline.sh ```
-
-Where ```run/country``` should be replaced with the relevent path. For example:
-
-```qsub -v "arg_path=Taiwan_Vietnam_2016/DADA2_Results/Taiwan" ../../../../../Generalised_Scripts/run_DADA2_HPC_pipeline.sh ```
-
-qsub -v "arg_path=CostaRica_Ecuador_2017/DADA2_Results/Ecuador" ../../../../../Generalised_Scripts/Processing/run_DADA2pipeline_filtering.sh
-
-Relative paths should be adapted for your own file structure or use absolute paths. I always run this from the relevent **HPC_Outputs** directory so the output and error files are also located here.
 
 &nbsp;
 
-### 3) DADA2_HPC_pipeline.R
+
+
+### 2) DADA2_pipeline
 
 #### *Requirements*
 
@@ -171,8 +243,6 @@ The HPC uses anaconda so I have installed all the above pacakges into a conda en
 #### *How to use*
 
 This is a script following the DADA2 ITS2 tutorial with some modifications to use only the forward reads and to run on HPC. Thanks to Phil Jervis for giving me his script as a basis and to the creators of the DADA2 pipeline (https://benjjneb.github.io/dada2/ITS_workflow.html). 
-
-Two other packages are also used in the pipeline, Shortread (ref) to ??? and Biostrings (ref) to find the reverse, complement and reverse complement of the primers.
 
 **Pipeline**
 
@@ -207,29 +277,30 @@ Also ensure that your sample name is separated from the rest of the fasta file n
 
 **Outputs**
 
-1) filtering_output.csv
-      - gives the read numbers per sample before and after the filter and trim steps
-2) quality profile.pdf 
+1) quality profile.pdf 
       - shows the quiality profiles of the forward reads
-3) read_counts_during_pipeline_steps.csv
+2) read_counts_during_pipeline_steps.csv
       - view number of reads that made it through each stage of the pipeline:
       input, filtered, denoisedF, nonchim
-4) error_rates.pdf
+3) error_rates.pdf
       - shows learned error rates
-5) tax_table.txt
+4) tax_table.txt
       - taxonomy table with ASVs as rows and taxonomic ranks as columns
-6) abun_table_sample_row.txt
+5) abun_table_sample_row.txt
       - abundance table with samples as rows and ASVs as columns
-7) abun_table_tax_row.txt 
-      - abundance table with ASVs as rows and samples as columns
+
 
 Screen output (or .o file in the case of running on HPC) should be reviewed before proceeding, as should the first four outputs listed above. These all contain checks to ensure nothing has gone wrong during te pipeline.
 
 No modifications should be required in order for this script to run with any R-script argument containing the correct variables and with the sequences in the correct format.
 
+
+
 &nbsp;
 
-### 4) DADA2_data_filtering.R
+
+
+### 3) DADA2_data_filtering
 
 #### *Requirements*
 
@@ -241,7 +312,8 @@ filtering_args.R
 
 R:
    
-phyloseq (v.1.30.0)  
+phyloseq (v.1.30.0)
+dplyr (v.1.0.1)  
 
 #### *How to use*
 
@@ -249,11 +321,11 @@ Can be run from local commandline with the following command:
 
 ```Rscript  ../../../../GeneralisedScripts/Processing/DADA2_data_filtering.R filtering_args.R```
 
-Filters and creates phyloseq object.
+Filters by removing all controls and creates phyloseq object.
 
-Troubleshooting:
-```Error in dimnames(x) <- dn : 
-  length of 'dimnames' [1] not equal to array extent```
+Troubleshooting:  
+
+```Error in dimnames(x) <- dn : length of 'dimnames' [1] not equal to array extent```
 This has occurred beacuse the taxa table and the abundance table get emptied of all samples, most likely because of a sample name issue, causing all samples to be filtered out.
 Check line 107 to confirm sample_names in plate data match those in the abundance table (these may not match where we previsouly replaced _ with - (or othewrwise) to enable the truncation of sample names in the DADA2 pipeline)
 ```plates$Sample_Name <- gsub("_", "-", plates$Sample_Name)```
@@ -265,47 +337,56 @@ This is part of the function that removes any negative controls and mock leakage
 Fixed by the following:
 ```plates$Sample_Name <- gsub("-A", "", plates$Sample_Name)``` where I had changed the original names of the mocks and posc to fit with the script (mock1-A to mock1) of the actual samples (so in the taxa df and the abundance df) but not in the plates csv.
 
-
-```Warning message:
-In estimate_richness(dada2, split = TRUE, measures = "Shannon") :
-  The data you have provided does not have
+A common warning message: ```Warning message: In estimate_richness(dada2, split = TRUE, measures = "Shannon"): The data you have provided does not have
 any singletons. This is highly suspicious. Results of richness
-estimates (for example) are probably unreliable, or wrong, if you have already
-trimmed low-abundance taxa from the data.
+estimates (for example) are probably unreliable, or wrong, if you have already trimmed low-abundance taxa from the data. We recommended that you find the un-trimmed data and retry.```
+Sometimes I got the above warning but I hadn't removed the singletons or done any of that kind of trimming so I ignored it.
 
-We recommended that you find the un-trimmed data and retry.```
-Sometimes I got the above warning but I haven't removed the singletons or done any of that kind of trimming so I ignored it.
+Output is two phyloseq objects. One keeps the ASV names as the full sequences, which is for merging and phylogenetic tree building, and the other renames to "ASV1, ASV2,..." for convenience and saves sequences under refseqs option of phyloseq option. The latter object is for analysis on that specific country/run.
 
 &nbsp;
 
-### 6) DADA2_args.R
+
+
+### 4) run_DADA2_HPC_pipeline
+
+#### *How to use*
+
+This script has been written to run on a PBS HPC so adjustments may need to be made to accommodate other machines.
+
+The following command should be used to run the script, making sure to check your own releative paths:
+
+```qsub -v "arg_path=run/DADA2_Results/country" ../../../../Generalised_Scripts/run_DADA2_HPC_pipeline.sh ```
+
+Where ```run/country``` should be replaced with the relevent path. For example:
+
+```qsub -v "arg_path=Taiwan_Vietnam_2016/DADA2_Results/Taiwan" ../../../../../Generalised_Scripts/run_DADA2_HPC_pipeline.sh ```
+
+
+Relative paths should be adapted for your own file structure or use absolute paths. I always run this from the relevent **HPC_Outputs** directory so the output and error files are also located here.
+
+
+
+&nbsp;
+
+
+
+### 5) phyloseq_merges
 
 #### *Requirements*
 
 #### Arguments: 
 
-None.
+Phyloseq objects to be merged (no maximum) should be used as command line arguments. ASV names must be full sequences.
 
 #### Packages:
 
-None.
+phyloseq (v.1.30.0)
 
 #### *How to use*
 
-This script is stored in the relevent country folder and contains 12 variables:  
+This script merges phyloseq objects and subsets sample data by those variables specified in the script. Before running, please confirm the list of varibales within the script in the "Set up" section. Sequences of ASVs are saved into the refseqs slot and ASVs are renamed "ASV1, ASV2, ..." for convenience.
 
-REV - reverse primer  
-FWD - forward primer  
-base_prefix - base name of sequences  
-run  - run directory
-country - country directory  
-root_path - your path to the directory containing all runs  
-path - path to directory containing sequences, using the root_path  
-path2 - path to filtN directory, using the root_path  
-path_out - path to directory where output will be sent to, using root_path  
-metadata_path - path to metadata file, using root_path  
-cutadapt - path to cutadapt directory, using root_path  
-unite.ref - path to UNITE database, using root_path 
+Outputs a single phyloseq object.
 
-7) phyloseq_merges.R
 
