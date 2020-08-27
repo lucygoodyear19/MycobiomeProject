@@ -37,17 +37,17 @@ File architecture must a similar structure to the below:
         │   ├── DADA2_Results
         │   │   ├── CostaRica
         │   │   └── Ecuador
-        │   │       ├── DADA2_args.R   
+        │   │       ├── DADA2_args.R 
+        │   │       ├── filtering_args.R          
         │   │       └── HPC_outputs
-        │   ├── Esto_Results
         │   └── Original_Data
         └── Taiwan_Vietnam_2016
             ├── DADA2_Results
             │   ├── Taiwan
             │   └── Vietnam
             │       ├── DADA2_args.R   
+            │       ├── filtering_args.R   
             │       └── HPC_outputs
-            ├── Esto_Results
             └── Original_Data
  ```
 
