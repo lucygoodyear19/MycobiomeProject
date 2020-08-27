@@ -5,9 +5,11 @@
 
 This repository contains all relevant files for my MRes project.
 
-**Analysis** contains all my data and scripts.
+**Analysis** contains all my scripts.
 
 **Proposal** contains all documents relating to my proposal.
+
+At present, I am unable to upload my LaTeX file with my thesis as it contains data that is yet to be formally published.
 
 ## Requirements
 

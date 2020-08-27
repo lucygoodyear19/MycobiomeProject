@@ -3,11 +3,9 @@
 *Author: Lucy Goodyear*  
 *Created: 04/02/20*
 
-This repository contains all relevant scripts and data for my analysis. There are 2 subdirectories:
+This directory contains one subdirectory that contains all relevant scripts for my analysis.
 
-**Generalised_Scripts** contains all my boilerplate script for running various filtering/analysis steps.
-
-**Runs_Countries** contains all my data divided by countries/run.
+Locally I have 4 other directories at this level: ```Original_Data```, ```Runs_Countries```, ```Results``` and ```UNITE_database```.
 
 ## Requirements
 
