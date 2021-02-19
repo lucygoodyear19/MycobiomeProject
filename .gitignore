@@ -1,14 +1,6 @@
-References
-Thesis_write_up
-Proposal/WorkingDocuments
-Proposal/Proposal_long_version.tex
 *.txt
 *.rds
 *.pdf
-Analysis/Original_Data/
-Analysis/Runs_Countries/
-Analysis/Results/
-Analysis/UNITE_database/
 Analysis/Generalised_Scripts/Sandbox/
 Analysis/Generalised_Scripts/Processing/run_fasttree.sh
 Analysis/Generalised_Scripts/Processing/fast_tree_subset.R
@@ -19,7 +11,6 @@ Analysis/Generalised_Scripts/Processing/sample_seq_prep_TW16.sh
 Analysis/Generalised_Scripts/Processing/split_TW16.sh
 Analysis/Generalised_Scripts/Analysis/alpha_diversity.R
 Analysis/Generalised_Scripts/Analysis/tree_plotting.R
-Analysis/Generalised_Scripts/Analysis/cooccur.R
 Analysis/Generalised_Scripts/Analysis/cooccur_analysis.R
 Analysis/Generalised_Scripts/Analysis/ilr_transform.R
 .DS_Store
