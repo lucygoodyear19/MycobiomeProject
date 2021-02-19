@@ -1,17 +1,5 @@
 *.txt
 *.rds
 *.pdf
-Sandbox/
-Processing/run_fasttree.sh
-Processing/fast_tree_subset.R
-Processing/phylogenetic_trees.R
-Processing/phylogenetic_tree_prep.R
-Processing/DADA2_data_filtering_TW16.R
-Processing/sample_seq_prep_TW16.sh
-Processing/split_TW16.sh
-Analysis/alpha_diversity.R
-Analysis/tree_plotting.R
-Analysis/cooccur_analysis.R
-Analysis/ilr_transform.R
 .DS_Store
 .Rhistory
