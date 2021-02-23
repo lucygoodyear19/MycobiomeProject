@@ -36,7 +36,7 @@ print(paste0("Data path: ", dada2_data_path))
 print(paste0("Results path: ", results_path))
 
 # load phyloseq object
-dada2 <- readRDS(paste0(dada2_data_path, "physeqob_dada2_tree.rds"))
+dada2 <- readRDS(paste0(dada2_data_path, "physeqob_DADA2_tree.rds"))
 
 #readDNAStringSet(paste0(dada2_data_path, "alignment.fasta"), format="fasta")
 

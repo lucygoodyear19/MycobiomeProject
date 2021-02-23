@@ -43,9 +43,6 @@ print("Data loaded")
 
 # extract Bd column from sample data
 samps <- as(sample_data(dada2), "data.frame")
-for (sam in 1:nrow(samps)) {
-  if (!is.na(samps$Bd[sam]) & samps$Bd[sam] == "S") {samps$Bd[sam] <- 0}
-}
 bd <- samps$Bd
 
 # add Bd binary column to otu_table
@@ -66,6 +63,8 @@ cooccur_object_t <- as.data.frame(t(cooccur_object))
 cooccur_object_t$sum <- rowSums(cooccur_object_t)
 cooccur_object_t <- subset(cooccur_object_t, sum >= 2)
 cooccur_object_t <- subset(cooccur_object_t, select=-c(sum))
+# save object for use in analysis
+saveRDS(cooccur_object_t, paste0(results_path,"cooccur_full_dataframe.rds"))
 
 # main cooccur function to calculate pairwise co-occurrence patterns
 print("Cooccur function start:")
@@ -77,7 +76,7 @@ cooccur_full <- cooccur(cooccur_object_t,
 print("Cooccur function finished:")
 Sys.time()
 
-# save cooccur object
+# save co-occur object
 saveRDS(cooccur_full, paste0(results_path,"cooccur_full_dada2.rds"))
 
 

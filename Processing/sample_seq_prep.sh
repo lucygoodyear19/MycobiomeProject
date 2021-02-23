@@ -33,9 +33,11 @@ csv=$2
 tar -xvf $raw_data.tar.gz
 
 # cd to folder with sequence subdirectories
-mv */*/*/*/*/*/*/ ./
+# mv */*/*/*/*/*/*/ ./
+mv */*/ ./
 ls
-cd IGF*/
+#cd IGF*/
+pwd
 
 # delete extra folders 
 #rm -rf *.*/
@@ -96,12 +98,16 @@ done
 # diff -r ../$numsamples1/Sample_Seqs/ Sample_Seqs_Phil/
 
 # move all unzipped fastq files per country to a new directory within each country directory
-cd ../
+#cd ../
 for country in ${!plates_per_country[@]}; do
     echo "Moving all sample fastq files to resepctive run/country directories"
-    mkdir -p ${country}/Sample_Seqs | mv IGF*/${country}/*/*.fastq ${country}/Sample_Seqs
+    # use first option if stored in many nested folders and files are saved as fastq
+    #mkdir -p ${country}/Sample_Seqs | mv IGF*/${country}/*/*.fastq ${country}/Sample_Seqs
+    mkdir -p ${country}/Sample_Seqs | mv ${country}/*/*.fastq.gz ${country}/Sample_Seqs
     # create a directory to store filtered data files
     mkdir -p ${country}/Sample_Seqs/filtN # (must be created beforehand to allow path to be passed as external argument to DADA2 script)
+    # comment out if stored in many nested folders
+    rm -r ${country}/IGF*
 done
 
 # remove all unnessecary directories and files

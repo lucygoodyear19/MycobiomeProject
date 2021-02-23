@@ -57,9 +57,9 @@ print("Print first item file name in folder containing the data:")
 list.files(path)[1]
 
 # save all forward read path names as a list
-fnFs <- sort(list.files(path, pattern = "R1_001.fastq$", full.names = TRUE))
+fnFs <- sort(list.files(path, pattern = patFs, full.names = TRUE))
 # save all reverse read path names as a list
-fnRs <- sort(list.files(path, pattern = "R2_001.fastq$", full.names = TRUE))
+fnRs <- sort(list.files(path, pattern = patRs, full.names = TRUE))
 
 # check paths are correct by viewing first item
 print("Print path to first item in folder containing the data:")
@@ -105,7 +105,9 @@ setwd(path2)
 
 # rename files to .gz for use in next steps
 list2 <- list.files(path2)
-file.rename(list2, paste0(list2,".gz"))
+if (grepl(".gz$", list2[1]) == FALSE) {
+  file.rename(list2, paste0(list2,".gz"))
+}
 
 # check folder has correct contents (including file names)
 print("Print name of first item in filtN subdirectory:")
@@ -219,12 +221,12 @@ rbind(FWD.ForwardReads = sapply(FWD.orients, primerHits, fn = fnFs.cut[[1]]),
       REV.ReverseReads = sapply(REV.orients, primerHits, fn = fnRs.cut[[1]]))
 
 # save all primer-free forward read path and file names in a list
-cutFs <- sort(list.files(path.cut, pattern = "R1_001.fastq$", full.names = TRUE))
+cutFs <- sort(list.files(path.cut, pattern = patFs, full.names = TRUE))
 # add prefix to all file names
 XcutFs <- sub(base_prefix,"",cutFs)
 
 # save all primer-free reverse read path and file names in a list
-cutRs <- sort(list.files(path.cut, pattern = "R2_001.fastq$", full.names = TRUE))
+cutRs <- sort(list.files(path.cut, pattern = patRs, full.names = TRUE))
 # add prefix to all file names
 XcutRs <- sub(base_prefix,"",cutRs)
 

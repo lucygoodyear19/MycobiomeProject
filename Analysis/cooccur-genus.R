@@ -69,9 +69,6 @@ genus_grid_t <- as.data.frame(t(genus_grid))
 
 # extract Bd column from sample data
 samps <- as(sample_data(dada2), "data.frame")
-for (sam in 1:nrow(samps)) {
-  if (!is.na(samps$Bd[sam]) & samps$Bd[sam] == "S") {samps$Bd[sam] <- 0}
-}
 bd <- samps$Bd
 
 # add Bd binary column to otu_table

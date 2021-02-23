@@ -14,7 +14,7 @@ rm(list=ls())
 
 
 # on local computer: store all console output to an output file
-sink("data_filtering_DADA2_output.log", type=c("output", "message"))
+#sink("DADA2_data_filtering_output.log", type=c("output", "message"))
 
 # import arguments to run script on specific country data
 #!/usr/bin/env Rscript
