@@ -3,7 +3,7 @@
 ##############################################################################
 
 
-# Author: Lucy Goodyear (lucy.goodyear19@imperial.ac.uk)
+# Author: Lucy Goodyear (leg19@ic.ac.uk)
 # Version: 0.0.1
 
 # clear worksapce
