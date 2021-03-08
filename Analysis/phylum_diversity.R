@@ -25,7 +25,7 @@ library("vegan")
 library("compositions")
 
 # set wd
-setwd("/Users/lucy/Documents/MRes/MycobiomeProject/Analysis/Results/Global_14/")
+setwd("~/Dropbox/luke/documents/academia/mres/mycobiome_project/analysis/results/Cameroon/")
 
 # load phyloseq object
 dada2 <- readRDS(paste0(dada2_data_path, "physeqob_DADA2.rds"))
@@ -100,7 +100,7 @@ phylum_ilr <- as.data.frame(ilr(phylum_mat0))
 phylum_ilr_nona <- phylum_ilr[rownames(phylum_ilr) %in% rownames(samps_bd),]
 samps_bd <- samps_bd[rownames(samps_bd) %in% rownames(phylum_ilr),]
 # Just keep the necessary columns
-samps_perm <- samps_bd[,c("Bd", "A_Family", "Country")]
+samps_perm <- samps_bd[,c("A_Order", "A_Family", "A_Genus_Species", "Bd", "Latitude", "Longitude", "Elevation_m", "Lifestage")]
 
 
 ########################################################################################
@@ -111,7 +111,7 @@ print("Performing PERMANOVA...")
 
 # perform PERMANOVA on 3 variables
 permanova <- adonis2(phylum_ilr_nona ~ get(samp_vars_1host[1])+get(samp_vars_1host[2])+get(samp_vars_1host[3]), 
-                     by = "margin", data = data=samps_perm, permutations=999,method="euclidean")
+                     by = "margin", data=samps_perm, permutations=999,method="euclidean")
 # save to text file
 cat("\n\nPERMANOVA: ", capture.output(permanova_out),
     file=paste0(path_out, "permanovas_phyla.txt"), sep = "\n", append=TRUE)
@@ -120,7 +120,7 @@ cat("\n\nPERMANOVA: ", capture.output(permanova_out),
 disp_ob <- cbind.data.frame(samps_perm, phylum_ilr_nona)
 
 # create distance matrix
-dist <- dist(disp_ob[,5:20], "euclidean")
+dist <- dist(disp_ob[,9:18], "euclidean")
 # calculate dispersion for the 3 variables
 for (var in 1:length(samp_vars_1host)){
   dispersion <- betadisper(dist, group=disp_ob[[samp_vars_1host[var]]],type="median",bias.adjust=TRUE)
