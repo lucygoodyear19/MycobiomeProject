@@ -37,14 +37,33 @@ ifelse(!dir.exists(file.path(paste0(results_path, "bd_associations/"))), dir.cre
 # define path out
 path_out <- paste0(results_path, "/bd_associations/")
 
+mets <- read.csv("metadata.csv")
+# add column for Bd +ve/-ve to metadata
+mets$Bd <- NA
+for (i in (1:nrow(mets))){
+  if (is.na(mets$Bd_GE[i])){
+    mets$Bd[i] <- NA
+  }
+  else {
+    if (mets$Bd_GE[i] >= 0.1){
+      mets$Bd[i] <- 1
+    } 
+    if (mets$Bd_GE[i] < 0.1){
+      mets$Bd[i] <- 0
+    }
+  }
+}
+
 # load filtered phyloseq object for DADA2 pipeline
 dada2 <- readRDS(paste0(dada2_data_path, "physeqob_DADA2.rds"))
 mets <- as.data.frame(as.matrix(sample_data(dada2)))
 mets <- as.data.frame(sapply(mets, as.factor))
-mets$A_Genus_Species <- as.double(mets$A_Genus_Species)
 mets$Elevation_m <- as.double(as.character(mets$Elevation_m))
 mets$Latitude <- as.double(as.character(mets$Latitude))
 mets$Longitude <- as.double(as.character(mets$Longitude))
+
+mets<-mets[!(mets$Mountain=="Ndikinimeki"),]
+
 #mets<-mets[!(mets$A_Order=="Gymnophiona"),]
 #mets<-mets[!(mets$Lifestage=="Metamorph"),]
 #mets<-mets[!(mets$Locality==""),]
@@ -240,15 +259,18 @@ plot_bd_bar <- function(samps, attrib, cont) {
     scale_y_continuous(limits = c(0,1), expand = expansion(mult = c(0,0))) +
     labs(fill = "Bd Status") +
     ylab("Proportion") +
+    xlab("Mountain") +
+    ggtitle("Bd status by Mountain") +
     scale_x_discrete(labels = lab_ls) +
     theme_bw() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
-          axis.title.x = element_blank(),
-          axis.title.y = element_blank(),
+          #axis.title.x = element_blank(),
+          #axis.title.y = element_blank(),
           panel.border = element_blank(),
           panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(),
-          axis.line.y = element_line(colour = "black"))
+          axis.line.y = element_line(colour = "black"),
+          plot.title = element_text(hjust = 0.5))
   dev.off()
 }
 
@@ -256,8 +278,8 @@ plot_bd_bar(mets, "Mountain", F)
 plot_bd_bar(mets, "Locality", F)
 plot_bd_bar(mets, "Latitude", T)
 plot_bd_bar(mets, "Elevation_m", T)
-plot_bd_bar(mets, "A_Family", F)
-plot_bd_bar(mets, "A_Genus_Species", F)
+plot_bd_bar(mets, "Family", F)
+plot_bd_bar(mets, "Genus_Species", F)
 
 
 # plot chart for Bd GE per attribute
@@ -269,7 +291,7 @@ plot(mets$A_Family, mets$Bd_GE)
 plot(mets$Bd_GE, mets$Genus_Species)
 
 # Bd positive samples only
-mets_bdpos <- mets[!mets$Bd_GE==0.00,]
+mets_bdpos <- mets[!mets$Bd==0,]
 plot(mets_bdpos$Latitude, mets_bdpos$Bd_GE)
 plot(mets_bdpos$Elevation_m, mets_bdpos$Bd_GE)
 plot(mets_bdpos$Mountain, mets_bdpos$Bd_GE)
@@ -285,8 +307,8 @@ plot(mets_bdpos$Bd_GE, mets_bdpos$Genus_Species)
 
 # regression set up
 mets <- as.data.frame(sapply(mets, as.factor))
-mets$A_Genus_Species <- as.double(mets$A_Genus_Species)
-mets$A_Family <- as.double(mets$A_Family)
+mets$Genus_Species <- as.double(mets$Genus_Species)
+mets$amily <- as.double(mets$Family)
 mets$Elevation_m <- as.double(mets$Elevation_m)
 mets$Latitude <- as.double(mets$Latitude)
 mets$Longitude <- as.double(as.character(mets$Longitude))
@@ -294,7 +316,7 @@ mets$Bd_GE<- as.double(as.character(mets$Bd_GE))
 
 
 # Logistics Regression
-glm_fit <- glm(Bd ~ A_Genus_Species + Elevation_m + Latitude, data = mets, family = binomial)
+glm_fit <- glm(Bd ~ Genus_Species + Elevation_m + Latitude, data = mets, family = binomial)
 summary(glm_fit)
 
 res <- residuals(glm_fit, type="deviance")
@@ -308,7 +330,7 @@ qqline(res)
 
 ###################### NOT SIGNIFICANT
 # Linear Regression on all samples
-glm_fit_bd_ge <- glm(Bd_GE ~ A_Genus_Species + Elevation_m + Latitude, data = mets, family = gaussian)
+glm_fit_bd_ge <- glm(Bd_GE ~ Genus_Species + Elevation_m + Latitude, data = mets, family = gaussian)
 summary(glm_fit_bd_ge)
 res_bd_ge <- residuals(glm_fit_bd_ge, type="deviance")
 plot(log(predict(glm_fit_bd_ge)), res_bd_ge)
@@ -318,7 +340,7 @@ qqplot(res_bd_ge)
 qqline(res_bd_ge)
 
 # Linear regression on positive samples only
-glm_fit_bdpos <- glm(Bd_GE ~ A_Genus_Species  + Elevation_m + Latitude, data = mets_bdpos, family = gaussian)
+glm_fit_bdpos <- glm(Bd_GE ~ Genus_Species  + Elevation_m + Latitude, data = mets_bdpos, family = gaussian)
 summary(glm_fit_bdpos)
 res <- residuals(glm_fit_bdpos, type="deviance")
 plot(log(predict(glm_fit_bdpos)), res)
