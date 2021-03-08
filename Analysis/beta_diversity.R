@@ -128,7 +128,7 @@ print("Performing PERMANOVA...")
 # perform PERMANOVA on 3 variables
 permanova <- adonis2(dada2_ilr_bd ~ get(samp_vars_1host[1])+get(samp_vars_1host[2])+get(samp_vars_1host[3]), by = "margin", data = sampdata_bd, permutations=999,method="euclidean")
 # save to text file
-cat("\n\nPERMANOVA: ", capture.output(permanova_out),
+cat("\n\nPERMANOVA: ", capture.output(permanova),
     file=paste0(path_out, "permanovas_beta.txt"), sep = "\n", append=TRUE)
 
 # calculate dispersion significance for the 3 variables
