@@ -2,8 +2,12 @@
 ################################# Calculate elevations using geonames #####################################
 ###########################################################################################################
 
-# Author: Lucy Goodyear
+
+# Author: Luke Goodyear
 # Date 14/01/2021
+
+
+########################################### Set up ########################################################
 
 
 # packages
@@ -11,17 +15,23 @@ library("rgbif")
 library("tidyr")
 
 # set path if running directly from here
-path <- "~/Dropbox/luke/documents/academia/mres/mycobiome_project/analysis/runs_countries/Cameroon_SouthAfrica_2018/DADA2_Results/Cameroon/"
+path <- "~/Dropbox/luke/documents/academia/mres/mycobiome_project/analysis/runs_countries/Taiwan_Vietnam_2016/DADA2_Results/Taiwan/"
 
 # import data
 metadata <- read.csv(paste0(path, "metadata.csv"))
+# save original csv for possible future use
 write.csv(metadata, paste0(path, "metadata_pre_elevs.csv"))
 
+# remove any samples with no lat/long data
 metadata <- metadata %>% drop_na("Latitude")
 # import geonames username
 user <- Sys.getenv("GEONAMES_USER")
 
-# calculate elevation
+
+################################### calculate elevation ####################################################
+
+
+# calculate elevations using geonames
 elevs <- elevation(latitude = metadata$Latitude,
                    longitude = metadata$Longitude,
                    elevation_model = "srtm1", # calculated over 90m x 90m area
