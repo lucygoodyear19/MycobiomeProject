@@ -2,7 +2,7 @@
 
 &nbsp;
 
-*Author: Lucy Goodyear*  
+*Author: Luke Goodyear*  
 *Created: 04/02/20*
 
 This repository contains all scripts required for prcoessing mycobiome data, which can then be imported into analysis scripts. Each script has been generalised so can easily be used for different datasets.
@@ -88,7 +88,7 @@ Runs DADA2_HPC_pipeline.R and the Data_filtering.R on the HPC. Each R-script is 
 
 Combines phyloseq objects via the command line so different combinations can be analysed.
 
-
+### 6) [calculate_elevation.R](#6-calculate_elevation)
 
 &nbsp;
 
@@ -392,3 +392,28 @@ This script merges phyloseq objects and subsets sample data by those variables s
 Outputs a single phyloseq object.
 
 
+
+&nbsp;
+
+
+
+### 6) calculate_elevation
+
+#### *Requirements*
+
+#### Arguments:
+
+None
+
+#### Packages:
+
+rgbif
+tidyr
+
+#### *How to use*
+
+Calculates elevations from the geonames database given latitudes and longitudes in csv format. 
+
+Outputs two csvs, one is the original saved under "metadata_pre-elevs.csv" and the other is the new metadata csv with elevations included
+
+Note, do not run this twice in a row or original data will be overwritten.
