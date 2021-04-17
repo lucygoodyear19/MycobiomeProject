@@ -3,7 +3,7 @@
 ###########################################################################
 
 
-# Author: Lucy Goodyear (lucy.goodyear19@imperial.ac.uk)
+# Author: Luke Goodyear (leg19@imperial.ac.uk)
 # Version: 0.0.1
 
 # clear workspace
@@ -262,11 +262,11 @@ filtFs <- file.path(path.cut, "filtered", basename(cutFs))
 # - maximum number of "expected errors" allowed in a read 
 # (rather than averaged quality scores)
 # - enforce minimum length of 50bp to removespurious very low length sequences
-# - truncate reads at the first instance of a quality score of less than 2
-# - removes PhiX, which is a common control used by illumina
+# - truncate reads at the first instance of a quality score of less than 2 (default)
+# - removes PhiX, which is a common control used by illumina (default)
+# note does not compress the output files
 print("Filtering reads")
-out <- filterAndTrim(cutFs, filtFs, maxN = 0, maxEE = 2, truncQ = 2,
-                     minLen = 50, rm.phix = TRUE, compress = FALSE, multithread = FALSE)
+out <- filterAndTrim(cutFs, filtFs, maxEE = 2, minLen = 50, compress = FALSE)
 
 # view data
 print("View number of reads before and after filtering/trimming per sample:")
@@ -275,9 +275,9 @@ out
 ########################### Learn the error rates ####################################
 
 
-# learn the error rates (rate of error for each possible transition (A→C, A→G, …)
+# learn the error rates (rate of error for each possible transition (A->C, A->G, …)
 print("Learning error rates")
-errF <- learnErrors(filtFs, multithread = FALSE, verbose=TRUE)
+errF <- learnErrors(filtFs)
 print("Visualising estimated error rates by plotting to pdf")
 pdf(file = paste(path_out,"Error_Rates.pdf",sep = ''), paper = 'A4')
 plotErrors(errF, nominalQ = TRUE) 
@@ -289,7 +289,7 @@ dev.off()
 
 # dereplicate identical reads
 print("Dereplicating identical reads")
-derepFs <- derepFastq(filtFs, verbose = TRUE)
+derepFs <- derepFastq(filtFs)
 # name the derep-class objects by the sample names
 names(derepFs) <- sample.names
 
@@ -299,7 +299,7 @@ names(derepFs) <- sample.names
 
 # apply the core sample inference algorithm to the dereplicated data
 print("Running sample inference algorithm")
-dadaFs <- dada(derepFs, err = errF, multithread = FALSE) 
+dadaFs <- dada(derepFs, err = errF) 
 
 
 ##################### Constructing ASV and taxonomy tables ########################
