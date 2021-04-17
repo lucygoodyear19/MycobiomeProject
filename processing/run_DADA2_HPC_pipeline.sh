@@ -4,15 +4,16 @@
 
 # load required environment
 module load anaconda3/personal
-source activate Renv
+source activate R_processing_env
 
 # checks and prep
 cutadapt --version
-(cd "/rds/general/user/leg19/home/mres/mycobiome_project/analysis/runs_countries/${arg_path}/sample_seqs/filtN/" && rm *)
-echo ${arg_path}
+(cd "/rds/general/user/leg19/home/mres/mycobiome_project/analysis/runs_countries/${run}/original_data/${country}/sample_seqs/filtN/" && rm *)
+echo ${run}
+echo ${country}
 
 echo "R is about to run DADA2 pipeline"
-Rscript --vanilla $HOME/mres/mycobiome_project/analysis/scripts/DADA2_HPC_pipeline.R "$HOME/mres/mycobiome_project/analysis/runs_countries/${arg_path}/DADA2_args.R"
+Rscript --vanilla $HOME/mres/mycobiome_project/analysis/scripts/processing/DADA2_pipeline.R "$HOME/mres/mycobiome_project/analysis/runs_countries/${run}/DADA2_results/${country}/DADA2_args.R"
 echo "R has finished running DADA2 pipeline"
 
 #echo "R is about to run filtering script on DADA2 results"
