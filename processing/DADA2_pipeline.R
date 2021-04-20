@@ -20,6 +20,9 @@ library("Biostrings")
 # personal laptop
 #library("cutadapt")
 
+# set seed to ensure reproducibility
+set.seed(26)
+
 # import arguments to run script on specific country data
 #!/usr/bin/env Rscript
 args = commandArgs(trailingOnly=TRUE) # setup to accept arguments from command line
@@ -245,7 +248,7 @@ print("From now on only forward reads will be processed because the reverse read
 
 # plot quality profiles for forward reads
 print("Plotting quality profiles for forward reads")
-pdf(file = paste0(path_out,"Quality_Profiles.pdf"), paper = 'A4')
+pdf(file = paste0(path_out,"quality_profiles.pdf"), paper = 'A4')
 for (i in 1:length(cutFs)){
 	print(plotQualityProfile(cutFs[i]))
 }
@@ -279,7 +282,7 @@ out
 print("Learning error rates")
 errF <- learnErrors(filtFs)
 print("Visualising estimated error rates by plotting to pdf")
-pdf(file = paste(path_out,"Error_Rates.pdf",sep = ''), paper = 'A4')
+pdf(file = paste(path_out,"error_rates.pdf",sep = ''), paper = 'A4')
 plotErrors(errF, nominalQ = TRUE) 
 dev.off()
 
@@ -436,8 +439,8 @@ if ("mock4" %in% colnames(seqtab.slim)){
 
 # save as .txt files
 print("Saving final outputs")
-write.table(taxa.slim,paste(path_out,"Taxa_Table.txt",sep = ''))
-write.table(seqtab.nochim,paste(path_out,"Abun_Table_sample_row.txt",sep=''))
+write.table(taxa.slim,paste(path_out,"taxa_table.txt",sep = ''))
+write.table(seqtab.nochim,paste(path_out,"abun_table_samplesinrows.txt",sep=''))
 
 print("DADA2 pipeline complete")
 
