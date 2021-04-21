@@ -31,26 +31,26 @@ File architecture must a similar structure to the below:
 
 ```
 .
-└── Analysis
-    ├── Generalised_Scripts
-    ├── Results  
-    └── Runs_Countries
+└── analysis
+    ├── scripts
+    ├── results  
+    └── runs_countries
         ├── CostaRica_Ecuador_2017
-        │   ├── DADA2_Results
+        │   ├── DADA2_results
         │   │   ├── CostaRica
         │   │   └── Ecuador
         │   │       ├── DADA2_args.R 
         │   │       ├── filtering_args.R          
         │   │       └── HPC_outputs
-        │   └── Original_Data
+        │   └── original_data
         └── Taiwan_Vietnam_2016
-            ├── DADA2_Results
+            ├── DADA2_results
             │   ├── Taiwan
             │   └── Vietnam
             │       ├── DADA2_args.R   
             │       ├── filtering_args.R   
             │       └── HPC_outputs
-            └── Original_Data
+            └── original_data
  ```
 
  There is actually a lot of flexibility with the structure. The only requirement is that the distances between subdirectories must be the same and the countries within the run directories must be named by country only.
@@ -90,6 +90,8 @@ Combines phyloseq objects via the command line so different combinations can be 
 
 ### 6) [calculate_elevation.R](#6-calculate_elevation)
 
+Given latitudes and longitudes in csv format, it calculates elevation using the geonames database.
+
 &nbsp;
 
 
@@ -115,6 +117,8 @@ This script is stored in the relevent country folder and contains 11 variables:
 REV - reverse primer  
 FWD - forward primer  
 base_prefix - base name of sequences  
+patFs - string pattern for forwards reads
+patRs - string pattern for reverse reads
 run  - run directory
 country - country directory  
 root_path - your path to the directory containing all runs  
@@ -193,7 +197,7 @@ Mandatory arguments:
 
       iii) Origin (country matching country directory or Mock or PosC or NC)
 
-      - The country name must contain no spaces and captial letters for new words, e.g. SouthKorea.
+      - The country name must contain no spaces and captial letters for new words, e.g. CostaRica.
       If the sample is a control, this column will contain "NC", "Mock" or "PosC" accordingly.
 
       - An example of the commmand to find this (based on Sample_ID):
@@ -202,17 +206,17 @@ Mandatory arguments:
 
 #### *How to use*
 
-The script should be run from the directory containing the tar ball. I have saved this within the relevent **run** directory under a subdirectory **Original_Data** (as can be seen on file structure tree).
+The script should be run from the directory containing the tar ball. I have saved this within the relevent **run** directory under a subdirectory **original_data** (as can be seen on file structure tree).
 
 An example command to run the script:
 
-```bash ../../../Generalised_Scripts/Processing/sample_seq_prep.sh NorthEastAsia_IGFfolders ../Plate_Data```
+```bash ../../../scripts/processing/sample_seq_prep.sh NorthEastAsia_IGFfolders ../plate_data```
 
 #### *Outputs*
 
-The script will output subdirectories in the **Original_Data** directory corresponding to each country present, each containing a subdirectory called **Sample_Seqs**, which contains all the fastq files for that country and all the fastq files for the mocks/posc/nc for each plate containing at least one sample from that country.
+The script will output subdirectories in the **original_data** directory corresponding to each country present, each containing a subdirectory called **sample_seqs**, which contains all the fastq files for that country and all the fastq files for the mocks/posc/nc for each plate containing at least one sample from that country.
 
-It is this **Sample_Seqs** directory that will be accessed in the DADA2 pipeline script below.
+It is this **sample_seqs** directory that will be accessed in the DADA2 pipeline script below.
 
 
 
@@ -240,7 +244,7 @@ Linux:
 
 cutadapt (v.2.8)
 
-The HPC uses anaconda so I have installed all the above pacakges into a conda environment called ```Renv```.
+The HPC uses anaconda so I have installed all the above pacakges into a conda environment called ```R_processing_env```.
 
 #### *How to use*
 
@@ -288,7 +292,7 @@ Also ensure that your sample name is separated from the rest of the fasta file n
       - shows learned error rates
 4) tax_table.txt
       - taxonomy table with ASVs as rows and taxonomic ranks as columns
-5) abun_table_sample_row.txt
+5) abun_table_samplesinrows.txt
       - abundance table with samples as rows and ASVs as columns
 
 
@@ -321,7 +325,7 @@ dplyr (v.1.0.1)
 
 Can be run from local commandline with the following command: 
 
-```Rscript  ../../../../GeneralisedScripts/Processing/DADA2_data_filtering.R filtering_args.R```
+```Rscript  ../../../../scripts/processing/DADA2_data_filtering.R filtering_args.R```
 
 Filters by removing all controls and creates phyloseq object.
 
@@ -365,7 +369,7 @@ Where ```run/country``` should be replaced with the relevent path. For example:
 ```qsub -v "run=FrenchGuiana_Seychelles_2016, country=FrenchGuiana" ../../../../../scripts/processing/run_DADA2_HPC_pipeline.sh```
 
 
-Relative paths should be adapted for your own file structure or use absolute paths. I always run this from the relevent **HPC_Outputs** directory so the output and error files are also located here.
+Relative paths should be adapted for your own file structure or use absolute paths. I always run this from the relevant **HPC_outputs** directory so the output and error files are also located here.
 
 
 
