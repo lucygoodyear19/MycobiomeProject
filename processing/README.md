@@ -358,11 +358,11 @@ This script has been written to run on a PBS HPC so adjustments may need to be m
 
 The following command should be used to run the script, making sure to check your own releative paths:
 
-```qsub -v "arg_path=run/DADA2_Results/country" ../../../../Generalised_Scripts/run_DADA2_HPC_pipeline.sh ```
+```qsub -v "run=run, country=country" ../../../../scripts/processing/run_DADA2_HPC_pipeline.sh ```
 
 Where ```run/country``` should be replaced with the relevent path. For example:
 
-```qsub -v "arg_path=Taiwan_Vietnam_2016/DADA2_Results/Taiwan" ../../../../../Generalised_Scripts/run_DADA2_HPC_pipeline.sh ```
+```qsub -v "run=FrenchGuiana_Seychelles_2016, country=FrenchGuiana" ../../../../../scripts/processing/run_DADA2_HPC_pipeline.sh```
 
 
 Relative paths should be adapted for your own file structure or use absolute paths. I always run this from the relevent **HPC_Outputs** directory so the output and error files are also located here.
