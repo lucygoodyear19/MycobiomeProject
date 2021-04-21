@@ -1,4 +1,4 @@
-# Mycobiome Project Generalised Processing Scripts Repository
+# Mycobiome Project Processing Scripts Repository
 
 &nbsp;
 
@@ -20,6 +20,7 @@ cutadapt (v.2.8)
 
 R packages:
 
+rgbif (v.3.5.2)
 dada2 (v.1.14.1)   
 ShortRead (v.1.44.3)  
 Biostrings (v.2.54.0)  
@@ -112,14 +113,14 @@ None.
 
 #### *How to use*
 
-This script is stored in the relevent country folder and contains 11 variables:  
+This script is stored in the relevent country folder and contains 13 variables:  
 
 REV - reverse primer  
 FWD - forward primer  
 base_prefix - base name of sequences  
-patFs - string pattern for forwards reads
-patRs - string pattern for reverse reads
-run  - run directory
+patFs - string pattern for forwards reads  
+patRs - string pattern for reverse reads  
+run  - run directory  
 country - country directory  
 root_path - your path to the directory containing all runs  
 path - path to directory containing sequences, using the root_path  
@@ -214,7 +215,7 @@ An example command to run the script:
 
 #### *Outputs*
 
-The script will output subdirectories in the **original_data** directory corresponding to each country present, each containing a subdirectory called **sample_seqs**, which contains all the fastq files for that country and all the fastq files for the mocks/posc/nc for each plate containing at least one sample from that country.
+The script will output subdirectories in the **original_data** directory corresponding to each country present, each containing a subdirectory called **sample_seqs**, which contains all the fastq files for that country and all the fastq files for the Mock/PosC/NC for each plate containing at least one sample from that country.
 
 It is this **sample_seqs** directory that will be accessed in the DADA2 pipeline script below.
 
@@ -258,7 +259,7 @@ The script performs a number of sequential steps to determine community composit
 
 2) Presence of the primers specified in the arguments script is verified and their orientation is checked
 
-3) Primers are removed using cutadapt tool due to the variable length of the ITS region (note cutadapt prints a lot to screen)
+3) Primers are removed using cutadapt tool (note cutadapt prints a lot to screen)
 
 4) Quality profiles are plotted for the forward reads (only forward reads are fully processed due to consistent lower quality of reverse reads)
 
@@ -279,14 +280,14 @@ The script performs a number of sequential steps to determine community composit
 
 10) Taxonomy is assigned using UNITE database
 
-Also ensure that your sample name is separated from the rest of the fasta file name by an underscore, _, otherwise you will not get the sample names you want in the output. Else, rename your fasta files before running the script. For example, i had t rename some of my samples with the following ```rename 'CHN17_' 'CHN17-' *``` commandline command.
+Also ensure that your sample name is separated from the rest of the fasta file name by an underscore, _, otherwise you will not get the sample names you want in the output. Else, rename your fasta files before running the script. For example, I had to rename some of my samples with the following ```rename 'CHN17_' 'CHN17-' *``` commandline command.
 
 **Outputs**
 
 1) quality profile.pdf 
-      - shows the quiality profiles of the forward reads
+      - shows the quality profiles of the forward reads
 2) read_counts_during_pipeline_steps.csv
-      - view number of reads that made it through each stage of the pipeline:
+      - displays number of reads that made it through each stage of the pipeline:
       input, filtered, denoisedF, nonchim
 3) error_rates.pdf
       - shows learned error rates
@@ -296,7 +297,7 @@ Also ensure that your sample name is separated from the rest of the fasta file n
       - abundance table with samples as rows and ASVs as columns
 
 
-Screen output (or .o file in the case of running on HPC) should be reviewed before proceeding, as should the first four outputs listed above. These all contain checks to ensure nothing has gone wrong during te pipeline.
+Screen output (or .o file in the case of running on HPC) should be reviewed before proceeding, as should the first three outputs listed above. These all contain checks to ensure nothing has gone wrong during the pipeline.
 
 No modifications should be required in order for this script to run with any R-script argument containing the correct variables and with the sequences in the correct format.
 
@@ -364,7 +365,7 @@ The following command should be used to run the script, making sure to check you
 
 ```qsub -v "run=run, country=country" ../../../../scripts/processing/run_DADA2_HPC_pipeline.sh ```
 
-Where ```run/country``` should be replaced with the relevent path. For example:
+Where ```run``` and ```country``` should be replaced with the relevant variables. For example:
 
 ```qsub -v "run=FrenchGuiana_Seychelles_2016, country=FrenchGuiana" ../../../../../scripts/processing/run_DADA2_HPC_pipeline.sh```
 
@@ -409,15 +410,15 @@ Outputs a single phyloseq object.
 
 None
 
-#### Packages:
+#### Packages:  
 
-rgbif
-tidyr
+rgbif (v.3.5.2)  
+tidyr (v.1.1.3)  
 
 #### *How to use*
 
 Calculates elevations from the geonames database given latitudes and longitudes in csv format. 
 
-Outputs two csvs, one is the original saved under "metadata_pre-elevs.csv" and the other is the new metadata csv with elevations included
+Outputs two csvs, one is the original saved under "metadata_pre-elevs.csv" and the other is the new metadata csv with elevations included.
 
 Note, do not run this twice in a row or original data will be overwritten.
