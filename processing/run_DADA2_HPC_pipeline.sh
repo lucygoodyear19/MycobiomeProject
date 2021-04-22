@@ -2,6 +2,15 @@
 #PBS -l walltime=48:00:00
 #PBS -l select=1:ncpus=120:mem=1440gb
 
+# Author: Luke Goodyear leg19@imperial.ac.uk
+# Script: run_DADA2_HPC_pipeline.sh
+# Desc: runs DADA2 pipeline (for use when submitting batch job)
+# Arguments:
+# 1) name of run as string
+# 2) name of country as string
+# Date: Mar 2020
+
+
 # load required environment
 module load anaconda3/personal
 source activate R_processing_env

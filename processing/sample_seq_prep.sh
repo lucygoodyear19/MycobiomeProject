@@ -1,5 +1,5 @@
 #!/bin/bash
-# Author: Lucy Goodyear lucy.goodyear19@imperial.ac.uk
+# Author: Luke Goodyear leg19@imperial.ac.uk
 # Script: sample_seq_prep.sh
 # Desc: Unzips sample sequence data and saves all fastq files to country directory
 # Arguments:
@@ -8,9 +8,11 @@
 #    and Origin (country matching country directory or Mock or PosC or NC) columns
 # Date: Mar 2020
 
+
 # activate conda environment containing csvcut
 module load anaconda3/personal
 source activate bash_env
+
 
 # check for correct number of arguments
 if [[ $# -lt 2 || $# -gt 2 ]] ; then
@@ -112,5 +114,6 @@ done
 
 # remove all unnessecary directories and files
 rm -r IGF*/ work/
+
 
 ## end of script
