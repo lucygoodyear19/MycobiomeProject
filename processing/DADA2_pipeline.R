@@ -280,6 +280,7 @@ out
 
 # learn the error rates (rate of error for each possible transition (A->C, A->G, …)
 print("Learning error rates")
+set.seed(26)
 errF <- learnErrors(filtFs)
 print("Visualising estimated error rates by plotting to pdf")
 pdf(file = paste(path_out,"error_rates.pdf",sep = ''), paper = 'A4')
@@ -355,6 +356,7 @@ write.csv(track,file=paste(path_out,"read_counts_during_pipeline_steps.csv",sep 
 
 # run assignTaxonomy function
 print("Assigning taxonomy")
+set.seed(26)
 taxa <- assignTaxonomy(seqtab.nochim, unite.ref, multithread = FALSE, tryRC = TRUE)
 
 # inspect taxonomic assignments
