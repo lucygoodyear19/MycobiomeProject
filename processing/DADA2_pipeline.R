@@ -20,9 +20,6 @@ library("Biostrings")
 # personal laptop
 #library("cutadapt")
 
-# set seed to ensure reproducibility
-set.seed(26)
-
 # import arguments to run script on specific country data
 #!/usr/bin/env Rscript
 args = commandArgs(trailingOnly=TRUE) # setup to accept arguments from command line
@@ -280,7 +277,6 @@ out
 
 # learn the error rates (rate of error for each possible transition (A->C, A->G, …)
 print("Learning error rates")
-set.seed(26)
 errF <- learnErrors(filtFs)
 print("Visualising estimated error rates by plotting to pdf")
 pdf(file = paste(path_out,"error_rates.pdf",sep = ''), paper = 'A4')
@@ -356,7 +352,6 @@ write.csv(track,file=paste(path_out,"read_counts_during_pipeline_steps.csv",sep 
 
 # run assignTaxonomy function
 print("Assigning taxonomy")
-set.seed(26)
 taxa <- assignTaxonomy(seqtab.nochim, unite.ref, multithread = FALSE, tryRC = TRUE)
 
 # inspect taxonomic assignments
