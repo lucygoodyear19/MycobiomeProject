@@ -245,7 +245,7 @@ print("From now on only forward reads will be processed because the reverse read
 
 # plot quality profiles for forward reads
 print("Plotting quality profiles for forward reads")
-pdf(file = paste0(path_out,"quality_profiles.pdf"), paper = 'A4')
+pdf(file = paste0(path_out,"quality_profiles_forward.pdf"), paper = 'A4')
 for (i in 1:length(cutFs)){
 	print(plotQualityProfile(cutFs[i]))
 }
