@@ -3,7 +3,7 @@
 ##############################################################################
 
 
-# Author: Lucy Goodyear (leg19@ic.ac.uk)
+# Author: Luke Goodyear (leg19@ic.ac.uk)
 # Version: 0.0.1
 
 # clear worksapce
@@ -52,14 +52,14 @@ library(dplyr)
 print("Loading data...")
 
 # load taxa data
-tax <- read.table(paste0(path_in, "Taxa_Table.txt"), 
+tax <- read.table(paste0(path_in, "taxa_table.txt"), 
                   stringsAsFactors = F,
                   header = T)
 # rename columns
 colnames(tax) <- c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species")
 
 # load abundance data
-seqtab <- read.table(paste0(path_in, "Abun_Table_sample_row.txt"), 
+seqtab <- read.table(paste0(path_in, "abun_table_samplesinrows.txt"), 
                      stringsAsFactors = F,
                      header = T)
 
@@ -102,7 +102,10 @@ metadata$Bd <- as.factor(metadata$Bd)
 print("Performing set up...")
 
 # change sample names in plate data to match processed data format
-plates$Sample_Name <- gsub("_", "-", plates$Sample_Name)
+for (patt in 1:length(plate_patterns)) {
+  plates$Sample_Name <- gsub(plate_patterns[patt], meta_patterns[patt], plates$Sample_Name)
+}
+#plates$Sample_Name <- gsub("_", "-", plates$Sample_Name)
 # country specific requirements: uncomment as required
 ## Vietnam
 #plates$Sample_Name <- gsub("-", "", plates$Sample_Name)
@@ -111,9 +114,6 @@ plates$Sample_Name <- gsub("_", "-", plates$Sample_Name)
 #plates$Sample_Name <- gsub("NC-PCR1-A", "NC-PCR1", plates$Sample_Name)
 #plates$Sample_Name <- gsub("NC-swab1-A", "NC-swab1", plates$Sample_Name)
 #plates$Sample_Name <- gsub("posC1-A", "posC1", plates$Sample_Name)
-## Costa Rica
-#plates$Sample_Name <- gsub("2016", "", plates$Sample_Name)
-#plates$Sample_Name <- gsub("-cr", "CR", plates$Sample_Name)
 
 # set rownames of taxonomy table to match column names of abundance table
 rownames(tax) <- colnames(seqtab)
@@ -327,12 +327,6 @@ if (!is.null(rm_id)) {
   metadata <- metadata[-c(rm_id),]
 }
 
-# rename Order, Family and Genus_Species columns in metadata 
-# (so no confusion occurs between amphibian taxa and fungal taxa)
-metadata <- rename(metadata ,c('A_Order' = 'Order', 
-                               'A_Family' = 'Family',
-                               'A_Genus_Species' = 'Genus_Species'))
-
 # set rownames of metadata to be MiSeq Code
 rownames(metadata) <- metadata$MiSeqCode
 
@@ -353,7 +347,7 @@ shannon_dada2 <- estimate_richness(dada2, split = TRUE, measures = "Shannon")
 sample_data(dada2)$Alpha_Shannon <- as.numeric(shannon_dada2[,1])
 
 # save with raw sequences for phylogenetic tree script
-saveRDS(dada2,paste0(path_out,"physeqob_DADA2_tree.rds"))
+saveRDS(dada2,paste0(path_out,"physeqob_DADA2_tree_new.rds"))
 
 # save sequences to refseqs slot and rename ASVs for convenience
 asv_seqs <- Biostrings::DNAStringSet(taxa_names(dada2))
@@ -365,7 +359,7 @@ taxa_names(dada2) <- paste0("ASV", seq(ntaxa(dada2)))
 dada2
 
 # save phyloseq object to be imported into analysis scripts
-saveRDS(dada2,paste0(path_out,"physeqob_DADA2.rds"))
+saveRDS(dada2,paste0(path_out,"physeqob_DADA2_new.rds"))
 
 print("Script completed")
 
