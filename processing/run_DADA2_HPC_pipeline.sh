@@ -26,7 +26,7 @@ Rscript --vanilla $HOME/mres/mycobiome_project/analysis/scripts/processing/DADA2
 echo "R has finished running DADA2 pipeline"
 
 echo "R is about to run filtering script on DADA2 results"
-Rscript --vanilla $HOME/mres/mycobiome_project/analysis/scripts/processing/DADA2_data_filtering.R "$HOME/mres/mycobiome_project/analysis/runs_countries/${run}/DADA2_results/${country}/DADA2_args.R"
+Rscript --vanilla $HOME/mres/mycobiome_project/analysis/scripts/processing/DADA2_data_filtering.R "$HOME/mres/mycobiome_project/analysis/runs_countries/${run}/DADA2_results/${country}/filtering_args.R"
 echo "R has finished running filtering script on DADA2 results"
 
 echo "All scripts have finsihed running. End."
