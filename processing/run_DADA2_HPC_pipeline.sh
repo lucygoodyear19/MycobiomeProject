@@ -13,7 +13,7 @@
 
 # load required environment
 module load anaconda3/personal
-source activate R_processing_env
+source activate r_processing
 
 # checks and prep
 cutadapt --version
