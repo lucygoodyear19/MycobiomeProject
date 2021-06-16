@@ -347,7 +347,7 @@ shannon_dada2 <- estimate_richness(dada2, split = TRUE, measures = "Shannon")
 sample_data(dada2)$Alpha_Shannon <- as.numeric(shannon_dada2[,1])
 
 # save with raw sequences for phylogenetic tree script
-saveRDS(dada2,paste0(path_out,"physeqob_DADA2_tree_new.rds"))
+saveRDS(dada2,paste0(path_out,"physeqob_DADA2_rawseqs.rds"))
 
 # save sequences to refseqs slot and rename ASVs for convenience
 asv_seqs <- Biostrings::DNAStringSet(taxa_names(dada2))
@@ -359,7 +359,7 @@ taxa_names(dada2) <- paste0("ASV", seq(ntaxa(dada2)))
 dada2
 
 # save phyloseq object to be imported into analysis scripts
-saveRDS(dada2,paste0(path_out,"physeqob_DADA2_new.rds"))
+saveRDS(dada2,paste0(path_out,"physeqob_DADA2.rds"))
 
 print("Script completed")
 
