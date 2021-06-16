@@ -87,7 +87,7 @@ FWD.orients
 
 ## remove sequences with ambiguous bases (have "N"s present)
 
-# empty filtN directory of any files from previsou runs
+# empty filtN directory of any files from previous runs
 unlink(paste0(path2, "*"))
 # put N-filtered files in filtN/ subdirectory for both forward and reverse reads
 # and save in new lists
