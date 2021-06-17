@@ -106,30 +106,11 @@ for (patt in 1:length(plate_patterns)) {
   plates$Sample_Name <- gsub(plate_patterns[patt], meta_patterns[patt], plates$Sample_Name)
 }
 
-# country specific requirements: uncomment as required
-## Vietnam
-#plates$Sample_Name <- gsub("-", "", plates$Sample_Name)
-## Pyrenees
-#plates$Sample_Name <- gsub("mock1-A", "mock1", plates$Sample_Name)
-#plates$Sample_Name <- gsub("NC-PCR1-A", "NC-PCR1", plates$Sample_Name)
-#plates$Sample_Name <- gsub("NC-swab1-A", "NC-swab1", plates$Sample_Name)
-#plates$Sample_Name <- gsub("posC1-A", "posC1", plates$Sample_Name)
-
 # set rownames of taxonomy table to match column names of abundance table
 rownames(tax) <- colnames(seqtab)
 
 # transpose abundance table
 seqtab_t <- as.data.frame(t(seqtab))
-
-# PosC and Mock seem to be swapped for TW17
-# plate 1 (Taiwan1a, Taiwan1b)
-#seqtab_t <- seqtab_t %>% rename(mock1 = "posC1", posC1 = "mock1")
-# plate 2 (Taiwan2)
-#seqtab_t <- seqtab_t %>% rename(mock2 = "posC2", posC2 = "mock2")
-# plate 3 (Taiwan3)
-#seqtab_t <- seqtab_t %>% rename(mock3 = "posC3", posC3 = "mock3")
-# transpose back
-#seqtab <- as.data.frame(t(seqtab_t))
 
 # subset taxonomy table
 species_by_seq <- as.data.frame(cbind(rownames(tax), tax$Genus, tax$Species))
@@ -139,20 +120,15 @@ names(species_by_seq) <- c("Sequence", "Genus", "Species")
 species_abun <- merge(species_by_seq, seqtab_t, by.x = "Sequence", by.y = "row.names")
 
 # create vector of plate numbers that the country was present on
-plate_nos <- c()
-for (samp in 1:nrow(plates)){
-  if (plates$Origin[samp] == country) {
-    plate_nos <- c(plate_nos, plates$Plate[samp])
-  } 
-  plate_nos <- unique(plate_nos)
+if(is.na(plate_nos)) {
+  plate_nos <- c()
+  for (samp in 1:nrow(plates)){
+    if (plates$Origin[samp] == country) {
+      plate_nos <- c(plate_nos, plates$Plate[samp])
+    } 
+    plate_nos <- unique(plate_nos)
+  }
 }
-
-# Pyrenees, Taiwan1a, Taiwan1b
-#plate_nos <- 1
-# Taiwan2
-#plate_nos <- 2
-# Taiwan3
-#plate_nos <- 3
 
 
 ######################### PosC
