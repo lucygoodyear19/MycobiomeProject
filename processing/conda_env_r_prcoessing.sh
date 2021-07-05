@@ -6,8 +6,8 @@
 # Script: env_manager.sh
 
 # Desc: 1) cleans conda environment 
-	2) creates new environment and installs packages
-	3) cleans conda environment
+#	2) creates new environment and installs packages
+#	3) cleans conda environment
 # Arguments: None
 # Date: Jun 2021
 
@@ -29,6 +29,7 @@ conda install -c bioconda bioconductor-shortread=1.50.0 -y
 conda install -c bioconda bioconductor-biostrings=2.60.0 -y
 conda install -c bioconda bioconductor-phyloseq=1.36.0 -y
 conda install -c conda-forge r-dplyr=1.0.6 -y
+conda install -c bioconda cutadapt=2.8 -y
 
 # remove any unused packages and caches after installations
 conda clean -a -y
