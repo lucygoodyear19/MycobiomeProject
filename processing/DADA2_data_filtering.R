@@ -106,7 +106,15 @@ for (patt in 1:length(plate_patterns)) {
   plates$Sample_Name <- gsub(plate_patterns[patt], meta_patterns[patt], plates$Sample_Name)
 }
 
-# modification for one particular Taiwan run to account for naming inconsistencies
+# modification for Taiwan 2017 run to account for swapping of mock and posC labels
+if (run == "Taiwan_2017/") {
+  for (patt in 1:length(plate_patterns)) {
+    colnames(tax) <- gsub(plate_patterns[patt], meta_patterns[patt], colnames(tax))
+    rownames(seqtab) <- gsub(plate_patterns[patt], meta_patterns[patt], rownames(seqtab))
+  }
+}
+
+# modification for Taiwan 2016 run to account for naming inconsistencies
 if (run == "Taiwan_Vietnam_2016/" && country == "Taiwan") {
   # change sample names in plate data to match processed data format
   rownames(seqtab) <- gsub("-", "", rownames(seqtab))
@@ -154,7 +162,7 @@ names(posc)[1:2] <- c("Sequence", "Genus_Species")
 # find posC species
 posc_ls <- c()
 for (plate in plate_nos) {
-  assign(paste0("poscspec", plate), as.character(posc$Genus_Species[posc[[paste0("posC", plate)]] > 1000]))
+  assign(paste0("poscspec", plate), as.character(posc$Genus_Species[posc[[paste0("posC", plate)]] > 10]))
   posc_ls <- c(posc_ls, get(paste0("poscspec", plate)))
 }
 
@@ -183,7 +191,7 @@ names(mocks)[1:2] <- c("Sequence", "Genus_Species")
 # find mock species
 mock_ls <- c()
 for (plate in plate_nos) {
-  assign(paste0("mockspec", plate), as.character(mocks$Genus_Species[mocks[[paste0("mock", plate)]] > 1000]))
+  assign(paste0("mockspec", plate), as.character(mocks$Genus_Species[mocks[[paste0("mock", plate)]] > 10]))
   mock_ls <- c(mock_ls, get(paste0("mockspec", plate)))
 }
 
