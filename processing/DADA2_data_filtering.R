@@ -52,14 +52,14 @@ library("dplyr")
 print("Loading data...")
 
 # load taxa data
-tax <- read.table(paste0(path_in, "Taxa_Table.txt"),
+tax <- read.table(paste0(path_in, "taxa_table.txt"),
                   stringsAsFactors = F,
                   header = T)
 # rename columns
 colnames(tax) <- c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species")
 
 # load abundance data
-seqtab <- read.table(paste0(path_in, "Abun_Table_sample_row.txt"),#abun_table_samplesinrows.txt"), 
+seqtab <- read.table(paste0(path_in, "abun_table_samplesinrows.txt"), 
                      stringsAsFactors = F,
                      header = T)
 
