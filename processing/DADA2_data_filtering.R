@@ -52,14 +52,14 @@ library("dplyr")
 print("Loading data...")
 
 # load taxa data
-tax <- read.table(paste0(path_in, "taxa_table.txt"),
+tax <- read.table(paste0(path_in, "Taxa_Table.txt"),
                   stringsAsFactors = F,
                   header = T)
 # rename columns
 colnames(tax) <- c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species")
 
 # load abundance data
-seqtab <- read.table(paste0(path_in, "abun_table_samplesinrows.txt"), 
+seqtab <- read.table(paste0(path_in, "Abun_Table_sample_row.txt"),#abun_table_samplesinrows.txt"), 
                      stringsAsFactors = F,
                      header = T)
 
@@ -104,6 +104,16 @@ print("Performing set up...")
 # change sample names in plate data to match processed data format
 for (patt in 1:length(plate_patterns)) {
   plates$Sample_Name <- gsub(plate_patterns[patt], meta_patterns[patt], plates$Sample_Name)
+}
+
+# modification for one particular Taiwan run to account for naming inconsistencies
+if (run == "Taiwan_Vietnam_2016/" && country == "Taiwan") {
+  # change sample names in plate data to match processed data format
+  rownames(seqtab) <- gsub("-", "", rownames(seqtab))
+  # replace sample indices with sample names in seqtab_t
+  for (samp in 1:nrow(seqtab)) {
+    rownames(seqtab)[samp] <- plates$Sample_Name[grep(rownames(seqtab)[samp], plates$indices)]
+  }
 }
 
 # set rownames of taxonomy table to match column names of abundance table
@@ -267,6 +277,27 @@ seqtab_filtered <- seqtab_filtered[,-ncol(seqtab_filtered)]
 ######################### Tidy up
 
 
+# modification for one particular Taiwan run to remove all Bsal and cultures
+if (run == "Taiwan_Vietnam_2016/" && country == "Taiwan") {
+  require(tibble) # for `rownames_to_column` and `column_to_rownames`
+  require(dplyr)
+  
+  # separate out Bsal from taxa table
+  bsal <- tax %>%
+    rownames_to_column('Seq') %>%
+    filter(Species == "s__salamandrivorans") %>%
+    column_to_rownames('Seq')
+
+  # save Bsal sequences
+  bsal_seqs <- rownames(bsal)
+
+  # remove all Bsal sequences from abundance table
+  seqtab_filtered <- as.data.frame(seqtab_filtered[,!colnames(seqtab_filtered) %in% bsal_seqs,])
+
+  # remove cultures (denoted by "c" in sample name)
+  seqtab_filtered <- seqtab_filtered[-c(grep("c", rownames(seqtab_filtered))), , drop=F]
+}
+
 # remove empty ASVs
 print("Removing empty ASVs...")
 
@@ -314,7 +345,6 @@ rownames(metadata) <- metadata$MiSeqCode
 # filling in the required substitution
 #rownames(seqtab_mat) <- gsub("X", "", rownames(seqtab_mat))
 
-require(phyloseq)
 dada2 <- phyloseq(tax_table(tax_mat), 
                   otu_table(seqtab_mat, taxa_are_rows = FALSE), 
                   sample_data(metadata))
